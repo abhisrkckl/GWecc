@@ -1,0 +1,3 @@
+constexpr size_t qmax = 4;
+constexpr size_t pmax = 8;
+typedef Eigen::Array<double,pmax+1,qmax+1> Array_pq;
