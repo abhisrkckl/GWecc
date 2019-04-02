@@ -1,0 +1,6 @@
+*.bak
+*.o
+GWecc.py
+*.pyc
+*_wrap.cxx
+*.so
