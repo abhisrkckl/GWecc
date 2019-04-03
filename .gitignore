@@ -3,4 +3,9 @@
 GWecc.py
 *.pyc
 *_wrap.cxx
+*_wrap.cpp
 *.so
+_evolve_.dat
+build/*
+dist/*
+*.egg-info
