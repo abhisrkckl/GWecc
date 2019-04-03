@@ -37,6 +37,10 @@ def eccentric_cw_delay(toas,
     psrTerm	is  [boolean] Whether to add pulsar term 
        
     evolve	is  [boolean] Whether to evolve phase exactly   ---   Not implemented (Always True)
+    
+    
+    Returns:	
+    		TOA delays due to GWs from eccentric binary sources (in s)
     """
     	
     D_GW = 10.**log10_D_GW   
