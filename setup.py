@@ -21,7 +21,7 @@ GWecc_sources = [src_dir+src_file for src_file in GWecc_sources] + ['enterprise_
 
 GWecc_cpp_module = Extension('enterprise_GWecc._GWecc', 
                              sources=GWecc_sources,
-                             include_dirs=[include_dir, current_dir],
+                             include_dirs=[include_dir, current_dir, '/usr/include/eigen3/'],
                              libraries=['gsl','gslcblas'],
                              swig_opts=['-c++'],
                              extra_compile_args=['-std=c++17']
@@ -33,5 +33,6 @@ setup(  name = 'enterprise_GWecc',
         author = "Abhimanyu Susobhanan",
         author_email = "s.abhimanyu@tifr.res.in",
         ext_modules = [GWecc_cpp_module],
-        py_modules = ['enterprise_GWecc.GWecc', 'enterprise_GWecc.enterprise_GWecc']
+        py_modules = ['enterprise_GWecc.GWecc', 'enterprise_GWecc.enterprise_GWecc'],
+        scripts = ['examples/Example.py']
     )
