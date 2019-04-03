@@ -1,6 +1,6 @@
 from .GWecc import EccentricResiduals, ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth
 from enterprise.signals import signal_base
-from numpy import pi
+import numpy as np
 
 @signal_base.function
 def eccentric_cw_delay(toas,
@@ -42,17 +42,19 @@ def eccentric_cw_delay(toas,
     D_GW = 10.**log10_D_GW   
     M = 10.**log10_M
     
-    n0 = pi*(10.**log10_f0_GW)	# GW frequency is twice the orbital frequency.
+    n0 = np.pi*(10.**log10_f0_GW)	# GW frequency is twice the orbital frequency.
 
     residuals_method = ResidualsMethod_Num
     
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
     
-    return EccentricResiduals(M, q,
-                              psi, i,
-                              t0, n0, e0, l0, gamma0,
-                              D_GW, RA_GW, DEC_GW,
-                              D_psr,  RA_psr,  DEC_psr,
-                              residuals_method,
-                              residuals_terms,
-                              toas)
+    return np.asarray(
+	    	   EccentricResiduals(M, q,
+		                      psi, i,
+		                      t0, n0, e0, l0, gamma0,
+		                      D_GW, RA_GW, DEC_GW,
+		                      D_psr,  RA_psr,  DEC_psr,
+		                      residuals_method,
+		                      residuals_terms,
+		                      toas)	
+		)

@@ -2,14 +2,36 @@
 #include "PN.hpp"
 #include <cstdio>
 
+void write_data_file(const char *datafilename, const std::vector<double> &taus, const std::vector<double> &es){
+	const size_t rows = taus.size();
+
+	FILE *outfile = fopen(datafilename, "wb");
+	fwrite(&rows,    sizeof(rows),   1,    outfile);
+	fwrite(&taus[0], sizeof(double), rows, outfile);
+	fwrite(&es[0],   sizeof(double), rows, outfile);
+	fclose(outfile);
+
+	printf("Successfully wrote %s.\n",datafilename);
+}
+
 Evolve::Evolve(const char *datafilename){
 
 	FILE *datafile = fopen(datafilename,"rb");
 	if(datafile==NULL){
-		fprintf(stderr, "ERROR : Unable to read pre-computed integral from %s.\nRun precompute_orbit to create this file.\n", datafilename);
-		fprintf(stderr, "Re-computing integral...\n");
+		fprintf(stderr, "ERROR : Unable to read pre-computed integral from %s. Re-computing integral...\n", datafilename);
 		
-		Evolve();
+		//Evolve();
+		constexpr double emin   = 2.5e-9,  // Initial condition
+                         	 taumax = 1000;    // Stopping condition
+
+		//std::vector<double> taus, es;
+		//std::tie(taus,es) = precompute_orbit(emin,taumax);
+		
+		const auto [taus,es] = precompute_orbit(emin,taumax);
+
+		initialize(taus, es);
+
+		write_data_file(datafilename, taus, es);
 	}
 	else{
 		size_t _rows;
@@ -22,10 +44,16 @@ Evolve::Evolve(const char *datafilename){
 
 		size_t filesize_expected = sizeof(_rows) + 2*_rows*sizeof(double);
 		if(filesize_expected!=filesize){
-			fprintf(stderr, "ERROR : File size mismatch. Unable to load data from file %s. \n", datafilename);
-			fprintf(stderr, "Re-computing integral...\n");
+			fprintf(stderr, "ERROR : Unable to read pre-computed integral from %s. Re-computing integral...\n", datafilename);
 			
-			Evolve();
+			//Evolve();
+			constexpr double emin   = 2.5e-9,  // Initial condition
+                                 	 taumax = 1000;
+			const auto [taus,es] = precompute_orbit(emin,taumax);
+			
+			initialize(taus, es);
+
+			write_data_file(datafilename, taus, es);
 		}
 		else{
 
