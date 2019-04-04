@@ -47,7 +47,7 @@ Evolve::Evolve(const char *datafilename){
 			fprintf(stderr, "ERROR : Unable to read pre-computed integral from %s. Re-computing integral...\n", datafilename);
 			
 			//Evolve();
-			constexpr double emin   = 2.5e-9,  // Initial condition
+			const/*expr*/ double emin   = 2.5e-9,  // Initial condition
                                  	 taumax = 1000;
 			const auto [taus,es] = precompute_orbit(emin,taumax);
 			
@@ -118,7 +118,7 @@ double Evolve::e_from_tau(const double tau) const{
 
 	double e;
 	if(tau<tau_min){
-		constexpr double coeff = pow(2,559./726) * pow(3,19./48) / pow(19,145./242);
+		const/*expr*/ double coeff = pow(2,559./726) * pow(3,19./48) / pow(19,145./242);
 		e = coeff * pow(tau, 19./48);
 	}
 	else if(tau>tau_max){
@@ -135,7 +135,7 @@ double Evolve::tau_from_e(const double e) const{
 
 	double tau;
 	if(e<e_min){
-		constexpr double coeff = 19*pow(19,1181./2299)/(6*pow(2,2173./2299));
+		const/*expr*/ double coeff = 19*pow(19,1181./2299)/(6*pow(2,2173./2299));
 		tau = coeff * pow(e,48./19);
 	}
 	else if(e>e_max){

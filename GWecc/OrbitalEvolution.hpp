@@ -43,7 +43,7 @@ class Evolve{
 			    tau_min, e_min;
 			    
 	//Coefficients for evaluating tau->inf asymptotic expressions
-	static constexpr double	a  = 2*sqrt(2.)/5/pow(5,  63./2299)/pow(17,1181./2299);
+	/*static*/ const/*expr*/ double	a  = 2*sqrt(2.)/5/pow(5,  63./2299)/pow(17,1181./2299);
 	double			b;
 
 	void initialize(const std::vector<double> &taus_pre, const std::vector<double> &es_pre);

@@ -76,18 +76,18 @@ double n_from_e(const double n0, const double e0, const double e){
 }
 
 double lbar_from_e(const double e){
-	constexpr double coeff = pow(19,2175./2299)/30/pow(2, 496./2299);
+	const/*expr*/ double coeff = pow(19,2175./2299)/30/pow(2, 496./2299);
 	return  coeff * e * pow(e,11./19) * gsl_sf_hyperg_2F1(124./2299, 15./19, 34./19, -121.*e*e/304);
 }
 
 double gbar_from_e(const double e){
-	constexpr double coeff = pow(19,1305./2299)/36/pow(2,1677./2299);
+	const/*expr*/ double coeff = pow(19,1305./2299)/36/pow(2,1677./2299);
 	return  coeff * pow(e,18./19) * gsl_sf_hyperg_2F1(994./2299,  9./19, 28./19, -121.*e*e/304);
 }
 
 double gbar2_from_e(const double e, const double eta){
 	
-	constexpr double coeff = 3 * pow(2,1740./2299) * pow(19,435./2299);
+	const/*expr*/ double coeff = 3 * pow(2,1740./2299) * pow(19,435./2299);
 	
 	double e2 = e*e;
 	
