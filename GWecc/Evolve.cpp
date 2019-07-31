@@ -24,10 +24,9 @@ Evolve::Evolve(const char *datafilename){
 		constexpr double emin   = 2.5e-9,  // Initial condition
                          	 taumax = 1000;    // Stopping condition
 
-		//std::vector<double> taus, es;
-		//std::tie(taus,es) = precompute_orbit(emin,taumax);
-		
-		const auto [taus,es] = precompute_orbit(emin,taumax);
+		std::vector<double> taus, es;
+	    	std::tie(taus,es) = precompute_orbit(emin,taumax);
+		//const auto [taus,es] = precompute_orbit(emin,taumax);
 
 		initialize(taus, es);
 
@@ -48,9 +47,10 @@ Evolve::Evolve(const char *datafilename){
 			
 			//Evolve();
 			const/*expr*/ double emin   = 2.5e-9,  // Initial condition
-                                 	 taumax = 1000;
-			const auto [taus,es] = precompute_orbit(emin,taumax);
-			
+                                 	     taumax = 1000;
+			std::vector<double> taus, es;
+                        std::tie(taus,es) = precompute_orbit(emin,taumax);
+
 			initialize(taus, es);
 
 			write_data_file(datafilename, taus, es);
@@ -118,7 +118,7 @@ double Evolve::e_from_tau(const double tau) const{
 
 	double e;
 	if(tau<tau_min){
-		const/*expr*/ double coeff = pow(2,559./726) * pow(3,19./48) / pow(19,145./242);
+		const double coeff = pow(2,559./726) * pow(3,19./48) / pow(19,145./242);
 		e = coeff * pow(tau, 19./48);
 	}
 	else if(tau>tau_max){
@@ -135,7 +135,7 @@ double Evolve::tau_from_e(const double e) const{
 
 	double tau;
 	if(e<e_min){
-		const/*expr*/ double coeff = 19*pow(19,1181./2299)/(6*pow(2,2173./2299));
+		const double coeff = 19*pow(19,1181./2299)/(6*pow(2,2173./2299));
 		tau = coeff * pow(e,48./19);
 	}
 	else if(e>e_max){
