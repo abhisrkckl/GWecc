@@ -85,7 +85,7 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
 	Signal1D _Rp, _Rx;
 	std::tie(_Rp, _Rx) = EccentricResiduals_px(bin_mass, bin_init, 
                                               	   residuals_method,
-                                              	   DGW,
+                                              	   parsec_geom*DGW,
                                               	   ts);
 
 	std::vector<double> 	Rp(std::begin(_Rp), std::end(_Rp)),

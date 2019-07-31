@@ -57,9 +57,9 @@ residuals1 = np.array(Rp)*Fp + np.array(Rx)*Fx;
 	     	       		     log10_f0_GW, e0, gamma0, l0, t0,
 	     	       		     psrTerm=False)"""
 
-#plt.plot(toas/Pb, np.asarray(residuals)/ns)
-#plt.plot(toas/Pb, np.asarray(residuals1)/ns)
-plt.plot(toas/Pb, np.asarray(residuals)/np.asarray(residuals1))
+plt.plot(toas/Pb, np.asarray(residuals)/ns)
+plt.plot(toas/Pb, np.asarray(residuals1)/ns)
+#plt.plot(toas/Pb, np.asarray(residuals)/np.asarray(residuals1))
 plt.xlabel("t/Pb")
 plt.ylabel("$\Delta_{GW}$ (ns)")
 plt.grid()
