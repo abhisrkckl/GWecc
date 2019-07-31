@@ -1,6 +1,6 @@
 #include "EccentricResiduals_py.hpp"
 #include "EccentricResiduals.hpp"
-
+#include "AntennaPattern.hpp"
 
 static constexpr double MSun_geom	= 4.92703806e-6;	// Solar mass in s (geometric units)
 static constexpr double parsec_geom 	= 102927125.0;		// Parsec in s (geometric units)
@@ -121,4 +121,9 @@ std::vector<std::vector<double> > EccentricWaveform_px(	const double M, const do
 			 	hx(std::begin(_hx), std::end(_hx));
 
         return std::vector<std::vector<double> > {hp, hx};
+}
+
+std::vector<double> AntennaPattern(const double RA_GW, const double DEC_GW, const double RA_P, const double DEC_P){
+    const auto [cos_th, Fp, Fx] = AntennaPattern(SkyPosition{0, RA_GW, DEC_GW}, SkyPosition{0, RA_P, DEC_P});
+    return std::vector<double>{cos_th, Fp, Fx};
 }

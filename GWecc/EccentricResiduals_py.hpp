@@ -32,4 +32,6 @@ std::vector<std::vector<double> > EccentricWaveform_px(	const double M, const do
 
 BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay);
 
+std::vector<double> AntennaPattern(const double RA_GW, const double DEC_GW, const double RA_P, const double DEC_P);
+
 #endif
