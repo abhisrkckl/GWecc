@@ -25,16 +25,16 @@ Signal1D EccentricResiduals_Num(const BinaryMass &bin_mass,
 		
 		const auto delay = -psr_pos.DL*(1-cosmu);
 		std::cout<<"delay = "<<delay<<'\n';
-		const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
+		//const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
 		
-		return EccentricResiduals_fn_Num(bin_mass, bin_psrterm, Fp, Fx, bin_pos.DL, ts + delay);
+		return EccentricResiduals_fn_Num(bin_mass, /*bin_psrterm*/bin_init, Fp, Fx, bin_pos.DL, ts + delay);
 	}
 	else{
 		const auto delay = -psr_pos.DL*(1-cosmu);
-		const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
+		//const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
 		
-		return 	 EccentricResiduals_fn_Num(bin_mass, bin_psrterm, Fp, Fx, bin_pos.DL, ts + delay)
-			-EccentricResiduals_fn_Num(bin_mass, bin_init,    Fp, Fx, bin_pos.DL, ts);
+		return 	 EccentricResiduals_fn_Num(bin_mass, /*bin_psrterm*/bin_init, Fp, Fx, bin_pos.DL, ts + delay)
+			    -EccentricResiduals_fn_Num(bin_mass, bin_init,    Fp, Fx, bin_pos.DL, ts);
 	}
 }
 
