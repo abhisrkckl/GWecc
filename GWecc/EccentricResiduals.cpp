@@ -29,7 +29,7 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px(const BinaryMass &bin_mass,
                                                      const Signal1D &ts){
 
 	const auto EccentricResiduals_px_fn = (residuals_method==ResidualsMethod::Anl) ? EccentricResiduals_px_Anl
-                                                                                       : EccentricResiduals_px_Num;
+                                                                                   : EccentricResiduals_px_Num;
 
 	return EccentricResiduals_px_fn(bin_mass, bin_init, DGW, ts);
 }
