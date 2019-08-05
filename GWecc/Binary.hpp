@@ -61,6 +61,9 @@ public:
 struct SkyPosition{
 	double DL;
 	double RA, DEC;
+	double z;
+	
+	SkyPosition(double _DL, double _RA, double _DEC, double _z) : DL(_DL), RA(_RA), DEC(_DEC), z(_z) {} 
 };
 
 #endif
