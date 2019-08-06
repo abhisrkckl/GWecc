@@ -18,8 +18,6 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
         
         const auto [RpE, RxE] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
         
-        //const auto H0E = GWAmplitude(bin_mass, bin_init, bin_pos.DL);
-        
         return -(Fp*RpE + Fx*RxE);
     }
     else if(residuals_terms==ResidualsTerms::Pulsar){
@@ -27,9 +25,7 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, /*bin_psrterm*/bin_init, bin_pos.DL, ts + delay);
-        
-        //const auto H0P = GWAmplitude(bin_mass, bin_psrterm, bin_pos.DL);
+        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay); 
         
         return (Fp*RpP + Fx*RxP);
     }
@@ -37,11 +33,8 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, /*bin_psrterm*/bin_init, bin_pos.DL, ts + delay);
+        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
         const auto [RpE, RxE] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
-        
-        //const auto H0E = GWAmplitude(bin_mass, bin_init, bin_pos.DL),
-        //           H0P = GWAmplitude(bin_mass, bin_psrterm, bin_pos.DL);
         
         return    (Fp*RpP + Fx*RxP) 
                 - (Fp*RpE + Fx*RxE);
@@ -69,17 +62,17 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Anl(const BinaryMass &bin_m
     
         const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, ts[i]-bin_init.t);
         
-        const auto k = advance_of_periastron(bin_mass, bin_now);
+        //const auto k = advance_of_periastron(bin_mass, bin_now);
     
         const auto res_coeffs  = FourierResidualCoeffs(bin_mass, bin_now, 0);
         
-        const auto nt     = bin_init.n * (ts[i]-bin_init.t),
-                   l      =       nt + bin_init.l,
-                   lambda = (1+k)*nt + bin_init.l + bin_init.gamma;
+        const auto //nt     = bin_now.n,                //bin_init.n * (ts[i]-bin_init.t),
+                   l      = bin_now.l,                  //      nt + bin_init.l,
+                   lambda = l+bin_now.gamma;            //(1+k)*nt + bin_init.l + bin_init.gamma;
         
         const auto [RA, RB] = FourierResidual_pt(res_coeffs, l, lambda);
         
-        const auto H0 = GWAmplitude(bin_mass, bin_init, DGW);
+        const auto H0 = GWAmplitude(bin_mass, bin_now, DGW);
         
         Rp[i] = H0*(cos2Omega*RA - sin2Omega*RB);
         Rx[i] = H0*(cos2Omega*RB + sin2Omega*RA);
