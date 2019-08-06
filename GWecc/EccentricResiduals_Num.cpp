@@ -1,7 +1,7 @@
 #include "EccentricResiduals.hpp"
-#include "NumericalWaveform.hpp"
-#include "AntennaPattern.hpp"
 #include "OrbitalEvolution.hpp"
+#include "AntennaPattern.hpp"
+#include "NumericalWaveform.hpp"
 #include "PN.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
@@ -15,7 +15,7 @@ Signal1D EccentricResiduals_Num(const BinaryMass &bin_mass,
                                 const SkyPosition &psr_pos,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts){
-    
+
     const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
     
     if(residuals_terms==ResidualsTerms::Earth){
@@ -29,11 +29,11 @@ Signal1D EccentricResiduals_Num(const BinaryMass &bin_mass,
         return EccentricResiduals_fn_Num(bin_mass, /*bin_psrterm*/bin_init, Fp, Fx, bin_pos.DL, ts + delay);
     }
     else{
-        const auto delay = -psr_pos.DL*(1-cosmu);
+        const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
         return    EccentricResiduals_fn_Num(bin_mass, /*bin_psrterm*/bin_init, Fp, Fx, bin_pos.DL, ts + delay)
-                - EccentricResiduals_fn_Num(bin_mass, bin_init,    Fp, Fx, bin_pos.DL, ts);
+                - EccentricResiduals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts);
     }
 }
 
