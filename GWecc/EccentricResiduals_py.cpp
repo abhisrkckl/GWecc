@@ -14,7 +14,7 @@ static constexpr double MSun_to_s   = 4.92703806e-6,       // Solar mass in s (g
  * Omega    is Polarization Angle       in rad
  * i        is Inclination              in rad
  *
- * t0       is Epoch                    in s
+ * t0       is Epoch                    in MJD
  * Pb0E     is Orbital period at t0     in year     in Earth frame
  * e0       is Eccentricity at t0 
  * l0       is Mean Anomaly at t0       in rad
@@ -30,7 +30,7 @@ static constexpr double MSun_to_s   = 4.92703806e-6,       // Solar mass in s (g
  *
  * residuals_method is one of {Anl,Num}
  *    
- * ts       are TOAs                    in s        in Earth frame
+ * ts       are TOAs                    in MJD        in Earth frame
  */
 std::vector<double> EccentricResiduals( const double M, const double q,
                                         const double Omega, const double i, 
@@ -47,7 +47,7 @@ std::vector<double> EccentricResiduals( const double M, const double q,
     const double Pb0 = Pb0E * year_to_s / (1+z),
                  n0 = 2*M_PI/Pb0; 
     
-    const BinaryState bin_init { t0,
+    const BinaryState bin_init { day_to_s*t0,
                                  Omega, i,
                                  n0, e0, l0, gamma0 };
                      
