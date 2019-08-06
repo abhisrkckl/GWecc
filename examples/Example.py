@@ -30,12 +30,12 @@ l0 = 0
 t0 = 0
 
 residuals = GWecc.eccentric_cw_delay(toas, 
-	     	       		     RA_psr, DEC_psr, D_psr,
-	     	       		     RA_GW, DEC_GW, log10_D_GW,
-	     	       		     psi, i,
-	     	       		     log10_M, q,
-	     	       		     log10_f0_GW, e0, gamma0, l0, t0,
-	     	       		     psrTerm=False)
+	             	       		     RA_psr, DEC_psr, D_psr,
+	             	       		     RA_GW, DEC_GW, log10_D_GW,
+	             	       		     psi, i,
+	             	       		     log10_M, q,
+	             	       		     log10_f0_GW, e0, gamma0, l0, t0,
+	             	       		     psrTerm=False)
 
 plt.plot(toas/year, np.asarray(residuals)/ns)
 plt.xlabel("t (yr)")
