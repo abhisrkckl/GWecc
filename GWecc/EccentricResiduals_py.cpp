@@ -42,7 +42,7 @@ std::vector<double> EccentricResiduals( const double M, const double q,
                                         const ResidualsTerms residuals_terms,
                                         const std::vector<double> _ts){
     
-    const BinaryMass bin_mass(MSun_geom*M, q);
+    const BinaryMass bin_mass(MSun_to_s*M, q);
     
     const double Pb0 = Pb0E * year_to_s / (1+z),
                  n0 = 2*M_PI/Pb0; 
@@ -51,8 +51,8 @@ std::vector<double> EccentricResiduals( const double M, const double q,
                                  Omega, i,
                                  n0, e0, l0, gamma0 };
                      
-    const SkyPosition bin_pos {parsec_geom*D_GW, RA_GW, DEC_GW, z},
-                      psr_pos {parsec_geom*D_P,  RA_P,  DEC_P,  0};
+    const SkyPosition bin_pos {parsec_to_s*D_GW, RA_GW, DEC_GW, z},
+                      psr_pos {parsec_to_s*D_P,  RA_P,  DEC_P,  0};
         
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
@@ -60,7 +60,7 @@ std::vector<double> EccentricResiduals( const double M, const double q,
     Signal1D result = EccentricResiduals(bin_mass, bin_init, bin_pos, psr_pos, 
                                          residuals_method, 
                                          residuals_terms,
-                                         ts);
+                                         tzs);
     result *= (1+z);
     
     return std::vector<double>(std::begin(result), std::end(result));
@@ -73,7 +73,7 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
                                                         const ResidualsMethod residuals_method,
                                                         const std::vector<double> _ts){
 
-    const BinaryMass bin_mass(MSun_geom*M, q);
+    const BinaryMass bin_mass(MSun_to_s*M, q);
 
     const double Pb0 = Pb0E * year_to_s / (1+z),
                  n0 = 2*M_PI/Pb0; 
@@ -82,16 +82,16 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
                                  Omega, i,
                                  n0, e0, l0, gamma0 };
 
-    Signal1D ts(_ts.data(), _ts.size());
-    ts /= (1+z);
+    Signal1D tzs(_ts.data(), _ts.size());
+    tzs /= (1+z);
 
     Signal1D _Rp, _Rx;
     std::tie(_Rp, _Rx) = EccentricResiduals_px(bin_mass, bin_init, 
                                                residuals_method,
-                                               parsec_geom*DGW,
-                                               ts);
+                                               parsec_to_s*DGW,
+                                               tzs);
     _Rp *= (1+z);
-    _Rz *= (1+z);
+    _Rx *= (1+z);
 
     std::vector<double>  Rp(std::begin(_Rp), std::end(_Rp)),
                          Rx(std::begin(_Rx), std::end(_Rx));
