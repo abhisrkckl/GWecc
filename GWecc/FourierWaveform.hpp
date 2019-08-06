@@ -8,7 +8,7 @@
 
 struct Fourier2DCoeffs_t{
 	Array_pq Ap, Bp, Cp, Dp,
-		 Ax, Bx, Cx, Dx;
+		     Ax, Bx, Cx, Dx;
 };
 
 //Fourier2DCoeffs_t FourierWaveformCoeffs(const BinaryMass &binmass, const BinaryState &binstate, const double beta);

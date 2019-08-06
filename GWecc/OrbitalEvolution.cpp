@@ -24,9 +24,9 @@ double compute_P_coeff(const double Mchirp, const double n0, const double e0){
 	double e02 = e0*e0;	
 	
 	return A/3	* pow(n0,8./3)
-		  	* pow(e0,48./19)
-			* pow(304 + 121*e02, 3480./2299)
-			/ pow(1-e02,4);
+		      	* pow(e0,48./19)
+			    * pow(304 + 121*e02, 3480./2299)
+			    / pow(1-e02,4);
 }
 
 double compute_alpha_coeff(const double Mchirp, const double n0, const double e0){
@@ -35,9 +35,9 @@ double compute_alpha_coeff(const double Mchirp, const double n0, const double e0
 	double e02 = e0*e0;
 	
 	return 3./A	/ pow(n0,5./3)
-			/ pow(e0,30./19)
-			/ pow(304 + 121*e02, 2175./2299)
-			* pow(1-e02,2.5);
+			    / pow(e0,30./19)
+			    / pow(304 + 121*e02, 2175./2299)
+			    * pow(1-e02,2.5);
 	
 }
 
@@ -47,10 +47,10 @@ double compute_beta_coeff(const double Mchirp, const double M, const double n0, 
 	double e02 = e0*e0;
 	
 	return 9./A	* pow(M, 2./3)
-			/ n0
-			/ pow(e0,18./19)
-			/ pow(304 + 121*e02, 1305./2299)
-			* pow(1-e02,1.5);
+			    / n0
+			    / pow(e0,18./19)
+			    / pow(304 + 121*e02, 1305./2299)
+			    * pow(1-e02,1.5);
 	
 }
 
@@ -60,10 +60,10 @@ double compute_beta2_coeff(const double Mchirp, const double M, const double n0,
 	double e02 = e0*e0;
 	
 	return 3./(4*A)	* pow(M, 4./3)
-			/ cbrt(n0)
-			/ pow(e0,6./19)
-			/ pow(304 + 121*e02, 435./2299)
-			* sqrt(1-e02);
+			        / cbrt(n0)
+			        / pow(e0,6./19)
+			        / pow(304 + 121*e02, 435./2299)
+			        * sqrt(1-e02);
 	
 }
 
@@ -71,8 +71,8 @@ double n_from_e(const double n0, const double e0, const double e){
 	double e02 = e0*e0,
 	       e2  = e*e; 
 	return n0	* pow(e0/e,18./19)
-			* sqrt(ipow((1-e2)/(1-e02),3))
-			* pow((304 + 121*e02)/(304 + 121*e2),1305./2299);
+			    * sqrt(ipow((1-e2)/(1-e02),3))
+			    * pow((304 + 121*e02)/(304 + 121*e2),1305./2299);
 }
 
 double lbar_from_e(const double e){
