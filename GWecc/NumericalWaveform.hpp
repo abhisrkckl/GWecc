@@ -1,8 +1,6 @@
-
 #ifndef _NumericalWaveform_hpp_
 #define _NumericalWaveform_hpp_
 
-//#include <gsl/gsl_spline.h>
 #include "EccentricResiduals.hpp"
 #include "OrbitalEvolution.hpp"
 #include <gsl/gsl_integration.h>
