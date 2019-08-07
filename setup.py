@@ -9,7 +9,6 @@ GWecc_sources = (   "AntennaPattern.cpp",
                     "Evolve.cpp",
                     "FourierWaveform.cpp",
                     "mikkola.cpp",
-                    "NumericalWaveform.cpp",
                     "OrbitalEvolution.cpp",
                     "PN.cpp",
                     "Precompute_Orbit.cpp"  
