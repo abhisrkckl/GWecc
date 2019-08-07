@@ -1,4 +1,4 @@
-#include "EccentricResiduals_py.hpp"
+#include "GWecc.hpp"
 #include "EccentricResiduals.hpp"
 #include "AntennaPattern.hpp"
 

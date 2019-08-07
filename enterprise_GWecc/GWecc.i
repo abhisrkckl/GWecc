@@ -1,6 +1,6 @@
 %module GWecc
 %{
-#include "GWecc/EccentricResiduals_py.hpp"
+#include "GWecc/GWecc.hpp"
 #include "GWecc/ResidualsOptions.hpp"
 #include "GWecc/Binary.hpp"
 #include "GWecc/OrbitalEvolution.hpp"
@@ -13,7 +13,7 @@ namespace std {
    %template(DoubleVectorVector) vector<vector<double> >;
 }
 
-%include "GWecc/EccentricResiduals_py.hpp"
+%include "GWecc/GWecc.hpp"
 %include "GWecc/ResidualsOptions.hpp"
 %include "GWecc/Binary.hpp"
 %include "GWecc/OrbitalEvolution.hpp"
