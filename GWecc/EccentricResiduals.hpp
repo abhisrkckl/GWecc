@@ -40,8 +40,9 @@ Signal1D EccentricResiduals(const BinaryMass &bin_mass,
 
 std::tuple<Signal1D, Signal1D> EccentricResiduals_px(const BinaryMass &bin_mass,
                                                      const BinaryState &bin_init,
+                                                     const double DGW, const double delay,
                                                      const ResidualsMethod residuals_method,
-                                                     const double DGW,
+                                                     const ResidualsTerms residuals_terms,
                                                      const Signal1D &ts);
 
 std::tuple<Signal1D, Signal1D> EccentricWaveform_px( const BinaryMass &bin_mass,

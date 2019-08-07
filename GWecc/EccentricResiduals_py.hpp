@@ -21,8 +21,10 @@ std::vector<double> EccentricResiduals( const double M, const double q,
 std::vector<std::vector<double> > EccentricResiduals_px(const double M, const double q,
                                                         const double Omega, const double i,
                                                         const double t0, const double n0, const double e0, const double l0, const double gamma0,
-                                                        const double DGW, const double z,
+                                                        const double DGW, const double delay,
+                                                        const double z,
                                                         const ResidualsMethod residuals_method,
+                                                        const ResidualsTerms residuals_terms,
                                                         const std::vector<double> _ts);
 
 /*
