@@ -12,7 +12,7 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts){
 
-    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);    
+    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
     
     if(residuals_terms==ResidualsTerms::Earth){
         
@@ -25,7 +25,7 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay); 
+        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
         
         return (Fp*RpP + Fx*RxP);
     }
