@@ -79,6 +79,10 @@ double EccentricResiduals_fn_pt(double t, void *_params){
                 ev_coeffs ] = *reinterpret_cast<WaveformParams*>(_params);
             
     const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, t-bin_init.t);
+
+    if(bin_now.merged){
+        return 0;
+    }
     
     const auto //&n     = bin_now.n,
                &e       = bin_now.e,
