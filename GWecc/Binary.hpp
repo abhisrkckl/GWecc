@@ -15,6 +15,14 @@ struct BinaryState{
     double t;
     double Omega, i;
     double n, e, l, gamma;
+    bool merged;
+
+    BinaryState(double _t, double _Om, double _i, double _n, double _e, double _l, double _gamma)
+       : t(_t), Omega(_Om), i(_i), n(_n), e(_e), l(_l), gamma(_gamma), merged(false) {}
+
+    BinaryState()
+       : t(0), Omega(0), i(0), n(0), e(0), l(0), gamma(0), 
+         merged(true) {} 
 };
 
 /*
