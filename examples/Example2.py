@@ -12,7 +12,7 @@ toas = 365.25*np.linspace(0,15,1000)
 RA_P = 1.65
 DEC_P = -1.12
 D_P = 1000
-	 
+     
 RA_GW = 3.1
 DEC_GW = -np.pi/3.5
 D_GW = 1e9
@@ -37,20 +37,20 @@ res_N =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
-                    					   D_P, RA_P, DEC_P, 
-                    					   z,
-					                       GWecc.GWecc.ResidualsMethod_Num,
-                    					   GWecc.GWecc.ResidualsTerms_Earth,
-					                       toas)
+                                           D_P, RA_P, DEC_P, 
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Num,
+                                           GWecc.GWecc.ResidualsTerms_Earth,
+                                           toas)
 res_A =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
-                    					   D_P, RA_P, DEC_P, 
-                    					   z,
-					                       GWecc.GWecc.ResidualsMethod_Anl,
-                    					   GWecc.GWecc.ResidualsTerms_Earth,
-					                       toas);
+                                           D_P, RA_P, DEC_P, 
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Anl,
+                                           GWecc.GWecc.ResidualsTerms_Earth,
+                                           toas);
 res_N = np.array(res_N) + res_A[0]
 plt.plot(toas/365.25, np.asarray(res_A)/ns)
 plt.plot(toas/365.25, np.asarray(res_N)/ns)
@@ -63,20 +63,20 @@ res_N =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
-                    					   D_P, RA_P, DEC_P, 
-                    					   z,
-					                       GWecc.GWecc.ResidualsMethod_Num,
-                    					   GWecc.GWecc.ResidualsTerms_Pulsar,
-					                       toas)
+                                           D_P, RA_P, DEC_P, 
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Num,
+                                           GWecc.GWecc.ResidualsTerms_Pulsar,
+                                           toas)
 res_A =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
-                    					   D_P, RA_P, DEC_P, 
-                    					   z,
-					                       GWecc.GWecc.ResidualsMethod_Anl,
-                    					   GWecc.GWecc.ResidualsTerms_Pulsar,
-					                       toas);
+                                           D_P, RA_P, DEC_P, 
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Anl,
+                                           GWecc.GWecc.ResidualsTerms_Pulsar,
+                                           toas);
 res_N = np.array(res_N) + res_A[0]
 plt.plot(toas/365.25, np.asarray(res_A)/ns)
 plt.plot(toas/365.25, np.asarray(res_N)/ns)
@@ -91,20 +91,20 @@ res_N =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
-                    					   D_P, RA_P, DEC_P, 
-                    					   z,
-					                       GWecc.GWecc.ResidualsMethod_Num,
-                    					   GWecc.GWecc.ResidualsTerms_Earth,
-					                       toas)
+                                           D_P, RA_P, DEC_P, 
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Num,
+                                           GWecc.GWecc.ResidualsTerms_Earth,
+                                           toas)
 res_A =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
-                    					   D_P, RA_P, DEC_P, 
-                    					   z,
-					                       GWecc.GWecc.ResidualsMethod_Anl,
-                    					   GWecc.GWecc.ResidualsTerms_Earth,
-					                       toas);
+                                           D_P, RA_P, DEC_P, 
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Anl,
+                                           GWecc.GWecc.ResidualsTerms_Earth,
+                                           toas);
 res_N = np.array(res_N) + res_A[0]
 plt.plot(toas/365.25, np.asarray(res_A)/ns)
 plt.plot(toas/365.25, np.asarray(res_N)/ns)
@@ -117,20 +117,20 @@ res_N =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
-                    					   D_P, RA_P, DEC_P, 
-                    					   z,
-					                       GWecc.GWecc.ResidualsMethod_Num,
-                    					   GWecc.GWecc.ResidualsTerms_Pulsar,
-					                       toas)
+                                           D_P, RA_P, DEC_P, 
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Num,
+                                           GWecc.GWecc.ResidualsTerms_Pulsar,
+                                           toas)
 res_A =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
-                    					   D_P, RA_P, DEC_P, 
-                    					   z,
-					                       GWecc.GWecc.ResidualsMethod_Anl,
-                    					   GWecc.GWecc.ResidualsTerms_Pulsar,
-					                       toas);
+                                           D_P, RA_P, DEC_P, 
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Anl,
+                                           GWecc.GWecc.ResidualsTerms_Pulsar,
+                                           toas);
 res_N = np.array(res_N) + res_A[0]
 plt.plot(toas/365.25, np.asarray(res_A)/ns)
 plt.plot(toas/365.25, np.asarray(res_N)/ns)
