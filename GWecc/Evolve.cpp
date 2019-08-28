@@ -18,14 +18,15 @@ Evolve::Evolve(const char *datafilename){
 
     FILE *datafile = fopen(datafilename,"rb");
     if(datafile==NULL){
+        
         fprintf(stderr, "ERROR : Unable to read pre-computed integral from %s. Re-computing integral...\n", datafilename);
         
         //Evolve();
         constexpr double emin   = 2.5e-9,  // Initial condition
-                              taumax = 1000;    // Stopping condition
+                         taumax = 1000;    // Stopping condition
 
         std::vector<double> taus, es;
-            std::tie(taus,es) = precompute_orbit(emin,taumax);
+        std::tie(taus,es) = precompute_orbit(emin,taumax);
         //const auto [taus,es] = precompute_orbit(emin,taumax);
 
         initialize(taus, es);
@@ -49,7 +50,7 @@ Evolve::Evolve(const char *datafilename){
             const/*expr*/ double emin   = 2.5e-9,  // Initial condition
                                           taumax = 1000;
             std::vector<double> taus, es;
-                        std::tie(taus,es) = precompute_orbit(emin,taumax);
+            std::tie(taus,es) = precompute_orbit(emin,taumax);
 
             initialize(taus, es);
 
@@ -167,6 +168,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
                  Mchirp = bin_mass.chirp_mass();
     
     double n, e, gamma, l, gamma1, gamma2;
+    bool merged = false;
 
     if(e0==0){
         
@@ -174,8 +176,9 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
         const double T     = 256*A*pow(n0,8./3)*t;
 
         if(T>1){
-            fprintf(stderr, "Error: The binary has already merged.\n");
-            e=n=l=gamma=NAN;
+            //fprintf(stderr, "Error: The binary has already merged.\n");
+            //e=n=l=gamma=NAN;
+            merged = true;
         }
         else{
             e     = e0;
@@ -191,8 +194,9 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
         double tau   = tau0 - P*t;
 
         if(tau<0){
-            fprintf(stderr, "Error: The binary has already merged.\n");
-            e=n=l=gamma=NAN;
+            //fprintf(stderr, "Error: The binary has already merged.\n");
+            //e=n=l=gamma=NAN;
+            merged = true;
         }
         else{
             
@@ -217,9 +221,10 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
         }
     }
 
-    return BinaryState { t, 
-                         bin_init.Omega, bin_init.i, 
-                         n, e, l, gamma };
+    return merged ? BinaryState()
+                  : BinaryState { t, 
+                                  bin_init.Omega, bin_init.i, 
+                                  n, e, l, gamma };
 }
 
 BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
@@ -237,6 +242,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
                  t      = t0 + delay;
     
     double n, e, gamma, l, gamma1, gamma2;
+    bool merged = false;
 
     if(e0==0){
         
@@ -247,8 +253,9 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
         const double T     = AT*t;
 
         if(T>1){
-            fprintf(stderr, "Error: The binary has already merged.\n");
-            e=n=l=gamma=NAN;
+            //fprintf(stderr, "Error: The binary has already merged.\n");
+            //e=n=l=gamma=NAN;
+            merged = true;
         }
         else{
             e     = e0;
@@ -264,8 +271,9 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
         double tau = tau0 - P*t;
 
         if(tau<0){
-            fprintf(stderr, "Error: The binary has already merged.\n");
-            e=n=l=gamma=NAN;
+            //fprintf(stderr, "Error: The binary has already merged.\n");
+            //e=n=l=gamma=NAN;
+            merged = true;
         }
         else{
             
@@ -290,9 +298,10 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
         }
     }
 
-    return BinaryState { t, 
-                         bin_init.Omega, bin_init.i, 
-                         n, e, l, gamma };
+    return merged ? BinaryState()
+                  : BinaryState { t, 
+                                  bin_init.Omega, bin_init.i, 
+                                  n, e, l, gamma };
 }
 
 double Evolve::phase_err(const BinaryMass &bin_mass, 

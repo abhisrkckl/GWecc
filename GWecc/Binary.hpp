@@ -21,7 +21,7 @@ struct BinaryState{
        : t(_t), Omega(_Om), i(_i), n(_n), e(_e), l(_l), gamma(_gamma), merged(false) {}
 
     BinaryState()
-       : t(0), Omega(0), i(0), n(0), e(0), l(0), gamma(0), 
+       : t(NAN), Omega(NAN), i(NAN), n(NAN), e(NAN), l(NAN), gamma(NAN), 
          merged(true) {} 
 };
 
