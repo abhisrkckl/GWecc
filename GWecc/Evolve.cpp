@@ -190,7 +190,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
     else{
         const double P     = compute_P_coeff(Mchirp,n0,e0);
         const double tau0  = tau_from_e(e0);
-        fprintf(stderr, "P = %e, tau0 = %e, t = %e\n",P,tau0,t);
+        //fprintf(stderr, "P = %e, tau0 = %e, t = %e\n",P,tau0,t);
         double tau   = tau0 - P*t;
 
         if(tau<0){

@@ -54,6 +54,11 @@ Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
                             bin_init,
                             ev_coeffs };
     
+    const double t_max = *std::max_element(std::begin(ts), std::end(ts));
+    const auto bin_last = solve_orbit_equations(bin_init, ev_coeffs, t_max-bin_init.t);
+    if(bin_last.merged){
+        std::cerr<<"Warning : [GWecc/EccentricResiduals_Num.cpp] The binary will merge within observation span.\n";
+    }
     
     gsl_function EccentricResiduals_gsl_func {&EccentricResiduals_fn_pt, &params};
     

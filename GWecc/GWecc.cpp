@@ -157,3 +157,23 @@ std::vector<double> AntennaPattern(const double RA_GW, const double DEC_GW, cons
     const auto [cos_th, Fp, Fx] = AntennaPattern(SkyPosition{0, RA_GW, DEC_GW, 0}, SkyPosition{0, RA_P, DEC_P, 0});
     return std::vector<double>{cos_th, Fp, Fx};
 }
+
+bool mergeq(const double M, const double q, 
+            const double Pb0E, const double e0,
+            const double z,
+            const double t0, const double max_toa){
+    
+    const double n0 = 2*M_PI/(Pb0E*year_to_s) * (1+z) ;
+
+    const BinaryState bin_init {t0*day_to_s,
+                                0, 0,
+                                n0, e0, 0, 0};
+    
+    const BinaryMass bin_mass {M*MSun_to_s, q};
+    
+    const double delay = (max_toa-t0)*day_to_s;
+
+    BinaryState bin_last = solve_orbit_equations(bin_mass, bin_init, delay);
+
+    return bin_last.merged;
+}

@@ -39,4 +39,9 @@ BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState 
 
 std::vector<double> AntennaPattern(const double RA_GW, const double DEC_GW, const double RA_P, const double DEC_P);
 
+bool mergeq(const double M, const double q, 
+            const double Pb0E, const double e0, 
+            const double z,
+            const double t0, const double max_toa);
+
 #endif
