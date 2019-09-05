@@ -154,7 +154,8 @@ std::vector<std::vector<double> > EccentricWaveform_px(    const double M, const
 */
 
 std::vector<double> AntennaPattern(const double RA_GW, const double DEC_GW, const double RA_P, const double DEC_P){
-    const auto [cos_th, Fp, Fx] = AntennaPattern(SkyPosition{0, RA_GW, DEC_GW, 0}, SkyPosition{0, RA_P, DEC_P, 0});
+    double cos_th, Fp, Fx;
+    std::tie(cos_th, Fp, Fx) = AntennaPattern(SkyPosition{0, RA_GW, DEC_GW, 0}, SkyPosition{0, RA_P, DEC_P, 0});
     return std::vector<double>{cos_th, Fp, Fx};
 }
 

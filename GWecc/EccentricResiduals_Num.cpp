@@ -16,7 +16,9 @@ Signal1D EccentricResiduals_Num(const BinaryMass &bin_mass,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts){
 
-    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
+    double cosmu, Fp, Fx;
+    std::tie(cosmu, Fp, Fx) = AntennaPattern(bin_pos, psr_pos);
+    //const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
     
     if(residuals_terms==ResidualsTerms::Earth){
         return -EccentricResiduals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts);
@@ -78,11 +80,18 @@ Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
 
 double EccentricResiduals_fn_pt(double t, void *_params){
 
-    const auto [Fp, Fx, DGW,
+    const auto &wf_params = *reinterpret_cast<WaveformParams*>(_params);
+    const auto &Fp = wf_params.Fp,
+               &Fx = wf_params.Fx,
+               &DGW = wf_params.DGW;
+    const auto &bin_mass = wf_params.bin_mass;
+    const auto &bin_init = wf_params.bin_init;
+    const auto &ev_coeffs = wf_params.ev_coeffs;
+    /*const auto [Fp, Fx, DGW,
                 bin_mass, 
                 bin_init,
-                ev_coeffs ] = *reinterpret_cast<WaveformParams*>(_params);
-            
+                ev_coeffs ] = *reinterpret_cast<WaveformParams*>(_params);*/
+    
     const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, t-bin_init.t);
 
     if(bin_now.merged){
