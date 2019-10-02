@@ -8,7 +8,7 @@ year = 365.25*24*3600
 ns = 1e-9
 #parsec = 102927125.0
 
-toas = 365.25*np.linspace(0,15,1000)
+toas = 365.25*np.linspace(0,4,1000)
 
 RA_P = 1.65
 DEC_P = -1.12
@@ -25,7 +25,7 @@ M = 5e9
 q = 1
 
 Pb0 = 2
-e0 = 0.1
+e0 = 0.01
 gamma0 = 0
 l0 = 0
 t0 = 0
@@ -40,7 +40,7 @@ res_px =     GWecc.GWecc.EccentricResiduals_px(M, q,
                                                D_GW, delay, 
                                                z,
                                                GWecc.GWecc.ResidualsMethod_Num,
-                                               GWecc.GWecc.ResidualsTerms_Both,
+                                               GWecc.GWecc.ResidualsTerms_Earth,
                                                toas)
 
 
@@ -53,21 +53,21 @@ res = GWecc.GWecc.EccentricResiduals(M, q,
                                      D_P, RA_P, DEC_P, 
                                      z,
                                      GWecc.GWecc.ResidualsMethod_Num,
-                                     GWecc.GWecc.ResidualsTerms_Both,
+                                     GWecc.GWecc.ResidualsTerms_Earth,
                                      toas)
 
 plt.subplot(211)
-#plt.suptitle("Comparing numerical and analytic residuals")
 
-plt.plot(toas/365.25, np.asarray(res_px[0])/ns)
-plt.plot(toas/365.25, np.asarray(res_px[1])/ns)
+plt.plot(toas/365.25, np.asarray(res_px[0])/ns-np.mean(res_px[0])/ns, label='+')
+plt.plot(toas/365.25, np.asarray(res_px[1])/ns-np.mean(res_px[1])/ns, label='x')
 plt.xlabel("t (year)")
-plt.ylabel("$\Delta_{GW}$ (ns)")
+plt.ylabel("$\Delta_{+,\\times}$ (ns)")
+plt.legend()
 plt.grid()
 
 plt.subplot(212)
-plt.plot(toas/365.25, np.asarray(res_from_px)/ns)
-plt.plot(toas/365.25, np.asarray(res)/ns)
+plt.plot(toas/365.25, np.asarray(res_from_px)/ns-np.mean(res_from_px)/ns)
+plt.plot(toas/365.25, np.asarray(res)/ns-np.mean(res)/ns)
 plt.xlabel("t (year)")
 plt.ylabel("$\Delta_{GW}$ (ns)")
 plt.grid()
