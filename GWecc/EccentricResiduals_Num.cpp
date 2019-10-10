@@ -163,7 +163,7 @@ double EccentricResiduals_fn_pt(double t, void *_params){
                                )*delta*ci*si/2;
     
     const auto hA       = h_mq_A + sqrtx*h_cq_A,
-               hB       = h_mq_B + sqrtx*h_cq_B;
+               hB       = h_mq_B + sqrtx*h_cq_B; 
     
     const auto hp       = c2Om*hA - s2Om*hB,
                hx       = c2Om*hB + s2Om*hA;
