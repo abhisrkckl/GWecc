@@ -131,17 +131,22 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
 
 std::vector<std::vector<double> > EccentricWaveform_px( const double M, const double q,
                                                         const double Omega, const double i,
-                                                        const double t0, const double n0, const double e0, const double l0, const double gamma0,
+                                                        const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double z,
                                                         const std::vector<double> _ts){
 
-    const BinaryMass bin_mass(M, q);
+
+    const double Pb0 = Pb0E * year_to_s / (1+z),
+                 n0 = 2*M_PI/Pb0;
+
+    const BinaryMass bin_mass(M*MSun_to_s, q);
 
     const BinaryState bin_init { t0,
                                  Omega, i,
                                  n0, e0, l0, gamma0 };
 
     const Signal1D ts(_ts.data(), _ts.size());
+    ts *= day_to_s/(1+z);
 
     Signal1D _hp, _hx;
     std::tie(_hp, _hx) = EccentricWaveform_px( bin_mass, bin_init, 
