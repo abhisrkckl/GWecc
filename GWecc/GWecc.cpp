@@ -106,7 +106,7 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
     const double Pb0 = Pb0E * year_to_s / (1+z),
                  n0 = 2*M_PI/Pb0; 
 
-    const BinaryState bin_init { t0,
+    const BinaryState bin_init { day_to_s*t0,
                                  Omega, i,
                                  n0, e0, l0, gamma0 };
 
@@ -141,17 +141,17 @@ std::vector<std::vector<double> > EccentricWaveform_px( const double M, const do
 
     const BinaryMass bin_mass(M*MSun_to_s, q);
 
-    const BinaryState bin_init { t0,
+    const BinaryState bin_init { day_to_s*t0,
                                  Omega, i,
                                  n0, e0, l0, gamma0 };
 
-    const Signal1D ts(_ts.data(), _ts.size());
-    ts *= day_to_s/(1+z);
+    Signal1D tzs(_ts.data(), _ts.size());
+    tzs *= day_to_s/(1+z);
 
     Signal1D _hp, _hx;
     std::tie(_hp, _hx) = EccentricWaveform_px( bin_mass, bin_init, 
                                                      DGW,
-                                                     ts);
+                                                     tzs);
 
     std::vector<double>     hp(std::begin(_hp), std::end(_hp)),
                  			hx(std::begin(_hx), std::end(_hx));
@@ -185,6 +185,3 @@ bool mergeq(const double M, const double q,
     return bin_last.merged;
 }
 
-int bla(){
-	return 1;
-}
