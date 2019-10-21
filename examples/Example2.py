@@ -4,6 +4,7 @@ import enterprise_GWecc as GWecc
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 year = 365.25*24*3600
 ns = 1e-9
 
