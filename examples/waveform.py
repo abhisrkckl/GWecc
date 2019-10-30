@@ -23,7 +23,7 @@ def PN_periastron_advance(M, q, n, e):
 
 M = 1e9*MSun
 q = 1
-Pb = 1.5*year
+Pb = 2*year
 n0 = 2*np.pi/Pb
 DGW = 1e9*parsec
 Omega = 0
@@ -46,7 +46,7 @@ for idx,t in enumerate(ts):
 	hpx0[idx] = hp,hx
 	
 
-hp1, hx1 = GWecc.EccentricWaveform_px(M/MSun, q, Omega, i, t0, Pb/year, e0, l0, gamma0, DGW, 0, ts/(24*3600))
+hp1, hx1 = GWecc.EccentricWaveform_px(M/MSun, q, Omega, i, t0, Pb/year, e0, l0, gamma0, DGW/parsec, 0, ts/(24*3600))
 ax = plt.subplot(321)
 plt.plot(ts/year, hp1, label="$h_+$ (Conservative+Reactive)")
 plt.plot(ts/year, hpx0[:,0], 'r--', label="$h_+$ (Conservative only)")
@@ -82,7 +82,7 @@ for idx,t in enumerate(ts):
 	hp,hx = GWecc.EccentricWaveform_fn(M, q, Omega, i, n0, e0, l, gamma, DGW)
 	
 	hpx0[idx] = hp,hx
-hp1, hx1 = GWecc.EccentricWaveform_px(M/MSun, q, Omega, i, t0, Pb/year, e0, l0, gamma0, DGW, 0, ts/(24*3600))
+hp1, hx1 = GWecc.EccentricWaveform_px(M/MSun, q, Omega, i, t0, Pb/year, e0, l0, gamma0, DGW/parsec, 0, ts/(24*3600))
 ax = plt.subplot(323)
 plt.plot(ts/year, hp1, label="$h_+$ (Conservative+Reactive)")
 plt.plot(ts/year, hpx0[:,0], 'r--', label="$h_+$ (Conservative only)")
@@ -114,7 +114,7 @@ for idx,t in enumerate(ts):
 	hp,hx = GWecc.EccentricWaveform_fn(M, q, Omega, i, n0, e0, l, gamma, DGW)
 	
 	hpx0[idx] = hp,hx
-hp1, hx1 = GWecc.EccentricWaveform_px(M/MSun, q, Omega, i, t0, Pb/year, e0, l0, gamma0, DGW, 0, ts/(24*3600))
+hp1, hx1 = GWecc.EccentricWaveform_px(M/MSun, q, Omega, i, t0, Pb/year, e0, l0, gamma0, DGW/parsec, 0, ts/(24*3600))
 ax = plt.subplot(325)
 plt.plot(ts/year, hp1, label="$h_+$ (Conservative+Reactive)")
 plt.plot(ts/year, hpx0[:,0], 'r--', label="$h_+$ (Conservative only)")

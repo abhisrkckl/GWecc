@@ -150,7 +150,7 @@ std::vector<std::vector<double> > EccentricWaveform_px( const double M, const do
 
     Signal1D _hp, _hx;
     std::tie(_hp, _hx) = EccentricWaveform_px( bin_mass, bin_init, 
-                                                     DGW,
+                                                     DGW*parsec_to_s,
                                                      tzs);
 
     std::vector<double>     hp(std::begin(_hp), std::end(_hp)),
