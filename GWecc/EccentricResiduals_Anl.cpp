@@ -12,11 +12,15 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts){
 
-    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
+    double cosmu, Fp, Fx;
+    std::tie(cosmu, Fp, Fx) = AntennaPattern(bin_pos, psr_pos);
+    //const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
     
     if(residuals_terms==ResidualsTerms::Earth){
         
-        const auto [RpE, RxE] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
+        Signal1D RpE, RxE;
+        std::tie(RpE, RxE) = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
+        //const auto [RpE, RxE] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
         
         return -(Fp*RpE + Fx*RxE);
     }
@@ -25,7 +29,9 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
+        Signal1D RpP, RxP;
+        std::tie(RpP, RxP) = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
+        //const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
         
         return (Fp*RpP + Fx*RxP);
     }
@@ -33,8 +39,11 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
-        const auto [RpE, RxE] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
+        Signal1D RpP, RxP, RpE, RxE;
+        std::tie(RpP, RxP) = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
+        std::tie(RpE, RxE) = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
+        //const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
+        //const auto [RpE, RxE] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
         
         return    (Fp*RpP + Fx*RxP) 
                 - (Fp*RpE + Fx*RxE);
@@ -70,8 +79,10 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Anl(const BinaryMass &bin_m
                    l      = bin_now.l,                  //      nt + bin_init.l,
                    lambda = l+bin_now.gamma;            //(1+k)*nt + bin_init.l + bin_init.gamma;
         
-        const auto [RA, RB] = FourierResidual_pt(res_coeffs, l, lambda);
-        
+        double RA, RB;
+        std::tie(RA, RB) = FourierResidual_pt(res_coeffs, l, lambda);
+        //const auto [RA, RB] = FourierResidual_pt(res_coeffs, l, lambda);
+
         const auto H0 = GWAmplitude(bin_mass, bin_now, DGW);
         
         Rp[i] = H0*(cos2Omega*RA - sin2Omega*RB);

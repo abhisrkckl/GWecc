@@ -27,13 +27,16 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
                                                         const ResidualsTerms residuals_terms,
                                                         const std::vector<double> _ts);
 
-/*
 std::vector<std::vector<double> > EccentricWaveform_px( const double M, const double q,
                                                         const double Omega, const double i,
                                                         const double t0, const double n0, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double z,
                                                         const std::vector<double> _ts);
-*/
+
+std::vector<double> EccentricWaveform_fn(const double M, const double q,
+                                         const double Omega, const double i,
+                                         const double n, const double e, const double l, const double gamma,
+                                         const double DGW); 
 
 BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay);
 

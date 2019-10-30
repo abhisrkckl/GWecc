@@ -4,11 +4,10 @@ import enterprise_GWecc as GWecc
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 year = 365.25*24*3600
 ns = 1e-9
 
-ntoas = 1000
+ntoas = 10
 toas = 365.25*np.linspace(0,15,ntoas)
 
 RA_P = 1.65
@@ -36,6 +35,9 @@ z = 0.0
 plt.subplot(221)
 plt.suptitle("Comparing numerical and analytic residuals")
 
+import time
+
+
 res_N =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
@@ -45,6 +47,22 @@ res_N =     GWecc.GWecc.EccentricResiduals(M, q,
                                            GWecc.GWecc.ResidualsMethod_Num,
                                            GWecc.GWecc.ResidualsTerms_Earth,
                                            toas)
+for ntoas in [10, 50, 100, 500, 1000, 5000]:
+    toas = 365.25*np.linspace(0,15,ntoas)
+    start = time.time()
+    res_N = [GWecc.GWecc.EccentricResiduals(M, q,
+                                           Omega, i,
+                                           t0, Pb0, e0, l0, gamma0,
+                                           D_GW, RA_GW, DEC_GW,
+                                           D_P, RA_P, DEC_P,
+                                           z,
+                                           GWecc.GWecc.ResidualsMethod_Num,
+                                           GWecc.GWecc.ResidualsTerms_Earth,
+                                           toas) for i in range(10000//ntoas)]
+    end = time.time()
+    print(ntoas, (end-start)/10000)
+
+"""
 res_A =     GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
@@ -142,3 +160,4 @@ plt.ylabel("$\Delta_{GW}$ (ns)")
 plt.grid()
 
 plt.show()
+"""

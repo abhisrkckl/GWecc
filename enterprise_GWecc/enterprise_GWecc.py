@@ -1,8 +1,8 @@
 from .GWecc import EccentricResiduals, ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth
-from enterprise.signals import signal_base
+#from enterprise.signals import signal_base
 import numpy as np
 
-@signal_base.function
+#@signal_base.function
 def eccentric_cw_delay(toas,
 	     	       RA_psr, DEC_psr, D_psr,
 	     	       RA_GW, DEC_GW, log10_D_GW,
