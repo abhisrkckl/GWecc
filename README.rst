@@ -35,8 +35,3 @@ To install, type
 > python3 setup.py install --user
 
 Note that the C++ extension uses C++17 features and requires a new C++ compiler. I have tested this only with g++.
-
-#=====
-#Usage
-#=====
-#Exposes the function "enterprise_GWecc.eccentric_cw_delay(...)". See examples/Example.py for usage.
