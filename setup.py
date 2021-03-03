@@ -34,5 +34,5 @@ setup(  name = 'enterprise_GWecc',
         author_email = "s.abhimanyu@tifr.res.in",
         ext_modules = [GWecc_cpp_module],
         py_modules = ['enterprise_GWecc.GWecc', 'enterprise_GWecc.enterprise_GWecc'],
-        scripts = ['examples/Example.py']
+        scripts = ['examples/Example1.py']
     )
