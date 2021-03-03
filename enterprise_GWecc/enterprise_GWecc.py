@@ -13,7 +13,7 @@ def eccentric_cw_delay(toas,
                        psrTerm=False,
                        evolve=True):
     """
-    toas        are Pulsar TOAs                 in s
+    toas        are Pulsar TOAs                 in MJD
     
     RA_PSR      is  RA of pulsar                in rad
     DEC_PSR     is  DEC of pulsar               in rad
@@ -33,7 +33,7 @@ def eccentric_cw_delay(toas,
     e0          is  Eccentricity at t=t0
     gamma0      is  Periastron angle at t=t0    in rad
     l0          is  Mean anomaly at t=t0        in rad
-    t0          is  Reference time              in s
+    t0          is  Reference time              in MJD
     
     z           is  redshift
     
