@@ -2,6 +2,8 @@ from .GWecc import EccentricResiduals, ResidualsMethod_Num, ResidualsTerms_Both,
 #from enterprise.signals import signal_base
 import numpy as np
 
+year_to_s   = 365.25*24*3600
+
 #@signal_base.function
 def eccentric_cw_delay(toas,
                        RA_psr, DEC_psr, D_psr,
@@ -50,7 +52,7 @@ def eccentric_cw_delay(toas,
     M = 10.**log10_M
     
     n0 = np.pi*(10.**log10_f0_GW)    # GW frequency is twice the orbital frequency.
-    Pb0 = 2*np.pi/n0
+    Pb0 = 2*np.pi/n0 / year_to_s
 
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
