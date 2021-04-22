@@ -1,41 +1,44 @@
 from .GWecc import EccentricResiduals, ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth
-#from enterprise.signals import signal_base
+from enterprise.signals import signal_base
 import numpy as np
 
 year_to_s   = 365.25*24*3600
 
-#@signal_base.function
-def eccentric_cw_delay(toas,
-                       RA_psr, DEC_psr, D_psr,
+@signal_base.function
+def eccentric_cw_delay(toas, 
+                       theta, phi, pdist, 
                        RA_GW, DEC_GW, log10_D_GW,
                        psi, i,
                        log10_M, q,
                        log10_f0_GW, e0, gamma0, l0, t0,
                        z,
+                       p_dist=1.0,
                        psrTerm=False,
                        evolve=True):
     """
-    toas        are Pulsar TOAs                 in MJD
+    toas        are Pulsar TOAs                         in MJD      (Taken from the Pulsar object)
     
-    RA_PSR      is  RA of pulsar                in rad
-    DEC_PSR     is  DEC of pulsar               in rad
-    D_PSR       is  distance to pulsar          in parsec
+    theta       is  Polar angle of pulsar (= pi/2-DEC)  in rad      (Taken from the Pulsar object)      
+    phi         is  Azimuthal angle of pulsar (= RA)    in rad      (Taken from the Pulsar object)
+    pdist       is  distance to pulsar (value,error)    in kpc      (Taken from the Pulsar object)
     
-    RA_GW       is  RA of GW source             in rad
-    DEC_GW      is  DEC of GW source            in rad
-    log10_D_GW  is  log10 distance to GW source in parsec
+    p_dist      is  Pulsar distance prior               in kpc      (Parametrizes the departure from the measured pulsar distance given in pdist.)
     
-    psi         is  Polarization angle          in rad
-    i           is  Inclination of GW source    in rad
+    RA_GW       is  RA of GW source                     in rad
+    DEC_GW      is  DEC of GW source                    in rad
+    log10_D_GW  is  log10 distance to GW source         in parsec
     
-    log10_M     is  log10 Total Mass of GW src  in SolarMass
+    psi         is  Polarization angle                  in rad
+    i           is  Inclination of GW source            in rad
+    
+    log10_M     is  log10 Total Mass of GW src          in SolarMass
     q           is  Mass ratio of GW source
     
-    log10_f0_GW is  log10 GW frequency at t=t0  in Hz
+    log10_f0_GW is  log10 GW frequency at t=t0          in Hz
     e0          is  Eccentricity at t=t0
-    gamma0      is  Periastron angle at t=t0    in rad
-    l0          is  Mean anomaly at t=t0        in rad
-    t0          is  Reference time              in MJD
+    gamma0      is  Periastron angle at t=t0            in rad
+    l0          is  Mean anomaly at t=t0                in rad
+    t0          is  Reference time                      in MJD
     
     z           is  redshift
     
@@ -47,7 +50,17 @@ def eccentric_cw_delay(toas,
     Returns:    
             TOA delays due to GWs from eccentric binary sources (in s)
     """
-        
+    
+    # Check the precision of these parameters later. 
+    RA_GW = phi
+    DEC_GW = np.pi/2 - theta
+    
+    #converts from kpc to pc
+    if type(pdist) is not tuple:
+        D_psr = pdist*1000 
+    else:
+        D_psr = (pdist[0]+pdist[1]*p_dist)*1000 
+    
     D_GW = 10.**log10_D_GW   
     M = 10.**log10_M
     
