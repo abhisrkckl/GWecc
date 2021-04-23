@@ -19,7 +19,7 @@ def eccentric_cw_delay(toas,
     ======================================================================================================================
     PARAM       DESCRIPTION                             UNIT        EXPRESSION              COMMENTS
     ======================================================================================================================
-    toas        are Pulsar TOAs                         in MJD                              (Taken from the Pulsar object)
+    toas        are Pulsar TOAs                         in s                                (Taken from the Pulsar object)
     
     theta       is  Polar angle of pulsar               in rad      = pi/2 - DEC_psr        (Taken from the Pulsar object)      
     phi         is  Azimuthal angle of pulsar           in rad      = RA_psr                (Taken from the Pulsar object)
@@ -41,7 +41,7 @@ def eccentric_cw_delay(toas,
     e0          is  Eccentricity at t=t0
     gamma0      is  Periastron angle at t=t0            in rad
     l0          is  Mean anomaly at t=t0                in rad                              (Should be set to zero if t0 is a free parameter.)
-    t0          is  Reference time                      in MJD                              (Should be set to a fixed epoch if l0 is a free parameter.)
+    t0          is  Reference time                      in s                                (Should be set to a fixed epoch if l0 is a free parameter.)
     
     z           is  redshift
     
@@ -54,6 +54,9 @@ def eccentric_cw_delay(toas,
     Returns:    
             TOA delays due to GWs from eccentric binary sources (in s)
     """
+    
+    toas = toas / (24*3600)
+    t0   = t0 / (24*3600)
     
     # Check the precision of these parameters later. 
     RA_psr  = phi
@@ -79,7 +82,7 @@ def eccentric_cw_delay(toas,
 
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
-    
+      
     return np.asarray(
                EccentricResiduals(M, q,
                                   psi, i,
