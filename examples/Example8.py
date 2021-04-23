@@ -49,6 +49,8 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
           D_GW, RA_GW, DEC_GW,
           D_P,  RA_P,  DEC_P,
           z)  
+          
+    # Directly calling the EccentricResiduals function
     res =   GWecc.EccentricResiduals(  M, q,
                                    Omega, i,
                                    t0, Pb0, e0, l0, gamma0,
@@ -59,6 +61,7 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
                                    GWecc.ResidualsTerms_Both,
                                    toas)
     
+    # Calling EccentricResiduals function through the enterprise interface
     ecc_gw = eccentric_cw_delay( cos_gwtheta = np.sin(DEC_GW), 
                                  gwphi = RA_GW,
                                  log10_dist = np.log10(D_GW/1e6),
