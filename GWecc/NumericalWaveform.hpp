@@ -4,7 +4,6 @@
 #include "EccentricResiduals.hpp"
 #include "OrbitalEvolution.hpp"
 #include <gsl/gsl_integration.h>
-#include <valarray>
 #include <tuple>
 
 struct WaveformParams{

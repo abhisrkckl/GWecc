@@ -47,4 +47,11 @@ bool mergeq(const double M, const double q,
             const double z,
             const double t0, const double max_toa);
 
+std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
+                                              const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
+                                              const double RA_GW, const double DEC_GW, 
+                                              const double RA_P,  const double DEC_P, 
+                                              const double z,
+                                              const std::vector<double> _ts);
+
 #endif

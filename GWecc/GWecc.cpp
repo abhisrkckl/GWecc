@@ -1,5 +1,6 @@
 #include "GWecc.hpp"
 #include "EccentricResiduals.hpp"
+#include "FeStat.hpp"
 #include "AntennaPattern.hpp"
 
 static constexpr double MSun_to_s   = 4.92703806e-6,       // Solar mass in s (geometric units)
@@ -185,3 +186,41 @@ bool mergeq(const double M, const double q,
     return bin_last.merged;
 }
 
+std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
+                                              const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
+                                              const double RA_GW, const double DEC_GW, 
+                                              const double RA_P,  const double DEC_P, 
+                                              const double z,
+                                              const std::vector<double> _ts){
+
+
+    const double Pb0 = Pb0E * year_to_s / (1+z),
+                 n0 = 2*M_PI/Pb0;
+    
+    const SkyPosition bin_pos {0, RA_GW, DEC_GW, 0},
+                      psr_pos {0,  RA_P,  DEC_P, 0};
+    
+    const BinaryMass bin_mass(M*MSun_to_s, q);
+
+    const BinaryState bin_init { day_to_s*t0,
+                                 0, 0,
+                                 n0, e0, l0, gamma0 };
+
+    Signal1D tzs(_ts.data(), _ts.size());
+    tzs *= day_to_s/(1+z);
+
+    std::array<Signal1D,10> A = FeStatFuncs(bin_mass, bin_init, bin_pos, psr_pos, tzs);
+        
+    std::vector<double>     A0(std::begin(A[0]), std::end(A[0])),
+                 			A1(std::begin(A[1]), std::end(A[1])),
+                 			A2(std::begin(A[2]), std::end(A[2])),
+                 			A3(std::begin(A[3]), std::end(A[3])),
+                 			A4(std::begin(A[4]), std::end(A[4])),
+                 			A5(std::begin(A[5]), std::end(A[5])),
+                 			A6(std::begin(A[6]), std::end(A[6])),
+                 			A7(std::begin(A[7]), std::end(A[7])),
+                 			A8(std::begin(A[8]), std::end(A[8])),
+                            A9(std::begin(A[9]), std::end(A[9]));
+
+    return std::vector<std::vector<double> > {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9};
+}
