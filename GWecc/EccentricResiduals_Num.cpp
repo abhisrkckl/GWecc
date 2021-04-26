@@ -1,7 +1,5 @@
-#include "EccentricResiduals.hpp"
-#include "OrbitalEvolution.hpp"
-#include "AntennaPattern.hpp"
 #include "NumericalWaveform.hpp"
+#include "AntennaPattern.hpp"
 #include "PN.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
