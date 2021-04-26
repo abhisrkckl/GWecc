@@ -32,7 +32,7 @@ t0 = 0
 
 z = 0.0
 
-res_N =     GWecc.GWecc.EccentricResiduals(M, q,
+res_N = GWecc.GWecc.EccentricResiduals(M, q,
                                            Omega, i,
                                            t0, Pb0, e0, l0, gamma0,
                                            D_GW, RA_GW, DEC_GW, 
