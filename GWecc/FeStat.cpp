@@ -53,7 +53,7 @@ double FeStatFunc_fn_pt(double t, void *_params){
     
     double fi;
     switch(i){
-        case 1: 
+        case 1:
             fi = 2*OTS*xi/(1-chi)/(1-chi)*c2phi;
             break;
         case 2:

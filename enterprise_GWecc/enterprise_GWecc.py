@@ -94,3 +94,31 @@ def eccentric_cw_delay(toas,
                                   residuals_terms,
                                   toas)    
             )
+
+@signal_base.function
+def Fe_statistic_funcs(toas, 
+                       theta, phi, 
+                       cos_gwtheta, gwphi,
+                       log10_M, q,
+                       log10_f0_GW, e0, gamma0, l0, t0,
+                       z):
+
+    M = 10.**log10_M
+    
+    toas = toas / (24*3600)
+    t0   = t0 / (24*3600)
+    
+    RA_P  = phi
+    DEC_P = np.pi/2 - theta
+    
+    gwtheta = np.arccos(cos_gwtheta)
+    DEC_GW = np.pi/2 - gwtheta
+    RA_GW  = gwphi
+    
+    n0 = np.pi*(10.**log10_f0_GW)    # GW frequency is twice the orbital frequency.
+    Pb0 = 2*np.pi/n0 / year_to_s
+                           
+    return GWecc.GWecc.FeStatFuncs(M, q, t0, Pb0, e0, l0, gamma0,
+                                   RA_GW, DEC_GW, RA_P, DEC_P, 
+                                   z,
+                                   toas)

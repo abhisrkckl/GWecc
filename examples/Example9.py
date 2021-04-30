@@ -33,14 +33,14 @@ t0 = 0
 z = 0.0
 
 res_N = GWecc.GWecc.EccentricResiduals(M, q,
-                                           Omega, i,
-                                           t0, Pb0, e0, l0, gamma0,
-                                           D_GW, RA_GW, DEC_GW, 
-                                           D_P, RA_P, DEC_P, 
-                                           z,
-                                           GWecc.GWecc.ResidualsMethod_Num,
-                                           GWecc.GWecc.ResidualsTerms_Earth,
-                                           toas)
+                                       Omega, i,
+                                       t0, Pb0, e0, l0, gamma0,
+                                       D_GW, RA_GW, DEC_GW, 
+                                       D_P, RA_P, DEC_P, 
+                                       z,
+                                       GWecc.GWecc.ResidualsMethod_Num,
+                                       GWecc.GWecc.ResidualsTerms_Earth,
+                                       toas)
 
 As = GWecc.GWecc.FeStatFuncs(M, q, t0, Pb0, e0, l0, gamma0,
                              RA_GW, DEC_GW, RA_P, DEC_P, 
