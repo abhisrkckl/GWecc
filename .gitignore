@@ -9,3 +9,5 @@ _evolve_.dat
 build/*
 dist/*
 *.egg-info
+*.zip
+
