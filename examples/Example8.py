@@ -36,7 +36,7 @@ DEC_GW = dms_to_rad(-45,0,0)
 D_GW = 1e9 # pc 
 
 toas = psr.toas / (24*3600)      # MJD
-t0   = min(toas)                 # MJD
+tref   = min(toas)                 # MJD
 
 for idx,e0 in enumerate([0.1,0.5,0.8]):
 
@@ -45,7 +45,7 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
 
     print("==>", M, q,
           Omega, i,
-          t0, Pb0, e0, l0, gamma0,
+          tref, Pb0, e0, l0, gamma0,
           D_GW, RA_GW, DEC_GW,
           D_P,  RA_P,  DEC_P,
           z)  
@@ -53,7 +53,7 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
     # Directly calling the EccentricResiduals function
     res =   GWecc.EccentricResiduals(  M, q,
                                    Omega, i,
-                                   t0, Pb0, e0, l0, gamma0,
+                                   tref, Pb0, e0, l0, gamma0,
                                    D_GW, RA_GW, DEC_GW, 
                                    D_P, RA_P, DEC_P, 
                                    z,
@@ -65,15 +65,16 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
     ecc_gw = eccentric_cw_delay( cos_gwtheta = np.sin(DEC_GW), 
                                  gwphi = RA_GW,
                                  log10_dist = np.log10(D_GW/1e6),
+                                 log10_h = None,
                                  psi = Omega, 
                                  cos_inc = np.cos(i),
                                  log10_M = np.log10(M), 
                                  q = q,
-                                 log10_f0_GW = np.log10(2/(Pb0*year)), 
+                                 log10_F = np.log10(2/(Pb0*year)), 
                                  e0 = e0,  
                                  gamma0 = gamma0, 
                                  l0 = l0, 
-                                 t0 = min(psr.toas),
+                                 tref = min(psr.toas),
                                  z = z,
                                  p_dist=0,
                                  psrTerm=True,
@@ -87,7 +88,7 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
     plt.plot(toas/365.25, res/ns, marker='x', ls='dotted')
     plt.plot(toas/365.25, res2/ns, marker='x', ls='', c='red')
     plt.ylabel("$R(t)$  (ns)", fontsize=14)
-    plt.text(t0/365.25,0.8*ax.yaxis.get_data_interval()[1],"e="+str(e0),size=15, ha="center", va="center", bbox=dict(boxstyle="round",facecolor='cyan',alpha=0.1))
+    plt.text(tref/365.25,0.8*ax.yaxis.get_data_interval()[1],"e="+str(e0),size=15, ha="center", va="center", bbox=dict(boxstyle="round",facecolor='cyan',alpha=0.1))
     if idx<2:
         plt.tick_params(labelbottom=False,labelsize=12)
     else:

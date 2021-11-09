@@ -7,10 +7,12 @@ year_to_s   = 365.25*24*3600
 @signal_base.function
 def eccentric_cw_delay(toas, 
                        theta, phi, pdist, 
-                       cos_gwtheta, gwphi, log10_dist,
+                       cos_gwtheta, gwphi, 
+                       log10_dist,
+                       log10_h,
                        psi, cos_inc,
                        log10_M, q,
-                       log10_f0_GW, e0, gamma0, l0, t0,
+                       log10_F, e0, gamma0, l0, tref,
                        z,
                        p_dist=1.0,
                        psrTerm=False,
@@ -29,7 +31,10 @@ def eccentric_cw_delay(toas,
     
     cos_gwtheta is  Cos of Polar angle of GW source     in rad      = cos(pi/2 - DEC_GW)     
     gwphi       is  Azimithal angle of GW source        in rad      = RA_GW
-    log10_dist  is  log10 distance to GW source         in Mpc      = log10(D_GW)
+    
+    log10_dist  is  log10 distance to GW source         in Mpc      = log10(D_GW)           (One and only one of log10_dist and log10_h should be used.) 
+    
+    log10_h     is  log10 GW amplitude at tref                      = log10(H0)             (One and only one of log10_dist and log10_h should be used.) 
     
     psi         is  Polarization angle                  in rad      
     cos_inc     is  Cos of Inclination of GW source     in rad      = cos(i)
@@ -37,11 +42,11 @@ def eccentric_cw_delay(toas,
     log10_M     is  log10 Total Mass of GW src          in MSun     = log10(M)              (Not to be confused with the chirp mass.)
     q           is  Mass ratio of GW source                         = m1/m2
     
-    log10_f0_GW is  log10 GW frequency at t=t0          in Hz       = log10(2/Pb0)
-    e0          is  Eccentricity at t=t0
-    gamma0      is  Periastron angle at t=t0            in rad
-    l0          is  Mean anomaly at t=t0                in rad                              (Should be set to zero if t0 is a free parameter.)
-    t0          is  Reference time                      in s                                (Should be set to a fixed epoch if l0 is a free parameter.)
+    log10_F     is  log10 GW frequency at t=tref        in Hz       = log10(2/Pb0)
+    e0          is  Eccentricity at t=tref
+    gamma0      is  Periastron angle at t=tref          in rad
+    l0          is  Mean anomaly at t=tref              in rad                              (Should be set to zero if tref is a free parameter.)
+    tref        is  Reference time                      in s                                (Should be set to a fixed epoch if l0 is a free parameter.)
     
     z           is  redshift
     
@@ -56,7 +61,7 @@ def eccentric_cw_delay(toas,
     """
     
     toas = toas / (24*3600)
-    t0   = t0 / (24*3600)
+    tref = tref / (24*3600)
     
     # Check the precision of these parameters later. 
     RA_psr  = phi
@@ -71,14 +76,23 @@ def eccentric_cw_delay(toas,
     gwtheta = np.arccos(cos_gwtheta)
     DEC_GW = np.pi/2 - gwtheta
     RA_GW  = gwphi
-    
-    D_GW = 1e6 * (10.**log10_dist)   
+        
     M = 10.**log10_M
     
     i = np.arccos(cos_inc)
     
-    n0 = np.pi*(10.**log10_f0_GW)    # GW frequency is twice the orbital frequency.
+    n0 = np.pi*(10.**log10_F)    # GW frequency is twice the orbital frequency.
     Pb0 = 2*np.pi/n0 / year_to_s
+    
+    if (log10_dist is None and log10_h is None) or (log10_dist is not None and log10_h is not None):
+        raise ValueError("One and only one of log10_dist and log10_h should be used. The other should be set to None.")
+    elif log10_dist is not None:
+        D_GW = 1e6 * (10.**log10_dist)
+    else:
+        H0 = 10.**log10_h
+        x0 = (M*n0)**(2/3)
+        eta = q/(1+q)**2
+        D_GW = M*eta*x/H0
 
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
@@ -86,7 +100,7 @@ def eccentric_cw_delay(toas,
     return np.asarray(
                EccentricResiduals(M, q,
                                   psi, i,
-                                  t0, Pb0, e0, l0, gamma0,
+                                  tref, Pb0, e0, l0, gamma0,
                                   D_GW, RA_GW, DEC_GW,
                                   D_psr,  RA_psr,  DEC_psr,
                                   z,
@@ -94,3 +108,31 @@ def eccentric_cw_delay(toas,
                                   residuals_terms,
                                   toas)    
             )
+
+@signal_base.function
+def Fe_statistic_funcs(toas, 
+                       theta, phi, 
+                       cos_gwtheta, gwphi,
+                       log10_M, q,
+                       log10_F, e0, gamma0, l0, tref,
+                       z):
+
+    M = 10.**log10_M
+    
+    toas = toas / (24*3600)
+    tref   = tref / (24*3600)
+    
+    RA_P  = phi
+    DEC_P = np.pi/2 - theta
+    
+    gwtheta = np.arccos(cos_gwtheta)
+    DEC_GW = np.pi/2 - gwtheta
+    RA_GW  = gwphi
+    
+    n0 = np.pi*(10.**log10_F)    # GW frequency is twice the orbital frequency.
+    Pb0 = 2*np.pi/n0 / year_to_s
+                           
+    return GWecc.GWecc.FeStatFuncs(M, q, tref, Pb0, e0, l0, gamma0,
+                                   RA_GW, DEC_GW, RA_P, DEC_P, 
+                                   z,
+                                   toas)

@@ -1,7 +1,5 @@
-#include "EccentricResiduals.hpp"
-#include "OrbitalEvolution.hpp"
-#include "AntennaPattern.hpp"
 #include "NumericalWaveform.hpp"
+#include "AntennaPattern.hpp"
 #include "PN.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
@@ -80,17 +78,13 @@ Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
 
 double EccentricResiduals_fn_pt(double t, void *_params){
 
-    const auto &wf_params = *reinterpret_cast<WaveformParams*>(_params);
+    const auto &wf_params = *static_cast<WaveformParams*>(_params);
     const auto &Fp = wf_params.Fp,
                &Fx = wf_params.Fx,
                &DGW = wf_params.DGW;
     const auto &bin_mass = wf_params.bin_mass;
     const auto &bin_init = wf_params.bin_init;
     const auto &ev_coeffs = wf_params.ev_coeffs;
-    /*const auto [Fp, Fx, DGW,
-                bin_mass, 
-                bin_init,
-                ev_coeffs ] = *reinterpret_cast<WaveformParams*>(_params);*/
     
     const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, t-bin_init.t);
 
