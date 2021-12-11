@@ -224,3 +224,37 @@ std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
 
     return std::vector<std::vector<double> > {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9};
 }
+
+std::vector<std::vector<double> > FeStatFuncs_h(const double M, const double q,
+                                              const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
+                                              const double RA_GW, const double DEC_GW, 
+                                              const double RA_P,  const double DEC_P, 
+                                              const double z,
+                                              const std::vector<double> _ts){
+
+
+    const double Pb0 = Pb0E * year_to_s / (1+z),
+                 n0 = 2*M_PI/Pb0;
+    
+    const SkyPosition bin_pos {0, RA_GW, DEC_GW, 0},
+                      psr_pos {0,  RA_P,  DEC_P, 0};
+    
+    const BinaryMass bin_mass(M*MSun_to_s, q);
+
+    const BinaryState bin_init { day_to_s*t0,
+                                 0, 0,
+                                 n0, e0, l0, gamma0 };
+
+    Signal1D tzs(_ts.data(), _ts.size());
+    tzs *= day_to_s/(1+z);
+
+    std::array<Signal1D,5> B = FeStatFuncs_h(bin_mass, bin_init, bin_pos, psr_pos, tzs);
+        
+    std::vector<double>     B0(std::begin(B[0]), std::end(B[0])),
+                 			B1(std::begin(B[1]), std::end(B[1])),
+                 			B2(std::begin(B[2]), std::end(B[2])),
+                 			B3(std::begin(B[3]), std::end(B[3])),
+                 			B4(std::begin(B[4]), std::end(B[4]));
+
+    return std::vector<std::vector<double> > {B0, B1, B2, B3, B4};
+}

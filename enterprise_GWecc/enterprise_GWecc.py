@@ -1,4 +1,4 @@
-from .GWecc import EccentricResiduals, ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth
+from .GWecc import EccentricResiduals, ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth, FeStatFuncs
 from enterprise.signals import signal_base
 import numpy as np
 
@@ -120,7 +120,7 @@ def Fe_statistic_funcs(toas,
     M = 10.**log10_M
     
     toas = toas / (24*3600)
-    tref   = tref / (24*3600)
+    tref = tref / (24*3600)
     
     RA_P  = phi
     DEC_P = np.pi/2 - theta
@@ -132,7 +132,9 @@ def Fe_statistic_funcs(toas,
     n0 = np.pi*(10.**log10_F)    # GW frequency is twice the orbital frequency.
     Pb0 = 2*np.pi/n0 / year_to_s
                            
-    return GWecc.GWecc.FeStatFuncs(M, q, tref, Pb0, e0, l0, gamma0,
-                                   RA_GW, DEC_GW, RA_P, DEC_P, 
-                                   z,
-                                   toas)
+    return np.asarray(
+                FeStatFuncs(M, q, tref, Pb0, e0, l0, gamma0,
+                        RA_GW, DEC_GW, RA_P, DEC_P, 
+                        z,
+                        toas)
+           )

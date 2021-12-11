@@ -73,6 +73,41 @@ double FeStatFunc_fn_pt(double t, void *_params){
     return fi;
 }
 
+std::array<Signal1D, 5> FeStatFuncs_h(const BinaryMass &bin_mass,
+                                      const BinaryState &bin_init,
+                                      const SkyPosition &bin_pos,
+                                      const SkyPosition &psr_pos,
+                                      const Signal1D &ts){
+
+    double cosmu, Fp, Fx;
+    std::tie(cosmu, Fp, Fx) = AntennaPattern(bin_pos, psr_pos);
+
+    //const auto integrator_size = 100;
+    //const auto integ_eps_abs = 1e-6,
+    //           integ_eps_rel = 1e-6;
+    //const GSL_QAG_Integrator qag_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15);
+
+    const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
+
+    WaveformParams params { Fp, Fx, 1,
+                            bin_mass,
+                            bin_init,
+                            ev_coeffs };
+
+    const size_t length = ts.size();
+    Signal1D B1(length), B2(length), B3(length), B4(length), B5(length);
+
+    for(size_t i=0; i<length; i++){
+        B1[i] = FeStatFunc_fn_pt<1>(ts[i], &params);
+        B2[i] = FeStatFunc_fn_pt<2>(ts[i], &params);
+        B3[i] = FeStatFunc_fn_pt<3>(ts[i], &params);
+        B4[i] = FeStatFunc_fn_pt<4>(ts[i], &params);
+        B5[i] = FeStatFunc_fn_pt<5>(ts[i], &params);
+    }
+
+    return {B1, B2, B3, B4, B5};
+}
+
 std::array<Signal1D, 10> FeStatFuncs(const BinaryMass &bin_mass,
                                      const BinaryState &bin_init,
                                      const SkyPosition &bin_pos,
