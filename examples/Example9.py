@@ -25,7 +25,7 @@ Omega = 0
 i = np.pi/3
 
 Pb0 = 2
-e0 = 0.01
+e0 = 0.2
 gamma0 = 0
 l0 = 0
 tref = 0
@@ -56,7 +56,7 @@ plt.legend()
 plt.subplot(212)
 for idx,Ai in enumerate(As):
     plt.plot(toas/365.25, Ai, label="$A_{%d}$ (Earth term)"%(idx+1))
-    
+
 plt.legend()
 plt.xlabel("t (yr)")
 
