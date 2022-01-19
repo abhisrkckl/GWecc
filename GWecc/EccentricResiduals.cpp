@@ -61,6 +61,10 @@ double GWAmplitude(const BinaryMass &bin_mass,
                    const BinaryState &bin_init,
                    const double DGW){
 
+    if(DGW<=0){
+        throw std::invalid_argument("Invalid luminosity distance value in GWAmplitude.");
+    }
+
     const auto eta = bin_mass.symmetric_mass_ratio(),
                x   = PN_param_x(bin_mass, bin_init);
 

@@ -143,6 +143,12 @@ std::array<Signal1D, 10> FeStatFuncs(const BinaryMass &bin_mass,
              f4 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_4, ts[0], ts),
              f5 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_5, ts[0], ts);
     
-    return {Fp*f1, Fx*f1, Fp*f2, Fx*f2, Fp*f3, Fx*f3, Fp*f4, Fx*f4, Fp*f5, Fx*f5};
+    const double H0 = GWAmplitude(bin_mass, bin_init, bin_pos.DL);
+
+    return {H0*Fp*f1, H0*Fx*f1, 
+            H0*Fp*f2, H0*Fx*f2, 
+            H0*Fp*f3, H0*Fx*f3, 
+            H0*Fp*f4, H0*Fx*f4, 
+            H0*Fp*f5, H0*Fx*f5};
 
 }

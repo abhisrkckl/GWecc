@@ -2,23 +2,22 @@ from .GWecc import EccentricResiduals
 from .GWecc import ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth
 from .GWecc import FeStatFuncs
 from enterprise.signals import signal_base
+from astropy.cosmology import Planck18
 import numpy as np
 
 year_to_s   = 365.25*24*3600
 
 @signal_base.function
-def eccentric_cw_delay(toas, 
-                       theta, phi, pdist, 
-                       cos_gwtheta, gwphi, 
-                       log10_dist,
-                       log10_h,
-                       psi, cos_inc,
-                       log10_M, q,
-                       log10_F, e0, gamma0, l0, tref,
-                       z,
-                       p_dist=1.0,
-                       psrTerm=False,
-                       evolve=True):
+def eccentric_cw_delay_Planck18(toas, 
+                                theta, phi, pdist, 
+                                cos_gwtheta, gwphi, 
+                                psi, cos_inc,
+                                log10_M, q,
+                                log10_F, e0, gamma0, l0, tref,
+                                z,
+                                p_dist=1.0,
+                                psrTerm=False,
+                                evolve=True):
     """
     ======================================================================================================================
     PARAM       DESCRIPTION                             UNIT        EXPRESSION              COMMENTS
@@ -86,15 +85,7 @@ def eccentric_cw_delay(toas,
     n0 = np.pi*(10.**log10_F)    # GW frequency is twice the orbital frequency.
     Pb0 = 2*np.pi/n0 / year_to_s
     
-    if (log10_dist is None and log10_h is None) or (log10_dist is not None and log10_h is not None):
-        raise ValueError("One and only one of log10_dist and log10_h should be used. The other should be set to None.")
-    elif log10_dist is not None:
-        D_GW = 1e6 * (10.**log10_dist)
-    else:
-        H0 = 10.**log10_h
-        x0 = (M*n0)**(2/3)
-        eta = q/(1+q)**2
-        D_GW = M*eta*x0/H0
+    D_GW = Planck18.luminosity_distance(z)
 
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
@@ -112,13 +103,12 @@ def eccentric_cw_delay(toas,
             )
 
 @signal_base.function
-def Fe_statistic_funcs_cosmoz(toas, 
-                              theta, phi, 
-                              cos_gwtheta, gwphi,
-                              log10_dist,
-                              log10_M, q,
-                              log10_F, e0, tref,
-                              z):
+def Fe_statistic_funcs_Plack18(toas, 
+                               theta, phi, 
+                               cos_gwtheta, gwphi,
+                               log10_M, q,
+                               log10_F, e0, tref,
+                               z):
 
     M = 10.**log10_M
     
@@ -131,7 +121,7 @@ def Fe_statistic_funcs_cosmoz(toas,
     gwtheta = np.arccos(cos_gwtheta)
     DEC_GW = np.pi/2 - gwtheta
     RA_GW  = gwphi
-    D_GW = 1e6 * (10.**log10_dist)
+    D_GW = Planck18.luminosity_distance(z)
     
     n0 = np.pi*(10.**log10_F)    # GW frequency is twice the orbital frequency.
     Pb0 = 2*np.pi/n0 / year_to_s

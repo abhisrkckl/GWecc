@@ -188,7 +188,7 @@ bool mergeq(const double M, const double q,
 
 std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
                                               const double t0, const double Pb0E, const double e0, 
-                                              const double RA_GW, const double DEC_GW, 
+                                              const double D_GW, const double RA_GW, const double DEC_GW, 
                                               const double RA_P,  const double DEC_P, 
                                               const double z,
                                               const std::vector<double> _ts){
@@ -197,7 +197,7 @@ std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
     const double Pb0 = Pb0E * year_to_s / (1+z),
                  n0 = 2*M_PI/Pb0;
     
-    const SkyPosition bin_pos {0, RA_GW, DEC_GW, 0},
+    const SkyPosition bin_pos {D_GW, RA_GW, DEC_GW, z},
                       psr_pos {0,  RA_P,  DEC_P, 0};
     
     const BinaryMass bin_mass(M*MSun_to_s, q);
