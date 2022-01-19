@@ -1,4 +1,6 @@
-from .GWecc import EccentricResiduals, ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth, FeStatFuncs
+from .GWecc import EccentricResiduals
+from .GWecc import ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth
+from .GWecc import FeStatFuncs
 from enterprise.signals import signal_base
 import numpy as np
 
@@ -92,7 +94,7 @@ def eccentric_cw_delay(toas,
         H0 = 10.**log10_h
         x0 = (M*n0)**(2/3)
         eta = q/(1+q)**2
-        D_GW = M*eta*x/H0
+        D_GW = M*eta*x0/H0
 
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
@@ -139,7 +141,8 @@ def Fe_statistic_funcs(toas,
 
     return np.asarray(
                 FeStatFuncs(M, q, tref, Pb0, e0, l0, gamma0,
-                        RA_GW, DEC_GW, RA_P, DEC_P, 
-                        z,
-                        toas)
+                            RA_GW, DEC_GW, RA_P, DEC_P, 
+                            z,
+                            toas)
            )
+
