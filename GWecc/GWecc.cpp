@@ -187,7 +187,7 @@ bool mergeq(const double M, const double q,
 }
 
 std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
-                                              const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
+                                              const double t0, const double Pb0E, const double e0, 
                                               const double RA_GW, const double DEC_GW, 
                                               const double RA_P,  const double DEC_P, 
                                               const double z,
@@ -204,7 +204,7 @@ std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
 
     const BinaryState bin_init { day_to_s*t0,
                                  0, 0,
-                                 n0, e0, l0, gamma0 };
+                                 n0, e0, 0, 0 };
 
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
@@ -225,6 +225,7 @@ std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
     return std::vector<std::vector<double> > {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9};
 }
 
+/*
 std::vector<std::vector<double> > FeStatFuncs_h(const double M, const double q,
                                               const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                               const double RA_GW, const double DEC_GW, 
@@ -258,3 +259,4 @@ std::vector<std::vector<double> > FeStatFuncs_h(const double M, const double q,
 
     return std::vector<std::vector<double> > {B0, B1, B2, B3, B4};
 }
+*/

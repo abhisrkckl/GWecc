@@ -116,7 +116,7 @@ def Fe_statistic_funcs(toas,
                        theta, phi, 
                        cos_gwtheta, gwphi,
                        log10_M, q,
-                       log10_F, e0, gamma0, l0, tref,
+                       log10_F, e0, tref,
                        z):
 
     M = 10.**log10_M
@@ -140,7 +140,7 @@ def Fe_statistic_funcs(toas,
     #                    toas))
 
     return np.asarray(
-                FeStatFuncs(M, q, tref, Pb0, e0, l0, gamma0,
+                FeStatFuncs(M, q, tref, Pb0, e0, 
                             RA_GW, DEC_GW, RA_P, DEC_P, 
                             z,
                             toas)

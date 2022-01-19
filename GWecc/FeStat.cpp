@@ -73,6 +73,7 @@ double FeStatFunc_fn_pt(double t, void *_params){
     return fi;
 }
 
+/*
 std::array<Signal1D, 5> FeStatFuncs_h(const BinaryMass &bin_mass,
                                       const BinaryState &bin_init,
                                       const SkyPosition &bin_pos,
@@ -107,6 +108,7 @@ std::array<Signal1D, 5> FeStatFuncs_h(const BinaryMass &bin_mass,
 
     return {B1, B2, B3, B4, B5};
 }
+*/
 
 std::array<Signal1D, 10> FeStatFuncs(const BinaryMass &bin_mass,
                                      const BinaryState &bin_init,
