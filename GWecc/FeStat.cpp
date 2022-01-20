@@ -6,8 +6,10 @@
 #include "mikkola.h"
 #include "ipow.hpp"
 
-template<int i>
-double FeStatFunc_fn_pt(double t, void *_params){
+template<unsigned i>
+double FeStat_A_fn_pt(double t, void *_params){
+
+    static_assert(i>0 && i<4, "Invalid A function index.");
 
     const auto &wf_params = *static_cast<WaveformParams*>(_params);
    
@@ -51,26 +53,19 @@ double FeStatFunc_fn_pt(double t, void *_params){
                     
                OTS      = sqrt(1-e*e);
     
-    double fi;
-    switch(i){
-        case 1:
-            fi = 2*OTS*xi/(1-chi)/(1-chi)*c2phi;
-            break;
-        case 2:
-            fi = 2*OTS*xi/(1-chi)/(1-chi)*s2phi;
-            break;
-        case 3:
-            fi = (chi*(1-chi) - 2*OTS*OTS)/(1-chi)/(1-chi)*c2phi;
-            break;
-        case 4:
-            fi = (chi*(1-chi) - 2*OTS*OTS)/(1-chi)/(1-chi)*s2phi;;
-            break;
-        case 5:
-            fi = chi/(1-chi);
-            break;
+    const double N = 2*OTS*xi/(1-chi)/(1-chi),
+                 P = (chi*(1-chi) - 2*OTS*OTS)/(1-chi)/(1-chi),
+                 Q = chi/(1-chi);
+
+    if constexpr(i==1){
+        return N*c2phi + P*s2phi;
     }
-    
-    return fi;
+    else if(i==2){
+        return N*s2phi - P*c2phi;
+    }
+    else if(i==3){
+        return Q;
+    }
 }
 
 /*
@@ -110,11 +105,11 @@ std::array<Signal1D, 5> FeStatFuncs_h(const BinaryMass &bin_mass,
 }
 */
 
-std::array<Signal1D, 10> FeStatFuncs(const BinaryMass &bin_mass,
-                                     const BinaryState &bin_init,
-                                     const SkyPosition &bin_pos,
-                                     const SkyPosition &psr_pos,
-                                     const Signal1D &ts){
+std::array<Signal1D, 6> FeStatFuncs(const BinaryMass &bin_mass,
+                                    const BinaryState &bin_init,
+                                    const SkyPosition &bin_pos,
+                                    const SkyPosition &psr_pos,
+                                    const Signal1D &ts){
 
     double cosmu, Fp, Fx;
     std::tie(cosmu, Fp, Fx) = AntennaPattern(bin_pos, psr_pos);
@@ -131,24 +126,17 @@ std::array<Signal1D, 10> FeStatFuncs(const BinaryMass &bin_mass,
                             bin_init,
                             ev_coeffs };
 
-    gsl_function EccentricResiduals_gsl_func_1 {&FeStatFunc_fn_pt<1>, &params},
-                 EccentricResiduals_gsl_func_2 {&FeStatFunc_fn_pt<2>, &params},
-                 EccentricResiduals_gsl_func_3 {&FeStatFunc_fn_pt<3>, &params},
-                 EccentricResiduals_gsl_func_4 {&FeStatFunc_fn_pt<4>, &params},
-                 EccentricResiduals_gsl_func_5 {&FeStatFunc_fn_pt<5>, &params};
+    gsl_function EccentricResiduals_gsl_func_1 {&FeStat_A_fn_pt<1>, &params},
+                 EccentricResiduals_gsl_func_2 {&FeStat_A_fn_pt<2>, &params},
+                 EccentricResiduals_gsl_func_3 {&FeStat_A_fn_pt<3>, &params};
 
     Signal1D f1 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_1, ts[0], ts),
              f2 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_2, ts[0], ts),
-             f3 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_3, ts[0], ts),
-             f4 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_4, ts[0], ts),
-             f5 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_5, ts[0], ts);
+             f3 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_3, ts[0], ts);
     
     const double H0 = GWAmplitude(bin_mass, bin_init, bin_pos.DL);
 
-    return {H0*Fp*f1, H0*Fx*f1, 
-            H0*Fp*f2, H0*Fx*f2, 
-            H0*Fp*f3, H0*Fx*f3, 
-            H0*Fp*f4, H0*Fx*f4, 
-            H0*Fp*f5, H0*Fx*f5};
+    return {H0*Fp*f1, H0*Fp*f2, H0*Fp*f3,
+            H0*Fx*f1, H0*Fx*f2, H0*Fx*f3};
 
 }

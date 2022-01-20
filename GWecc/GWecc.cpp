@@ -187,7 +187,7 @@ bool mergeq(const double M, const double q,
 }
 
 std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
-                                              const double t0, const double Pb0E, const double e0, 
+                                              const double t0, const double Pb0E, const double e0, const double l0,
                                               const double D_GW, const double RA_GW, const double DEC_GW, 
                                               const double RA_P,  const double DEC_P, 
                                               const double z,
@@ -204,25 +204,21 @@ std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
 
     const BinaryState bin_init { day_to_s*t0,
                                  0, 0,
-                                 n0, e0, 0, 0 };
+                                 n0, e0, l0, 0 };
 
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
 
-    std::array<Signal1D,10> A = FeStatFuncs(bin_mass, bin_init, bin_pos, psr_pos, tzs);
+    std::array<Signal1D,6> A = FeStatFuncs(bin_mass, bin_init, bin_pos, psr_pos, tzs);
         
     std::vector<double>     A0(std::begin(A[0]), std::end(A[0])),
                  			A1(std::begin(A[1]), std::end(A[1])),
                  			A2(std::begin(A[2]), std::end(A[2])),
                  			A3(std::begin(A[3]), std::end(A[3])),
                  			A4(std::begin(A[4]), std::end(A[4])),
-                 			A5(std::begin(A[5]), std::end(A[5])),
-                 			A6(std::begin(A[6]), std::end(A[6])),
-                 			A7(std::begin(A[7]), std::end(A[7])),
-                 			A8(std::begin(A[8]), std::end(A[8])),
-                            A9(std::begin(A[9]), std::end(A[9]));
+                 			A5(std::begin(A[5]), std::end(A[5]));
 
-    return std::vector<std::vector<double> > {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9};
+    return std::vector<std::vector<double> > {A0, A1, A2, A3, A4, A5};
 }
 
 /*

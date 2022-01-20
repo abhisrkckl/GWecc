@@ -107,7 +107,7 @@ def Fe_statistic_funcs_Plack18(toas,
                                theta, phi, 
                                cos_gwtheta, gwphi,
                                log10_M, q,
-                               log10_F, e0, tref,
+                               log10_F, e0, l0, tref,
                                z):
 
     M = 10.**log10_M
@@ -132,7 +132,7 @@ def Fe_statistic_funcs_Plack18(toas,
     #                    toas))
 
     return np.asarray(
-                FeStatFuncs(M, q, tref, Pb0, e0, 
+                FeStatFuncs(M, q, tref, Pb0, e0, l0,
                             D_GW, RA_GW, DEC_GW, 
                             RA_P, DEC_P, 
                             z,
