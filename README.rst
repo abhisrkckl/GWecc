@@ -41,3 +41,8 @@ Usage
 =====
 
 Examples of usage are given in the `examples/` directory.
+
+================
+Acknowledgements
+================
+Lankeswar Dey, Yannick Boetzel, Belinda Cheeseboro, Nidhi Pant, Amit Jit Singh
