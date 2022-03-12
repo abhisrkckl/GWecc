@@ -5,6 +5,7 @@
 #include "PN.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
+#include <sstream>
 
 template<unsigned i>
 double FeStat_A_fn_pt(double t, void *_params){
@@ -23,7 +24,7 @@ double FeStat_A_fn_pt(double t, void *_params){
         return 0;
     }
     
-    const auto //&n     = bin_now.n,
+    const auto &n       = bin_now.n,
                &e       = bin_now.e,
                &g       = bin_now.gamma,
                &l       = bin_now.l,
@@ -57,14 +58,44 @@ double FeStat_A_fn_pt(double t, void *_params){
                  P = (chi*(1-chi) - 2*OTS*OTS)/(1-chi)/(1-chi),
                  Q = chi/(1-chi);
 
+    double result;
+
     if constexpr(i==1){
-        return N*c2phi + P*s2phi;
+        result = N*c2phi + P*s2phi;
     }
-    else if(i==2){
-        return N*s2phi - P*c2phi;
+    else if constexpr(i==2){
+        result = N*s2phi - P*c2phi;
     }
-    else if(i==3){
-        return Q;
+    else if constexpr(i==3){
+        result = Q;
+    }
+
+    if(std::isnan(result)){
+        std::ostringstream errstrm;
+        errstrm<<"NaN encountered in FeStat_A_fn_pt<"<<i<<">. "
+               <<"M = "<<bin_mass.mass()<<", "
+               <<"eta = "<<bin_mass.symmetric_mass_ratio()<<", "
+               <<"e = "<<e<<", "
+               <<"n = "<<n<<", "
+               <<"gamma = "<<g<<", "
+               <<"l = "<<l<<", "
+               <<"u = "<<u<<", "
+               <<"L = "<<L<<", "
+               <<"su = "<<su<<", "
+               <<"cu = "<<cu<<", "
+               <<"xi = "<<xi<<", "
+               <<"chi = "<<chi<<", "
+               <<"k = "<<k<<", "
+               <<"ephi = "<<ephi<<", "
+               <<"betaphi = "<<betaphi<<", "
+               <<"v_u = "<<v_u<<", "
+               <<"v_l = "<<v_l<<", "
+               <<"W ="<<W<<", "
+               <<"phi = "<<phi<<", "
+               <<"s2phi = "<<s2phi<<", "
+               <<"c2phi = "<<c2phi<<", "
+               <<"OTS = "<<OTS<<", ";
+        throw std::runtime_error(errstrm.str());
     }
 }
 
@@ -113,6 +144,8 @@ std::array<Signal1D, 6> FeStatFuncs(const BinaryMass &bin_mass,
 
     double cosmu, Fp, Fx;
     std::tie(cosmu, Fp, Fx) = AntennaPattern(bin_pos, psr_pos);
+
+    gsl_set_error_handler_off();
 
     const auto integrator_size = 100;
     const auto integ_eps_abs = 1e-6,

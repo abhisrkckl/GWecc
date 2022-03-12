@@ -4,7 +4,9 @@
 #include "EccentricResiduals.hpp"
 #include "OrbitalEvolution.hpp"
 #include <gsl/gsl_integration.h>
+#include <gsl/gsl_errno.h>
 #include <tuple>
+#include <stdexcept>
 
 struct WaveformParams{
 	const double Fp, Fx, DGW;
@@ -79,8 +81,14 @@ public:
 		
 		for(unsigned int i=0; i<length; i++){
 			double result, error;
-			gsl_integration_qag(&func, x_prev, x[i], epsabs, epsrel, workspace_size, integ_type, workspace, &result, &error);
+
+			int status = gsl_integration_qag(&func, x_prev, x[i], epsabs, epsrel, workspace_size, integ_type, workspace, &result, &error);
 			
+			if(status){
+				std::string errormsg = "GSL error occurred in eval_noerr. Error code is " + std::to_string(status);
+				throw std::runtime_error(errormsg);
+			}
+
 			res_prev += result;
 			results[i] = res_prev;
 			
