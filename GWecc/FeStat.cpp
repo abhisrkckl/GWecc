@@ -97,6 +97,8 @@ double FeStat_A_fn_pt(double t, void *_params){
                <<"OTS = "<<OTS<<", ";
         throw std::runtime_error(errstrm.str());
     }
+
+    return result;
 }
 
 /*

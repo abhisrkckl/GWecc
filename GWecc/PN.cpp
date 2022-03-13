@@ -21,6 +21,8 @@ double PN_param_x(const BinaryMass &bin_mass,
     if(x>=1){
         throw std::runtime_error("x >= 1 encountered in PN_param_x.");
     }
+
+    return x;
 }
 
 double advance_of_periastron(const BinaryMass &binmass, const BinaryState &binstate){
@@ -71,5 +73,5 @@ double angular_eccentricity(const BinaryMass &bin_mass,
         throw std::runtime_error("ephi >= 1 encountered in angular_eccentricity.");
     }
 
-    return  ephi;
+    return ephi;
 }

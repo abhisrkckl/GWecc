@@ -1,6 +1,7 @@
 #include "OrbitalEvolution.hpp"
 #include "PN.hpp"
 #include <cstdio>
+#include <stdexcept>
 
 void write_data_file(const char *datafilename, const std::vector<double> &taus, const std::vector<double> &es){
     const size_t rows = taus.size();
@@ -179,6 +180,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
+            throw std::runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             e     = e0;
@@ -197,6 +199,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
+            throw std::runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             
@@ -256,6 +259,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
+            throw std::runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             e     = e0;
@@ -274,6 +278,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
+            throw std::runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             
