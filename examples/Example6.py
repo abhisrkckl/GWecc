@@ -49,7 +49,7 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
 		res_px = GWecc.EccentricResiduals_px(M, q,
 				                           	 Omega, i,
 				                             t0, Pb0, e0, l0, gamma0,
-				                           	 DEC_GW, delay,
+				                           	 D_GW, delay,
 				                           	 z,
 				                           	 GWecc.ResidualsMethod_Num,
 				                           	 term,

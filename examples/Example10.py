@@ -46,15 +46,16 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
     ecc_gw = eccentric_cw_delay( cos_gwtheta = np.sin(DEC_GW), 
                                  gwphi = RA_GW,
                                  log10_dist = np.log10(D_GW/1e6),
+                                 log10_h=None,
                                  psi = Omega, 
                                  cos_inc = np.cos(i),
                                  log10_M = np.log10(M), 
                                  q = q,
-                                 log10_f0_GW = np.log10(2/(Pb0*year)), 
+                                 log10_F = np.log10(2/(Pb0*year)), 
                                  e0 = e0,  
                                  gamma0 = gamma0, 
                                  l0 = l0, 
-                                 t0 = min(psr.toas),
+                                 tref = max(psr.toas),
                                  z = z,
                                  p_dist=0,
                                  psrTerm=True,
@@ -62,10 +63,10 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
     ecc_gw_fn = ecc_gw("ecc_gw", psr=psr)
     res2 = ecc_gw_fn()
     
-    res = np.asarray(res) - np.mean(res)
+    #res = np.asarray(res) - np.mean(res)
     res2 = np.asarray(res2) - np.mean(res2)
     
-    plt.plot(toas/365.25, res/ns, marker='x', ls='dotted')
+    #plt.plot(toas/365.25, res/ns, marker='x', ls='dotted')
     plt.plot(toas/365.25, res2/ns, marker='x', ls='', c='red')
     plt.ylabel("$R(t)$  (ns)", fontsize=14)
     plt.text(t0/365.25,0.8*ax.yaxis.get_data_interval()[1],"e="+str(e0),size=15, ha="center", va="center", bbox=dict(boxstyle="round",facecolor='cyan',alpha=0.1))
