@@ -74,7 +74,7 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
                                  e0 = e0,  
                                  gamma0 = gamma0, 
                                  l0 = l0, 
-                                 tref = min(psr.toas),
+                                 tref = tref*day,
                                  z = z,
                                  p_dist=0,
                                  psrTerm=True,
