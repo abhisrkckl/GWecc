@@ -18,9 +18,9 @@ GWecc_sources = (   "AntennaPattern.cpp",
 src_dir = "GWecc/"
 current_dir = os.path.dirname(os.path.realpath(__file__))
 include_dir = current_dir+'/'+"GWecc/"
-GWecc_sources = [src_dir+src_file for src_file in GWecc_sources] + ['enterprise_GWecc/GWecc.i']
+GWecc_sources = [src_dir+src_file for src_file in GWecc_sources] + ['enterprise_GWecc1/GWecc.i']
 
-GWecc_cpp_module = Extension('enterprise_GWecc._GWecc', 
+GWecc_cpp_module = Extension('enterprise_GWecc1._GWecc', 
                              sources=GWecc_sources,
                              include_dirs=[include_dir, current_dir, '/usr/include/eigen3/'],
                              libraries=['gsl','gslcblas'],
@@ -28,15 +28,15 @@ GWecc_cpp_module = Extension('enterprise_GWecc._GWecc',
                              extra_compile_args=['-std=c++17', '-Wno-unused-result']
                             )
 
-setup(  name = 'enterprise_GWecc',
+setup(  name = 'enterprise_GWecc1',
         version = '0.1.5',
         description = "Computes pulsar TOA delays due to gravitational waves from eccentric supermassive binary sources.",
         author = "Abhimanyu Susobhanan",
         author_email = "abhisrkckl@gmail.com",
         ext_modules = [GWecc_cpp_module],
-        py_modules = ['enterprise_GWecc.GWecc', 
-                      'enterprise_GWecc.enterprise_GWecc',
-                      'enterprise_GWecc.enterprise_GWecc_cosmoz'],
+        py_modules = ['enterprise_GWecc1.GWecc', 
+                      'enterprise_GWecc1.enterprise_GWecc',
+                      'enterprise_GWecc1.enterprise_GWecc_cosmoz'],
         #scripts = ['examples/Example1.py'],
         install_requires = ['numpy', 'astropy', 'enterprise-pulsar']
     )
