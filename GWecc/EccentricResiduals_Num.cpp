@@ -45,7 +45,7 @@ Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
     const auto integrator_size = 100;
     const auto integ_eps_abs = 1e-12,
                integ_eps_rel = 1e-12;
-    const GSL_QAG_Integrator qag_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15); 
+    const GSL_CQUAD_Integrator cquad_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15); 
     
     const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
     
@@ -62,7 +62,7 @@ Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
     
     gsl_function EccentricResiduals_gsl_func {&EccentricResiduals_fn_pt, &params};
     
-    return qag_integrator.eval_noerr(EccentricResiduals_gsl_func, ts[0], ts);
+    return cquad_integrator.eval_noerr(EccentricResiduals_gsl_func, ts[0], ts);
     
     /*
     const int length = ts.size();
@@ -173,7 +173,7 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Num(const BinaryMass &bin_m
         const auto integrator_size = 100;
         const auto integ_eps_abs = 1e-6,
                    integ_eps_rel = 1e-6;
-        const GSL_QAG_Integrator qag_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15);
+        const GSL_CQUAD_Integrator cquad_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15);
 
         const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 
@@ -190,8 +190,8 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Num(const BinaryMass &bin_m
         gsl_function EccentricResiduals_gsl_func_p {&EccentricResiduals_fn_pt, &params_p},
                      EccentricResiduals_gsl_func_x {&EccentricResiduals_fn_pt, &params_x};
 
-        Signal1D Rp = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_p, ts[0], ts),
-                 Rx = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_x, ts[0], ts);
+        Signal1D Rp = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_p, ts[0], ts),
+                 Rx = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_x, ts[0], ts);
         
         return std::make_tuple(Rp,Rx);
 

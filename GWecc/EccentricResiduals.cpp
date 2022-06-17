@@ -2,6 +2,7 @@
 #include "OrbitalEvolution.hpp"
 #include "AntennaPattern.hpp"
 #include "PN.hpp"
+#include <stdexcept>
 
 Signal1D EccentricResiduals(const BinaryMass &bin_mass,
                             const BinaryState &bin_init,

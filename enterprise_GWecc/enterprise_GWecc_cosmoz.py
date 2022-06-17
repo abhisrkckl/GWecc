@@ -85,7 +85,7 @@ def eccentric_cw_delay_Planck18(toas,
     n0 = np.pi*(10.**log10_F)    # GW frequency is twice the orbital frequency.
     Pb0 = 2*np.pi/n0 / year_to_s
     
-    D_GW = Planck18.luminosity_distance(z)
+    D_GW = 1e6 * (Planck18.luminosity_distance(z).value)
 
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
@@ -107,7 +107,7 @@ def Fe_statistic_funcs_Plack18(toas,
                                theta, phi, 
                                cos_gwtheta, gwphi,
                                log10_M, q,
-                               log10_F, e0, tref,
+                               log10_F, e0, l0, tref,
                                z):
 
     M = 10.**log10_M
@@ -121,7 +121,7 @@ def Fe_statistic_funcs_Plack18(toas,
     gwtheta = np.arccos(cos_gwtheta)
     DEC_GW = np.pi/2 - gwtheta
     RA_GW  = gwphi
-    D_GW = Planck18.luminosity_distance(z)
+    D_GW = 1e6 * (Planck18.luminosity_distance(z).value)
     
     n0 = np.pi*(10.**log10_F)    # GW frequency is twice the orbital frequency.
     Pb0 = 2*np.pi/n0 / year_to_s
@@ -132,7 +132,7 @@ def Fe_statistic_funcs_Plack18(toas,
     #                    toas))
 
     return np.asarray(
-                FeStatFuncs(M, q, tref, Pb0, e0, 
+                FeStatFuncs(M, q, tref, Pb0, e0, l0,
                             D_GW, RA_GW, DEC_GW, 
                             RA_P, DEC_P, 
                             z,

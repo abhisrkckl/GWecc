@@ -38,7 +38,7 @@ ntoas = 5000
 toas = 365.25*np.linspace(0,10,ntoas)	# days
 
 cosmu, Fp, Fx = GWecc.AntennaPattern(RA_GW, DEC_GW, RA_P, DEC_P)
-delay = -1000#-D_P*(1-cosmu) / (1+z)
+delay = -1000 # -D_P*(1-cosmu) / (1+z)
 
 for idx,e0 in enumerate([0.1,0.5,0.8]):
 
@@ -49,7 +49,7 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
 		res_px = GWecc.EccentricResiduals_px(M, q,
 				                           	 Omega, i,
 				                             t0, Pb0, e0, l0, gamma0,
-				                           	 DEC_GW, delay,
+				                           	 D_GW, delay,
 				                           	 z,
 				                           	 GWecc.ResidualsMethod_Num,
 				                           	 term,

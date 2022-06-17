@@ -42,8 +42,8 @@ res_N = GWecc.GWecc.EccentricResiduals(M, q,
                                        GWecc.GWecc.ResidualsTerms_Earth,
                                        toas)
 
-As = GWecc.GWecc.FeStatFuncs(M, q, tref, Pb0, e0, l0, gamma0,
-                             RA_GW, DEC_GW, RA_P, DEC_P, 
+As = GWecc.GWecc.FeStatFuncs(M, q, tref, Pb0, e0, l0,
+                             D_GW, RA_GW, DEC_GW, RA_P, DEC_P, 
                              z,
                              toas)
 

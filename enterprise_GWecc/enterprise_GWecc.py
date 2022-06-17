@@ -112,13 +112,13 @@ def eccentric_cw_delay(toas,
             )
 
 @signal_base.function
-def Fe_statistic_funcs_cosmoz(toas, 
-                              theta, phi, 
-                              cos_gwtheta, gwphi,
-                              log10_dist,
-                              log10_M, q,
-                              log10_F, e0, tref,
-                              z):
+def Fe_statistic_funcs(toas, 
+                       theta, phi, 
+                       cos_gwtheta, gwphi,
+                       log10_dist,
+                       log10_M, q,
+                       log10_F, e0, l0, tref,
+                       z):
 
     M = 10.**log10_M
     
@@ -136,13 +136,8 @@ def Fe_statistic_funcs_cosmoz(toas,
     n0 = np.pi*(10.**log10_F)    # GW frequency is twice the orbital frequency.
     Pb0 = 2*np.pi/n0 / year_to_s
 
-    #print((M, q, tref, Pb0, e0, l0, gamma0,
-    #                    RA_GW, DEC_GW, RA_P, DEC_P, 
-    #                    z,
-    #                    toas))
-
     return np.asarray(
-                FeStatFuncs(M, q, tref, Pb0, e0, 
+                FeStatFuncs(M, q, tref, Pb0, e0, l0,
                             D_GW, RA_GW, DEC_GW, 
                             RA_P, DEC_P, 
                             z,

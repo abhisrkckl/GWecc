@@ -1,6 +1,7 @@
 #include "OrbitalEvolution.hpp"
 #include "PN.hpp"
 #include <cstdio>
+#include <stdexcept>
 
 void write_data_file(const char *datafilename, const std::vector<double> &taus, const std::vector<double> &es){
     const size_t rows = taus.size();
@@ -161,7 +162,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
                  &gamma0= bin_init.gamma,
                  &l0    = bin_init.l,
                  
-                 t        = t0 + delay,
+                 t      = t0 + delay,
                   
                  eta    = bin_mass.symmetric_mass_ratio(),
                  M      = bin_mass.mass(),
@@ -173,12 +174,13 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
     if(e0==0){
         
         const double A     = pow(Mchirp,5./3)/5;
-        const double T     = 256*A*pow(n0,8./3)*t;
+        const double T     = 256*A*pow(n0,8./3)*delay;
 
         if(T>1){
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
+            throw std::runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             e     = e0;
@@ -191,12 +193,13 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
         const double P     = compute_P_coeff(Mchirp,n0,e0);
         const double tau0  = tau_from_e(e0);
         //fprintf(stderr, "P = %e, tau0 = %e, t = %e\n",P,tau0,t);
-        double tau   = tau0 - P*t;
+        double tau   = tau0 - P*delay;
 
         if(tau<0){
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
+            throw std::runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             
@@ -250,12 +253,13 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
                      &AT   = ev_coeffs.AT,
                      &AG   = ev_coeffs.AG;
                  
-        const double T     = AT*t;
+        const double T     = AT*delay;
 
         if(T>1){
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
+            throw std::runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             e     = e0;
@@ -268,12 +272,13 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
         const double &P       = ev_coeffs.P;
         const double &tau0    = ev_coeffs.tau0;
         
-        double tau = tau0 - P*t;
+        double tau = tau0 - P*delay;
 
         if(tau<0){
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
+            throw std::runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             

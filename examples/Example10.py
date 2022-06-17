@@ -36,36 +36,17 @@ DEC_GW = dms_to_rad(-45,0,0)
 D_GW = 1e9 # pc 
 
 toas = psr.toas / (24*3600)      # MJD
-tref   = min(toas)                 # MJD
+t0   = min(toas)                 # MJD
 
 for idx,e0 in enumerate([0.1,0.5,0.8]):
 
     ax = plt.subplot(311+idx)
-
-
-    print("==>", M, q,
-          Omega, i,
-          tref, Pb0, e0, l0, gamma0,
-          D_GW, RA_GW, DEC_GW,
-          D_P,  RA_P,  DEC_P,
-          z)  
-          
-    # Directly calling the EccentricResiduals function
-    res =   GWecc.EccentricResiduals(  M, q,
-                                   Omega, i,
-                                   tref, Pb0, e0, l0, gamma0,
-                                   D_GW, RA_GW, DEC_GW, 
-                                   D_P, RA_P, DEC_P, 
-                                   z,
-                                   GWecc.ResidualsMethod_Num,
-                                   GWecc.ResidualsTerms_Both,
-                                   toas)
     
     # Calling EccentricResiduals function through the enterprise interface
     ecc_gw = eccentric_cw_delay( cos_gwtheta = np.sin(DEC_GW), 
                                  gwphi = RA_GW,
                                  log10_dist = np.log10(D_GW/1e6),
-                                 log10_h = None,
+                                 log10_h=None,
                                  psi = Omega, 
                                  cos_inc = np.cos(i),
                                  log10_M = np.log10(M), 
@@ -74,7 +55,7 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
                                  e0 = e0,  
                                  gamma0 = gamma0, 
                                  l0 = l0, 
-                                 tref = tref*day,
+                                 tref = max(psr.toas),
                                  z = z,
                                  p_dist=0,
                                  psrTerm=True,
@@ -82,13 +63,13 @@ for idx,e0 in enumerate([0.1,0.5,0.8]):
     ecc_gw_fn = ecc_gw("ecc_gw", psr=psr)
     res2 = ecc_gw_fn()
     
-    res = np.asarray(res) - np.mean(res)
+    #res = np.asarray(res) - np.mean(res)
     res2 = np.asarray(res2) - np.mean(res2)
     
-    plt.plot(toas/365.25, res/ns, marker='x', ls='dotted')
+    #plt.plot(toas/365.25, res/ns, marker='x', ls='dotted')
     plt.plot(toas/365.25, res2/ns, marker='x', ls='', c='red')
     plt.ylabel("$R(t)$  (ns)", fontsize=14)
-    plt.text(tref/365.25,0.8*ax.yaxis.get_data_interval()[1],"e="+str(e0),size=15, ha="center", va="center", bbox=dict(boxstyle="round",facecolor='cyan',alpha=0.1))
+    plt.text(t0/365.25,0.8*ax.yaxis.get_data_interval()[1],"e="+str(e0),size=15, ha="center", va="center", bbox=dict(boxstyle="round",facecolor='cyan',alpha=0.1))
     if idx<2:
         plt.tick_params(labelbottom=False,labelsize=12)
     else:
