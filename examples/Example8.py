@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import numpy as np
 from enterprise_GWecc import GWecc, eccentric_cw_delay
 from enterprise.pulsar import Pulsar
