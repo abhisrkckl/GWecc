@@ -38,7 +38,7 @@ ntoas = 5000
 toas = 365.25*np.linspace(0,10,ntoas)	# days
 
 cosmu, Fp, Fx = GWecc.AntennaPattern(RA_GW, DEC_GW, RA_P, DEC_P)
-delay = -1000#-D_P*(1-cosmu) / (1+z)
+delay = -1000 # -D_P*(1-cosmu) / (1+z)
 
 for idx,e0 in enumerate([0.1,0.5,0.8]):
 
