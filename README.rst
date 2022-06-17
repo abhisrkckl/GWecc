@@ -33,9 +33,9 @@ Installation
 I suggest installing this in a conda environment.
 To install, type
 
-$ conda install enterprise-pulsar gsl eigen
+$ `conda install -c conda-forge enterprise-pulsar gsl eigen`
 
-$ pip install .
+$ `pip install .`
 
 Note that the C++ extension uses C++17 features and requires a new C++ compiler. I have tested this only with g++-8 and later.
 
