@@ -13,13 +13,13 @@ Dependencies
 
 C/C++ Libraries
 ***************
-* libgsl-dev
-* libeigen3-dev
+* GSL
+* Eigen
 
 Python Packages
 ***************
 * numpy
-* enterprise
+* enterprise-pulsar
 * setuptools
 
 Other
@@ -30,11 +30,13 @@ Other
 Installation
 ============
 
+I suggest installing this in a conda environment.
 To install, type
 
-> python3 setup.py install --user
+> conda install enterprise-pulsar gsl eigen
+> pip install .
 
-Note that the C++ extension uses C++17 features and requires a new C++ compiler. I have tested this only with g++.
+Note that the C++ extension uses C++17 features and requires a new C++ compiler. I have tested this only with g++-8 and later.
 
 =====
 Usage
