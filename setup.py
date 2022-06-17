@@ -38,5 +38,5 @@ setup(  name = 'enterprise_GWecc',
                       'enterprise_GWecc.enterprise_GWecc',
                       'enterprise_GWecc.enterprise_GWecc_cosmoz'],
         #scripts = ['examples/Example1.py'],
-        install_requires = ['numpy', 'astropy', 'enterprise-pulsar']
+        install_requires = ['numpy', 'astropy', 'matplotlib', 'enterprise-pulsar']
     )
