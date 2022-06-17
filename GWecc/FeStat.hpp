@@ -2,6 +2,7 @@
 #define _FeStat_hpp_
 
 #include "NumericalWaveform.hpp"
+#include <array>
 
 std::array<Signal1D, 6> FeStatFuncs(const BinaryMass &bin_mass,
                                     const BinaryState &bin_init,

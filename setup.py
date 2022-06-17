@@ -22,7 +22,7 @@ GWecc_sources = [src_dir+src_file for src_file in GWecc_sources] + ['enterprise_
 
 GWecc_cpp_module = Extension('enterprise_GWecc._GWecc', 
                              sources=GWecc_sources,
-                             include_dirs=[include_dir, current_dir, '/usr/include/eigen3/'],
+                             include_dirs=[include_dir, current_dir],
                              libraries=['gsl','gslcblas'],
                              swig_opts=['-c++'],
                              extra_compile_args=['-std=c++17', '-Wno-unused-result']

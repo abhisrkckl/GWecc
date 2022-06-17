@@ -5,6 +5,7 @@
 #include "PN.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
+#include "FeStat.hpp"
 #include <sstream>
 
 template<unsigned i>
