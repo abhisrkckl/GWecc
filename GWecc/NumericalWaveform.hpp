@@ -15,35 +15,35 @@ struct WaveformParams{
 	const EvolveCoeffs_t &ev_coeffs;
 };
 
-class GSL_QAG_Integrator{
+class GSL_CQUAD_Integrator{
 	
 private:
 	
 	const size_t workspace_size;
-	gsl_integration_workspace *workspace;
+	gsl_integration_cquad_workspace *workspace;
 	
 	int integ_type;
 	
 	double epsabs, epsrel;
 	
 public:
-	GSL_QAG_Integrator(const size_t _workspace_size, const double _epsabs, const double _epsrel, const int key)
+	GSL_CQUAD_Integrator(const size_t _workspace_size, const double _epsabs, const double _epsrel, const int key)
 		: workspace_size(_workspace_size),
 		  integ_type(key),
 		  epsabs(_epsabs),
 		  epsrel(_epsrel) {
 		  
-		workspace = gsl_integration_workspace_alloc(workspace_size);
+		workspace = gsl_integration_cquad_workspace_alloc(workspace_size);
 	}
 	
-	~GSL_QAG_Integrator(){
-		gsl_integration_workspace_free(workspace);
+	~GSL_CQUAD_Integrator(){
+		gsl_integration_cquad_workspace_free(workspace);
 	}
 	
 	std::tuple<double,double> eval(gsl_function &func, const double x0, const double x1) const{
 		double result, error;
 		
-		gsl_integration_qag(&func, x0, x1, epsabs, epsrel, workspace_size, integ_type, workspace, &result, &error);
+		gsl_integration_cquad(&func, x0, x1, epsabs, epsrel, workspace, &result, &error, NULL);
 		
 		return std::make_tuple(result,error);
 	}
@@ -59,7 +59,7 @@ public:
 		
 		for(unsigned int i=0; i<length; i++){
 			double result, error;
-			gsl_integration_qag(&func, x_prev, x[i], epsabs, epsrel, workspace_size, integ_type, workspace, &result, &error);
+			gsl_integration_cquad(&func, x_prev, x[i], epsabs, epsrel, workspace, &result, &error, NULL);
 			
 			res_prev += result;
 			results[i] = res_prev;
@@ -82,7 +82,7 @@ public:
 		for(unsigned int i=0; i<length; i++){
 			double result, error;
 
-			int status = gsl_integration_qag(&func, x_prev, x[i], epsabs, epsrel, workspace_size, integ_type, workspace, &result, &error);
+			int status = gsl_integration_cquad(&func, x_prev, x[i], epsabs, epsrel, workspace, &result, &error, NULL);
 			
 			if(status){
 				std::string errormsg = "GSL error occurred in eval_noerr. Error code is " + std::to_string(status);

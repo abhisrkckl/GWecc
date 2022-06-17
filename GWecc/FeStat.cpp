@@ -153,7 +153,7 @@ std::array<Signal1D, 6> FeStatFuncs(const BinaryMass &bin_mass,
     const auto integrator_size = 100;
     const auto integ_eps_abs = 1e-6,
                integ_eps_rel = 1e-6;
-    const GSL_QAG_Integrator qag_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15);
+    const GSL_CQUAD_Integrator cquad_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15);
 
     const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 
@@ -166,9 +166,9 @@ std::array<Signal1D, 6> FeStatFuncs(const BinaryMass &bin_mass,
                  EccentricResiduals_gsl_func_2 {&FeStat_A_fn_pt<2>, &params},
                  EccentricResiduals_gsl_func_3 {&FeStat_A_fn_pt<3>, &params};
 
-    Signal1D f1 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_1, ts[0], ts),
-             f2 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_2, ts[0], ts),
-             f3 = qag_integrator.eval_noerr(EccentricResiduals_gsl_func_3, ts[0], ts);
+    Signal1D f1 = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_1, ts[0], ts),
+             f2 = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_2, ts[0], ts),
+             f3 = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_3, ts[0], ts);
     
     const double H0 = GWAmplitude(bin_mass, bin_init, bin_pos.DL);
 
