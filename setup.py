@@ -20,7 +20,7 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 include_dir = current_dir+'/'+"GWecc/"
 GWecc_sources = [src_dir+src_file for src_file in GWecc_sources] + ['enterprise_GWecc/GWecc.i']
 
-GWecc_cpp_module = Extension('enterprise_GWecc.GWecc', 
+GWecc_cpp_module = Extension('enterprise_GWecc._GWecc', 
                              sources=GWecc_sources,
                              include_dirs=[include_dir, current_dir],
                              libraries=['gsl','gslcblas'],
