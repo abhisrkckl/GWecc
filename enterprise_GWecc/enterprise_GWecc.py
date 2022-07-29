@@ -1,6 +1,6 @@
-from .GWecc import EccentricResiduals
-from .GWecc import ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth
-from .GWecc import FeStatFuncs
+from enterprise_GWecc.GWecc import EccentricResiduals
+from enterprise_GWecc.GWecc import ResidualsMethod_Num, ResidualsTerms_Both, ResidualsTerms_Earth
+from enterprise_GWecc.GWecc import FeStatFuncs
 from enterprise.signals import signal_base
 import numpy as np
 
