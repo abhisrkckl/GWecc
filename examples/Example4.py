@@ -4,22 +4,22 @@ import enterprise_GWecc as GWecc
 import numpy as np
 import matplotlib.pyplot as plt
 
-year = 365.25*24*3600
+year = 365.25 * 24 * 3600
 ns = 1e-9
 
 ntoas = 10
-toas = 365.25*np.linspace(0,15,ntoas)
+toas = 365.25 * np.linspace(0, 15, ntoas)
 
 RA_P = 1.65
 DEC_P = -1.12
 D_P = 1000
-     
+
 RA_GW = 3.1
-DEC_GW = -np.pi/3.5
+DEC_GW = -np.pi / 3.5
 D_GW = 1e9
 
 Omega = 0
-i = np.pi/3
+i = np.pi / 3
 
 M = 5e9
 q = 1
@@ -38,29 +38,56 @@ plt.suptitle("Comparing numerical and analytic residuals")
 import time
 
 
-res_N =     GWecc.GWecc.EccentricResiduals(M, q,
-                                           Omega, i,
-                                           t0, Pb0, e0, l0, gamma0,
-                                           D_GW, RA_GW, DEC_GW, 
-                                           D_P, RA_P, DEC_P, 
-                                           z,
-                                           GWecc.GWecc.ResidualsMethod_Num,
-                                           GWecc.GWecc.ResidualsTerms_Earth,
-                                           toas)
+res_N = GWecc.GWecc.EccentricResiduals(
+    M,
+    q,
+    Omega,
+    i,
+    t0,
+    Pb0,
+    e0,
+    l0,
+    gamma0,
+    D_GW,
+    RA_GW,
+    DEC_GW,
+    D_P,
+    RA_P,
+    DEC_P,
+    z,
+    GWecc.GWecc.ResidualsMethod_Num,
+    GWecc.GWecc.ResidualsTerms_Earth,
+    toas,
+)
 for ntoas in [10, 50, 100, 500, 1000, 5000]:
-    toas = 365.25*np.linspace(0,15,ntoas)
+    toas = 365.25 * np.linspace(0, 15, ntoas)
     start = time.time()
-    res_N = [GWecc.GWecc.EccentricResiduals(M, q,
-                                           Omega, i,
-                                           t0, Pb0, e0, l0, gamma0,
-                                           D_GW, RA_GW, DEC_GW,
-                                           D_P, RA_P, DEC_P,
-                                           z,
-                                           GWecc.GWecc.ResidualsMethod_Num,
-                                           GWecc.GWecc.ResidualsTerms_Earth,
-                                           toas) for i in range(10000//ntoas)]
+    res_N = [
+        GWecc.GWecc.EccentricResiduals(
+            M,
+            q,
+            Omega,
+            i,
+            t0,
+            Pb0,
+            e0,
+            l0,
+            gamma0,
+            D_GW,
+            RA_GW,
+            DEC_GW,
+            D_P,
+            RA_P,
+            DEC_P,
+            z,
+            GWecc.GWecc.ResidualsMethod_Num,
+            GWecc.GWecc.ResidualsTerms_Earth,
+            toas,
+        )
+        for i in range(10000 // ntoas)
+    ]
     end = time.time()
-    print(ntoas, (end-start)/10000)
+    print(ntoas, (end - start) / 10000)
 
 """
 res_A =     GWecc.GWecc.EccentricResiduals(M, q,
