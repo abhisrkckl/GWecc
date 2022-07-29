@@ -43,7 +43,7 @@ Note that the C++ extension uses C++17 features and requires a new C++ compiler.
 Usage
 =====
 
-Examples of usage are given in the `examples/` directory.
+Examples of usage are given in the `examples` directory.
 
 ================
 Acknowledgements
