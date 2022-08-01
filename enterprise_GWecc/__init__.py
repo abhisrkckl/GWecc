@@ -4,4 +4,3 @@ from .enterprise_GWecc_cosmoz import (
     Fe_statistic_funcs_Plack18,
 )
 from .block import gwecc_block
-import GWecc

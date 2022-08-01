@@ -39,15 +39,15 @@ def gwecc_block(
     log10_M = Uniform(6.0, 9.1)(f"{name}_log10_M")
     q = Uniform(0.01, 1)(f"{name}_q")
 
-    gamma0 = Uniform(-np.pi / 2, np.pi)(f"{name}_psi")
-    l0 = Uniform(-np.pi, np.pi)(f"{name}_psi")
+    gamma0 = Uniform(-np.pi / 2, np.pi)(f"{name}_gamma0")
+    l0 = Uniform(-np.pi, np.pi)(f"{name}_l0")
 
     tref = Constant(tref)(f"{name}_tref")
 
     if redshift is None:
-        z = Uniform(0, 1)(f"{name}_q")
+        z = Uniform(0, 1)(f"{name}_z")
     else:
-        z = Constant(redshift)(f"{name}_q")
+        z = Constant(redshift)(f"{name}_z")
 
     wf = eccentric_cw_delay_Planck18(
         cos_gwtheta=cos_gwtheta,
