@@ -30,6 +30,7 @@ def eccentric_cw_delay_Planck18(
     l0,
     tref,
     log10_z,
+    delta_DGW,
     p_dist=1.0,
     psrTerm=False,
     evolve=True,
@@ -66,6 +67,7 @@ def eccentric_cw_delay_Planck18(
     tref        is  Reference time                      in s                                (Should be set to a fixed epoch if l0 is a free parameter.)
 
     log10_z     is  log10 redshift
+    delta_DGW   is  Luminosity distance correction      in Mpc
 
     psrTerm     is  [boolean] Whether to add pulsar term
 
@@ -103,7 +105,7 @@ def eccentric_cw_delay_Planck18(
     n0 = np.pi * (10.0**log10_F)  # GW frequency is twice the orbital frequency.
     Pb0 = 2 * np.pi / n0 / year_to_s
 
-    D_GW = 1e6 * (Planck18.luminosity_distance(z).value)
+    D_GW = 1e6 * (Planck18.luminosity_distance(z).value + delta_DGW)
 
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
