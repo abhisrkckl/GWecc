@@ -104,7 +104,7 @@ def eccentric_cw_delay_Planck18(
     Pb0 = 2 * np.pi / n0 / year_to_s
 
     zc = 10**log10_zc
-    z = (1 + zc) * (1 + zp)
+    z = (1+zc)*(1+zp) - 1
     D_GW = 1e6 * Planck18.luminosity_distance(zc).value
 
     residuals_method = ResidualsMethod_Num
