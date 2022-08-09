@@ -29,8 +29,8 @@ def eccentric_cw_delay_Planck18(
     gamma0,
     l0,
     tref,
-    log10_z,
-    delta_DGW,
+    log10_zc,
+    zp,
     p_dist=1.0,
     psrTerm=False,
     evolve=True,
@@ -66,8 +66,8 @@ def eccentric_cw_delay_Planck18(
     l0          is  Mean anomaly at t=tref              in rad                              (Should be set to zero if tref is a free parameter.)
     tref        is  Reference time                      in s                                (Should be set to a fixed epoch if l0 is a free parameter.)
 
-    log10_z     is  log10 redshift
-    delta_DGW   is  Luminosity distance correction      in Mpc
+    log10_zc    is  log10 cosmological redshift
+    zp          is  Peculiar redshift
 
     psrTerm     is  [boolean] Whether to add pulsar term
 
@@ -78,8 +78,6 @@ def eccentric_cw_delay_Planck18(
     Returns:
             TOA delays due to GWs from eccentric binary sources (in s)
     """
-
-    z = 10**log10_z
 
     toas = toas / (24 * 3600)
     tref = tref / (24 * 3600)
@@ -105,7 +103,9 @@ def eccentric_cw_delay_Planck18(
     n0 = np.pi * (10.0**log10_F)  # GW frequency is twice the orbital frequency.
     Pb0 = 2 * np.pi / n0 / year_to_s
 
-    D_GW = 1e6 * (Planck18.luminosity_distance(z).value + delta_DGW)
+    zc = 10**log10_zc
+    z = (1 + zc) * (1 + zp)
+    D_GW = 1e6 * Planck18.luminosity_distance(zc).value
 
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
