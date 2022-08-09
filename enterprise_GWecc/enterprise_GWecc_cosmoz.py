@@ -29,7 +29,7 @@ def eccentric_cw_delay_Planck18(
     gamma0,
     l0,
     tref,
-    z,
+    log10_z,
     p_dist=1.0,
     psrTerm=False,
     evolve=True,
@@ -65,7 +65,7 @@ def eccentric_cw_delay_Planck18(
     l0          is  Mean anomaly at t=tref              in rad                              (Should be set to zero if tref is a free parameter.)
     tref        is  Reference time                      in s                                (Should be set to a fixed epoch if l0 is a free parameter.)
 
-    z           is  redshift
+    log10_z     is  log10 redshift
 
     psrTerm     is  [boolean] Whether to add pulsar term
 
@@ -76,6 +76,8 @@ def eccentric_cw_delay_Planck18(
     Returns:
             TOA delays due to GWs from eccentric binary sources (in s)
     """
+
+    z = 10**log10_z
 
     toas = toas / (24 * 3600)
     tref = tref / (24 * 3600)
@@ -133,8 +135,10 @@ def eccentric_cw_delay_Planck18(
 
 @signal_base.function
 def Fe_statistic_funcs_Plack18(
-    toas, theta, phi, cos_gwtheta, gwphi, log10_M, q, log10_F, e0, l0, tref, z
+    toas, theta, phi, cos_gwtheta, gwphi, log10_M, q, log10_F, e0, l0, tref, log10_z
 ):
+
+    z = 10**log10_z
 
     M = 10.0**log10_M
 
