@@ -1,6 +1,7 @@
 from enterprise_GWecc.GWecc import EccentricResiduals
 from enterprise_GWecc.GWecc import (
     ResidualsMethod_Num,
+    ResidualsMethod_Anl,
     ResidualsTerms_Both,
     ResidualsTerms_Earth,
 )
@@ -107,6 +108,7 @@ def eccentric_cw_delay_Planck18(
     z = (1+zc)*(1+zp) - 1
     D_GW = 1e6 * Planck18.luminosity_distance(zc).value
 
+    #residuals_method = ResidualsMethod_Anl if (e0<=2.8 and not psrTerm) else ResidualsMethod_Num
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
 
@@ -137,10 +139,12 @@ def eccentric_cw_delay_Planck18(
 
 @signal_base.function
 def Fe_statistic_funcs_Plack18(
-    toas, theta, phi, cos_gwtheta, gwphi, log10_M, q, log10_F, e0, l0, tref, log10_z
+    toas, theta, phi, cos_gwtheta, gwphi, log10_M, q, log10_F, e0, l0, tref, log10_zc, zp
 ):
 
-    z = 10**log10_z
+    zc = 10**log10_zc
+    z = (1+zc)*(1+zp) - 1
+    D_GW = 1e6 * Planck18.luminosity_distance(zc).value
 
     M = 10.0**log10_M
 
@@ -153,7 +157,6 @@ def Fe_statistic_funcs_Plack18(
     gwtheta = np.arccos(cos_gwtheta)
     DEC_GW = np.pi / 2 - gwtheta
     RA_GW = gwphi
-    D_GW = 1e6 * (Planck18.luminosity_distance(z).value)
 
     n0 = np.pi * (10.0**log10_F)  # GW frequency is twice the orbital frequency.
     Pb0 = 2 * np.pi / n0 / year_to_s
