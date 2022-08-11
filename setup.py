@@ -28,7 +28,7 @@ GWecc_cpp_module = Extension(
     sources=GWecc_sources,
     include_dirs=[include_dir, current_dir],
     libraries=["gsl", "gslcblas"],
-    swig_opts=["-c++"],
+    swig_opts=["-c++", "-threads"],
     extra_compile_args=["-std=c++17", "-Wno-unused-result"],
 )
 

@@ -42,32 +42,42 @@ class FeStat(object):
         self.psrs = psrs
         self.params = params
 
-        self.Nmats = None
+        self.compute_Nmats()
 
-    def get_Nmats(self):
+    def compute_Nmats(self):
         """Makes the Nmatrix used in the fstatistic"""
-        TNTs = self.pta.get_TNT(self.params)
-        phiinvs = self.pta.get_phiinv(self.params, logdet=False, method="partition")
+        self.TNTs = self.pta.get_TNT(self.params)
+        self.phiinvs = self.pta.get_phiinv(
+            self.params, logdet=False, method="partition"
+        )
         # Get noise parameters for pta toaerr**2
-        Nvecs = self.pta.get_ndiag(self.params)
+        self.Nvecs = self.pta.get_ndiag(self.params)
         # Get the basis matrix
-        Ts = self.pta.get_basis(self.params)
+        self.Ts = self.pta.get_basis(self.params)
 
-        Nmats = [
+        self.Nmats = [
             make_Nmat(phiinv, TNT, Nvec, T)
-            for phiinv, TNT, Nvec, T in zip(phiinvs, TNTs, Nvecs, Ts)
+            for phiinv, TNT, Nvec, T in zip(
+                self.phiinvs, self.TNTs, self.Nvecs, self.Ts
+            )
         ]
 
-        return Nmats
+        self.Sigmas = [
+            TNT + (np.diag(phiinv) if phiinv.ndim == 1 else phiinv)
+            for TNT, phiinv in zip(self.TNTs, self.phiinvs)
+        ]
+
+        self.cfs = [sl.cho_factor(Sigma) for Sigma in self.Sigmas]
 
     def compute_Fe(
         self,
-        f0,
-        e0,
         gw_skyloc,
         log10_M,
         q,
+        log10_F,
+        e0,
         l0,
+        tref,
         log10_zc,
         zp,
         brave=False,
@@ -76,7 +86,7 @@ class FeStat(object):
         """
         Computes the Fe-statistic (see Ellis, Siemens, Creighton 2012).
 
-        :param f0: GW frequency
+        :param log10_F: log10 GW frequency
         :param gw_skyloc: 2x{number of sky locations} array containing [theta, phi] for each queried sky location,
                           where theta=pi/2-DEC, phi=RA,
                           for singlge sky location use gw_skyloc= np.array([[theta,],[phi,]])
@@ -92,17 +102,10 @@ class FeStat(object):
             h_max: Maximized value of amplitude
 
         """
-
-        tmax = [p.toas.max() for p in self.psrs]
-        tref = np.max(tmax)
-
-        phiinvs = self.pta.get_phiinv(self.params, logdet=False)
-        TNTs = self.pta.get_TNT(self.params)
-        Ts = self.pta.get_basis()
-
-        if self.Nmats is None:
-
-            self.Nmats = self.get_Nmats()
+        psrs = self.psrs
+        Ts = self.Ts
+        Nmats = self.Nmats
+        cfs = self.cfs
 
         n_psr = len(self.psrs)
         N = np.zeros((n_psr, 6))
@@ -115,16 +118,11 @@ class FeStat(object):
             phase0_max = np.zeros(gw_skyloc.shape[1])
 
         for j, gw_pos in enumerate(gw_skyloc.T):
-            for idx, (psr, Nmat, TNT, phiinv, T) in enumerate(
-                zip(self.psrs, self.Nmats, TNTs, phiinvs, Ts)
-            ):
-
-                Sigma = TNT + (np.diag(phiinv) if phiinv.ndim == 1 else phiinv)
+            for idx, (psr, Nmat, cf, T) in enumerate(zip(psrs, Nmats, cfs, Ts)):
 
                 ntoa = len(psr.toas)
 
                 A = np.zeros((6, ntoa))
-                log10_F = np.log10(f0)
                 As = Fe_statistic_funcs_Plack18(
                     psr.toas,
                     psr.theta,
@@ -138,30 +136,18 @@ class FeStat(object):
                     l0,
                     tref,
                     log10_zc,
-                    zp
+                    zp,
                 )
 
                 for i in range(6):
                     A[i, :] = As[i]
 
-                ip1 = innerProduct_rr(
-                    A[0, :], psr.residuals, Nmat, T, Sigma, brave=brave
-                )
-                ip2 = innerProduct_rr(
-                    A[1, :], psr.residuals, Nmat, T, Sigma, brave=brave
-                )
-                ip3 = innerProduct_rr(
-                    A[2, :], psr.residuals, Nmat, T, Sigma, brave=brave
-                )
-                ip4 = innerProduct_rr(
-                    A[3, :], psr.residuals, Nmat, T, Sigma, brave=brave
-                )
-                ip5 = innerProduct_rr(
-                    A[4, :], psr.residuals, Nmat, T, Sigma, brave=brave
-                )
-                ip6 = innerProduct_rr(
-                    A[5, :], psr.residuals, Nmat, T, Sigma, brave=brave
-                )
+                ip1 = innerProduct_rr(A[0, :], psr.residuals, Nmat, T, cf, brave=brave)
+                ip2 = innerProduct_rr(A[1, :], psr.residuals, Nmat, T, cf, brave=brave)
+                ip3 = innerProduct_rr(A[2, :], psr.residuals, Nmat, T, cf, brave=brave)
+                ip4 = innerProduct_rr(A[3, :], psr.residuals, Nmat, T, cf, brave=brave)
+                ip5 = innerProduct_rr(A[4, :], psr.residuals, Nmat, T, cf, brave=brave)
+                ip6 = innerProduct_rr(A[5, :], psr.residuals, Nmat, T, cf, brave=brave)
 
                 N[idx, :] = np.array([ip1, ip2, ip3, ip4, ip5, ip6])
 
@@ -169,7 +155,7 @@ class FeStat(object):
                 for jj in range(6):
                     for kk in range(6):
                         M[idx, jj, kk] = innerProduct_rr(
-                            A[jj, :], A[kk, :], Nmat, T, Sigma, brave=brave
+                            A[jj, :], A[kk, :], Nmat, T, cf, brave=brave
                         )
 
             NN = np.copy(N)
@@ -230,7 +216,7 @@ class FeStat(object):
             return fstat
 
 
-def innerProduct_rr(x, y, Nmat, Tmat, Sigma, TNx=None, TNy=None, brave=False):
+def innerProduct_rr(x, y, Nmat, Tmat, cf, TNx=None, TNy=None, brave=False):
     r"""
     Compute inner product using rank-reduced
     approximations for red noise/jitter
@@ -256,10 +242,10 @@ def innerProduct_rr(x, y, Nmat, Tmat, Sigma, TNx=None, TNy=None, brave=False):
         TNy = np.dot(Tmat.T, Ny)
 
     if brave:
-        cf = sl.cho_factor(Sigma, check_finite=False)
+        # cf = sl.cho_factor(Sigma, check_finite=False)
         SigmaTNy = sl.cho_solve(cf, TNy, check_finite=False)
     else:
-        cf = sl.cho_factor(Sigma)
+        # cf = sl.cho_factor(Sigma)
         SigmaTNy = sl.cho_solve(cf, TNy)
 
     ret = xNy - np.dot(TNx, SigmaTNy)
