@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import numpy as np
-from enterprise_GWecc import GWecc, eccentric_cw_delay_Planck18
+from enterprise_GWecc import eccentric_cw_delay_Planck18, eccentric_cw_delay_Planck18_spline
 from enterprise.pulsar import Pulsar
 import matplotlib.pyplot as plt
 
@@ -89,7 +89,8 @@ for idx, e0 in enumerate([0.1, 0.4, 0.6]):
         gamma0=gamma0,
         l0=l0,
         tref=tref * (24 * 3600),
-        z=z,
+        log10_zc=np.log(z),
+        zp=0,
         p_dist=0,
         psrTerm=True,
         evolve=True,
@@ -97,11 +98,37 @@ for idx, e0 in enumerate([0.1, 0.4, 0.6]):
     ecc_gw_fn = ecc_gw("ecc_gw", psr=psr)
     res2 = ecc_gw_fn()
 
+    # Calling EccentricResiduals function through the enterprise interface
+    ecc_gw_spl = eccentric_cw_delay_Planck18_spline(
+        cos_gwtheta=np.sin(DEC_GW),
+        gwphi=RA_GW,
+        # log10_dist = np.log10(D_GW/1e6),
+        # log10_h = None,
+        psi=Omega,
+        cos_inc=np.cos(i),
+        log10_M=np.log10(M),
+        q=q,
+        log10_F=np.log10(f0),
+        e0=e0,
+        gamma0=gamma0,
+        l0=l0,
+        tref=tref * (24 * 3600),
+        log10_zc=np.log(z),
+        zp=0,
+        p_dist=0,
+        psrTerm=True,
+        evolve=True,
+    )
+    ecc_gw_spl_fn = ecc_gw_spl("ecc_gw", psr=psr)
+    res2_spl = ecc_gw_spl_fn()
+
     # res = np.asarray(res) - np.mean(res)
     res2 = np.asarray(res2) - np.mean(res2)
+    res2_spl = np.asarray(res2_spl) - np.mean(res2_spl)
 
     # plt.plot(toas/365.25, res/ns, marker='x', ls='dotted')
     plt.plot(toas / 365.25, res2 / ns, marker="x", ls="-", c="red")
+    plt.plot(toas / 365.25, res2_spl / ns, marker="x", ls="-", c="green")
     plt.axvline(tref / 365.25)
     plt.ylabel("$R(t)$  (ns)", fontsize=14)
     plt.text(

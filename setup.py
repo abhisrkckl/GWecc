@@ -44,6 +44,7 @@ setup(
         "enterprise_GWecc.enterprise_GWecc",
         "enterprise_GWecc.enterprise_GWecc_cosmoz",
         "enterprise_GWecc.block",
+        "enterprise_GWecc.spline",
         "enterprise_GWecc.Fe_stat",
     ],
     # scripts = ['examples/Example1.py'],
