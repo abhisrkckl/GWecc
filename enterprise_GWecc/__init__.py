@@ -5,3 +5,4 @@ from .enterprise_GWecc_cosmoz import (
     eccentric_cw_waveform_Planck18
 )
 from .block import gwecc_block
+from .spline import eccentric_cw_delay_Planck18_spline
