@@ -1,4 +1,5 @@
-#!/usr/bin/python3
+"""
+"""
 
 import enterprise_GWecc as GWecc
 import numpy as np

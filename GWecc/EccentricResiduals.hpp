@@ -38,6 +38,16 @@ Signal1D EccentricResiduals(const BinaryMass &bin_mass,
                             const ResidualsTerms residuals_terms,
                             const Signal1D &ts);
 
+/*
+ * Computes h(t)
+ */
+Signal1D EccentricWaveform( const BinaryMass &bin_mass,
+                            const BinaryState &bin_init,
+                            const SkyPosition &bin_pos,
+                            const SkyPosition &psr_pos,
+                            const ResidualsTerms residuals_terms,
+                            const Signal1D &ts);
+
 std::tuple<Signal1D, Signal1D> EccentricResiduals_px(const BinaryMass &bin_mass,
                                                      const BinaryState &bin_init,
                                                      const double DGW, const double delay,
@@ -95,5 +105,7 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Num(const BinaryMass &bin_m
                                                          const BinaryState &bin_init,
                                                          const double DGW,
                                                          const Signal1D &ts);
+
+double EccentricResiduals_fn_pt(double t, void *_params);
 
 #endif

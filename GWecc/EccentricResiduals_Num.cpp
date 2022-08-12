@@ -197,29 +197,4 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Num(const BinaryMass &bin_m
 
 }
 
-std::tuple<Signal1D, Signal1D> EccentricWaveform_px(const BinaryMass &bin_mass,
-                                                    const BinaryState &bin_init,
-                                                    const double DGW,
-                                                    const Signal1D &ts){
-    const size_t length = ts.size();                                                
-    Signal1D hp(length), hx(length);
-    
-    const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
-    
-    WaveformParams params_p { 1, 0, DGW,
-                              bin_mass,
-                              bin_init,
-                              ev_coeffs },
-                   params_x { 0, 1, DGW,
-                              bin_mass,
-                              bin_init,
-                              ev_coeffs };
-    
-    for(unsigned i=0; i<length; i++){
-        hp[i] = EccentricResiduals_fn_pt(ts[i], &params_p);
-        hx[i] = EccentricResiduals_fn_pt(ts[i], &params_x);    
-    }
-    
-    return std::make_tuple(hp, hx);
-}
 

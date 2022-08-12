@@ -1,3 +1,7 @@
+"""Figure 1 of Susobhanan+ 2020
+Comparison of eccentric waveforms with and without reactive evolution.
+"""
+
 import numpy as np
 from enterprise_GWecc import GWecc
 import matplotlib.pyplot as plt

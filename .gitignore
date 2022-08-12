@@ -18,3 +18,5 @@ Untitled*.*
 *.swp
 .vscode/
 *.diff
+*.par
+*.tim
