@@ -87,8 +87,16 @@ plt.legend()
 plt.grid()
 
 plt.subplot(212)
-plt.plot(toas / 365.25, np.asarray(res_from_px) / ns - np.mean(res_from_px) / ns, label="From +/x computation")
-plt.plot(toas / 365.25, np.asarray(res) / ns - np.mean(res) / ns, label="From direct function call")
+plt.plot(
+    toas / 365.25,
+    np.asarray(res_from_px) / ns - np.mean(res_from_px) / ns,
+    label="From +/x computation",
+)
+plt.plot(
+    toas / 365.25,
+    np.asarray(res) / ns - np.mean(res) / ns,
+    label="From direct function call",
+)
 plt.xlabel("t (year)")
 plt.ylabel("$\Delta_{GW}$ (ns)")
 plt.grid()

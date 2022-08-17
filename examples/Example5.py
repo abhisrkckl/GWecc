@@ -1,4 +1,6 @@
-#!/usr/bin/python3
+"""Figure 4 of Susobhanan+ 2020
+Full residuals (Earth and pulsar term)
+"""
 
 import numpy as np
 from enterprise_GWecc import GWecc
@@ -24,7 +26,6 @@ def dms_to_rad(dd, mm, ss):
 M = 1e9
 q = 1
 Pb0 = 1.5  # years
-# n0 = 2*np.pi/Pb
 Omega = 0
 i = 0
 t0 = 0

@@ -1,4 +1,6 @@
-#!/usr/bin/python3
+"""Fe statistic function plots
+Singh et al (In prep)
+"""
 
 import enterprise_GWecc as GWecc
 import numpy as np

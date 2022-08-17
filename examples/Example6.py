@@ -1,4 +1,6 @@
-#!/usr/bin/python3
+"""Figure 5 of Susobhanan+ 2020
++/x polarizations of Earth & Pulsar terms
+"""
 
 import numpy as np
 from enterprise_GWecc import GWecc

@@ -1,7 +1,11 @@
-#!/usr/bin/python3
+"""ENTERPRISE interface example usage - spline vs full function call
+"""
 
 import numpy as np
-from enterprise_GWecc import eccentric_cw_delay_Planck18, eccentric_cw_delay_Planck18_spline
+from enterprise_GWecc import (
+    eccentric_cw_delay_Planck18,
+    eccentric_cw_delay_Planck18_spline,
+)
 from enterprise.pulsar import Pulsar
 import matplotlib.pyplot as plt
 

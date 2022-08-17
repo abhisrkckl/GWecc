@@ -1,4 +1,5 @@
-#!/usr/bin/python3
+"""ENTERPRISE interface example usage
+"""
 
 import numpy as np
 from enterprise_GWecc import GWecc, eccentric_cw_delay

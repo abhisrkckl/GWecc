@@ -1,4 +1,6 @@
-#!/usr/bin/python3
+"""Figure 9 of Susobhanan+ 2020
+Comparison of analytical vs numerical residuals
+"""
 
 import numpy as np
 from enterprise_GWecc import GWecc
@@ -24,7 +26,6 @@ def dms_to_rad(dd, mm, ss):
 M = 1e9
 q = 1
 Pb0 = 1.5  # years
-# n0 = 2*np.pi/Pb
 Omega = 0
 i = 0
 t0 = 0
@@ -131,29 +132,4 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
     else:
         plt.tick_params(labelbottom=False, labelsize=12)
 
-    """
-	for jdx,method in enumerate([GWecc.ResidualsMethod_Num, GWecc.ResidualsMethod_Anl]):
-		
-		
-
-		
-		
-		
-		
-		
-		if term == GWecc.ResidualsTerms_Earth:
-			
-			
-		
-		if idx == 0:
-			title = "Earth term" if term==GWecc.ResidualsTerms_Earth else "Pulsar term"
-			plt.title(title)
-			
-		
-		
-		if idx<2:
-			
-		else:
-			
-	"""
 plt.show()
