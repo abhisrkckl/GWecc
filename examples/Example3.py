@@ -1,12 +1,13 @@
-#!/usr/bin/python3
+"""Comparing residuals computed from +/x components vs direct function call.
+"""
 
+from cProfile import label
 import enterprise_GWecc as GWecc
 import numpy as np
 import matplotlib.pyplot as plt
 
 year = 365.25 * 24 * 3600
 ns = 1e-9
-# parsec = 102927125.0
 
 toas = 365.25 * np.linspace(0, 4, 1000)
 
@@ -86,8 +87,8 @@ plt.legend()
 plt.grid()
 
 plt.subplot(212)
-plt.plot(toas / 365.25, np.asarray(res_from_px) / ns - np.mean(res_from_px) / ns)
-plt.plot(toas / 365.25, np.asarray(res) / ns - np.mean(res) / ns)
+plt.plot(toas / 365.25, np.asarray(res_from_px) / ns - np.mean(res_from_px) / ns, label="From +/x computation")
+plt.plot(toas / 365.25, np.asarray(res) / ns - np.mean(res) / ns, label="From direct function call")
 plt.xlabel("t (year)")
 plt.ylabel("$\Delta_{GW}$ (ns)")
 plt.grid()
