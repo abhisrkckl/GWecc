@@ -2,6 +2,7 @@
 #include "AntennaPattern.hpp"
 #include <Eigen/Dense>
 #include <cmath>
+#include "ipow.hpp"
 
 /*
 std::tuple<double,double,double> AntennaPattern(const SkyPosition &bin_pos, const SkyPosition &psr_pos){
@@ -58,15 +59,15 @@ std::tuple<double,double,double> AntennaPattern(const SkyPosition &bin_pos, cons
     
     double Fp = 0, Fx = 0;
     if(cos_theta!=1){
-        const double    e11p = pow(sin(lambda),2)-pow(cos(lambda),2)*pow(sin(beta),2),
-                        e21p = -sin(lambda)*cos(lambda)*(pow(sin(beta),2)+1),
+        const double    e11p = ipow(sin(lambda),2)-ipow(cos(lambda),2)*ipow(sin(beta),2),
+                        e21p = -sin(lambda)*cos(lambda)*(ipow(sin(beta),2)+1),
                         e31p = cos(lambda)*sin(beta)*cos(beta),
-                        e12p = -sin(lambda)*cos(lambda)*(pow(sin(beta),2)+1),
-                        e22p = pow(cos(lambda),2)-pow(sin(lambda),2)*pow(sin(beta),2),
+                        e12p = -sin(lambda)*cos(lambda)*(ipow(sin(beta),2)+1),
+                        e22p = ipow(cos(lambda),2)-ipow(sin(lambda),2)*ipow(sin(beta),2),
                         e32p = sin(lambda)*sin(beta)*cos(beta),
                         e13p = cos(lambda)*sin(beta)*cos(beta),
                         e23p = sin(lambda)*sin(beta)*cos(beta),
-                        e33p = -pow(cos(beta),2);
+                        e33p = -ipow(cos(beta),2);
     
         Fp = (n1*(n1*e11p+n2*e12p+n3*e13p)+
               n2*(n1*e21p+n2*e22p+n3*e23p)+

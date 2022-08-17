@@ -79,6 +79,7 @@ def eccentric_cw_delay_Planck18_spline(
     p_dist=1.0,
     psrTerm=False,
     evolve=True,
+    xspline=1
 ):
     gwecc_s_func = lambda ts: eccentric_cw_delay_Planck18(
         ts,
@@ -125,7 +126,7 @@ def eccentric_cw_delay_Planck18_spline(
     )
 
     nharms = 18.64801851 * (1 - e0**2) ** -1.5 - 14.04695398
-    Nspline = int(2 * nharms * (np.max(toas) - np.min(toas)) * (10**log10_F) + 1)
+    Nspline = int(nharms * xspline * (np.max(toas) - np.min(toas)) * (10**log10_F) + 1)
 
     if Nspline < len(toas)/2:
         gwecc_spline = PTASignalSpline(gwecc_s_func, gwecc_h_func, toas, Nspline=Nspline)

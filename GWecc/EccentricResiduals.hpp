@@ -76,6 +76,19 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Anl(const BinaryMass &bin_m
                                                          const double DGW,
                                                          const Signal1D &ts);
 
+
+Signal1D EccentricResiduals_Adb(const BinaryMass &bin_mass,
+                                const BinaryState &bin_init,
+                                const SkyPosition &bin_pos,
+                                const SkyPosition &psr_pos,
+                                const ResidualsTerms residuals_terms,
+                                const Signal1D &ts);
+
+std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Adb(const BinaryMass &bin_mass,
+                                                         const BinaryState &bin_init,
+                                                         const double DGW,
+                                                         const Signal1D &ts);
+
 /*
  * Compute Rp and Rx using FFT. Valid for all eccentricities.
  * Based on Tessmer & Gopakumar 2006

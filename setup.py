@@ -6,6 +6,7 @@ GWecc_sources = (
     "EccentricResiduals_Anl.cpp",
     "EccentricResiduals.cpp",
     "EccentricResiduals_Num.cpp",
+    "EccentricResiduals_Adb.cpp",
     "GWecc.cpp",
     "Evolve.cpp",
     "FourierWaveform.cpp",

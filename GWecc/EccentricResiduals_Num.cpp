@@ -14,9 +14,7 @@ Signal1D EccentricResiduals_Num(const BinaryMass &bin_mass,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts){
 
-    double cosmu, Fp, Fx;
-    std::tie(cosmu, Fp, Fx) = AntennaPattern(bin_pos, psr_pos);
-    //const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
+    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
     
     if(residuals_terms==ResidualsTerms::Earth){
         return -EccentricResiduals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts);
