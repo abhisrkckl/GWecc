@@ -1,6 +1,7 @@
-"""
+"""Comparing numerical and analytic residuals (High eccentricity)
 """
 
+from cProfile import label
 import enterprise_GWecc as GWecc
 import numpy as np
 import matplotlib.pyplot as plt
@@ -80,10 +81,11 @@ res_A = GWecc.GWecc.EccentricResiduals(
     toas,
 )
 res_N = np.array(res_N) + res_A[0]
-plt.plot(toas / 365.25, np.asarray(res_A) / ns)
-plt.plot(toas / 365.25, np.asarray(res_N) / ns)
+plt.plot(toas / 365.25, np.asarray(res_A) / ns, label="Anl")
+plt.plot(toas / 365.25, np.asarray(res_N) / ns, label="Num")
 plt.xlabel("t (year)")
 plt.ylabel("$\Delta_{GW}$ (ns)")
+plt.legend()
 plt.grid()
 
 plt.subplot(222)
