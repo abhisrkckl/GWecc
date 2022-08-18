@@ -36,6 +36,7 @@ def eccentric_cw_delay_Planck18(
     p_dist=1.0,
     psrTerm=False,
     evolve=True,
+    residuals_method=ResidualsMethod_Num
 ):
     """
     ======================================================================================================================
@@ -110,7 +111,6 @@ def eccentric_cw_delay_Planck18(
     D_GW = 1e6 * Planck18.luminosity_distance(zc).value
 
     # residuals_method = ResidualsMethod_Anl if (e0<=2.8 and not psrTerm) else ResidualsMethod_Num
-    residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
 
     return np.asarray(
