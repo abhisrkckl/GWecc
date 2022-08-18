@@ -1,9 +1,9 @@
-from tkinter import N
 import numpy as np
 
-from enterprise.signals.parameter import Uniform, Constant
-from enterprise_GWecc import eccentric_cw_delay_Planck18
+from enterprise.signals.parameter import Constant, Uniform
 from enterprise_extensions.deterministic import CWSignal
+
+from enterprise_GWecc import eccentric_cw_delay_Planck18
 
 
 def gwecc_block(

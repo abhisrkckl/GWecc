@@ -1,14 +1,15 @@
-from enterprise_GWecc.GWecc import EccentricResiduals, EccentricWaveform
+import numpy as np
+from astropy.cosmology import Planck18
+from enterprise.signals import signal_base
+
 from enterprise_GWecc.GWecc import (
+    EccentricResiduals,
+    EccentricWaveform,
+    FeStatFuncs,
     ResidualsMethod_Num,
-    ResidualsMethod_Anl,
     ResidualsTerms_Both,
     ResidualsTerms_Earth,
 )
-from enterprise_GWecc.GWecc import FeStatFuncs
-from enterprise.signals import signal_base
-from astropy.cosmology import Planck18
-import numpy as np
 
 year_to_s = 365.25 * 24 * 3600
 
@@ -105,10 +106,10 @@ def eccentric_cw_delay_Planck18(
     Pb0 = 2 * np.pi / n0 / year_to_s
 
     zc = 10**log10_zc
-    z = (1+zc)*(1+zp) - 1
+    z = (1 + zc) * (1 + zp) - 1
     D_GW = 1e6 * Planck18.luminosity_distance(zc).value
 
-    #residuals_method = ResidualsMethod_Anl if (e0<=2.8 and not psrTerm) else ResidualsMethod_Num
+    # residuals_method = ResidualsMethod_Anl if (e0<=2.8 and not psrTerm) else ResidualsMethod_Num
     residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
 
@@ -139,11 +140,23 @@ def eccentric_cw_delay_Planck18(
 
 @signal_base.function
 def Fe_statistic_funcs_Plack18(
-    toas, theta, phi, cos_gwtheta, gwphi, log10_M, q, log10_F, e0, l0, tref, log10_zc, zp
+    toas,
+    theta,
+    phi,
+    cos_gwtheta,
+    gwphi,
+    log10_M,
+    q,
+    log10_F,
+    e0,
+    l0,
+    tref,
+    log10_zc,
+    zp,
 ):
 
     zc = 10**log10_zc
-    z = (1+zc)*(1+zp) - 1
+    z = (1 + zc) * (1 + zp) - 1
     D_GW = 1e6 * Planck18.luminosity_distance(zc).value
 
     M = 10.0**log10_M
@@ -161,7 +174,7 @@ def Fe_statistic_funcs_Plack18(
     n0 = np.pi * (10.0**log10_F)  # GW frequency is twice the orbital frequency.
     Pb0 = 2 * np.pi / n0 / year_to_s
 
-    # print((M, q, tref, Pb0, e0, l0, 
+    # print((M, q, tref, Pb0, e0, l0,
     #                    RA_GW, DEC_GW, RA_P, DEC_P,
     #                    z,
     #                    toas))
@@ -169,6 +182,7 @@ def Fe_statistic_funcs_Plack18(
     return np.asarray(
         FeStatFuncs(M, q, tref, Pb0, e0, l0, D_GW, RA_GW, DEC_GW, RA_P, DEC_P, z, toas)
     )
+
 
 @signal_base.function
 def eccentric_cw_waveform_Planck18(
@@ -261,7 +275,7 @@ def eccentric_cw_waveform_Planck18(
     Pb0 = 2 * np.pi / n0 / year_to_s
 
     zc = 10**log10_zc
-    z = (1+zc)*(1+zp) - 1
+    z = (1 + zc) * (1 + zp) - 1
     D_GW = 1e6 * Planck18.luminosity_distance(zc).value
 
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth

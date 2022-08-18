@@ -1,9 +1,10 @@
 import numpy as np
+from enterprise.signals import signal_base
+
 from enterprise_GWecc.enterprise_GWecc_cosmoz import (
     eccentric_cw_delay_Planck18,
     eccentric_cw_waveform_Planck18,
 )
-from enterprise.signals import signal_base
 
 
 def spline_coeffs(t12, s12, h12):
@@ -79,7 +80,7 @@ def eccentric_cw_delay_Planck18_spline(
     p_dist=1.0,
     psrTerm=False,
     evolve=True,
-    xspline=1
+    xspline=1,
 ):
     gwecc_s_func = lambda ts: eccentric_cw_delay_Planck18(
         ts,
@@ -126,10 +127,14 @@ def eccentric_cw_delay_Planck18_spline(
     )
 
     nharms = 18.64801851 * (1 - e0**2) ** -1.5 - 14.04695398
-    Nspline = int(nharms * xspline * (np.max(toas) - np.min(toas)) * (10**log10_F) + 1)
+    Nspline = int(
+        nharms * xspline * (np.max(toas) - np.min(toas)) * (10**log10_F) + 1
+    )
 
-    if Nspline < len(toas)/2:
-        gwecc_spline = PTASignalSpline(gwecc_s_func, gwecc_h_func, toas, Nspline=Nspline)
+    if Nspline < len(toas) / 2:
+        gwecc_spline = PTASignalSpline(
+            gwecc_s_func, gwecc_h_func, toas, Nspline=Nspline
+        )
         return gwecc_spline.eval(toas)
     else:
         return gwecc_s_func(toas)

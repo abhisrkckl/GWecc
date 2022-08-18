@@ -1,12 +1,13 @@
-from enterprise_GWecc.GWecc import EccentricResiduals
+import numpy as np
+from enterprise.signals import signal_base
+
 from enterprise_GWecc.GWecc import (
+    EccentricResiduals,
+    FeStatFuncs,
     ResidualsMethod_Num,
     ResidualsTerms_Both,
     ResidualsTerms_Earth,
 )
-from enterprise_GWecc.GWecc import FeStatFuncs
-from enterprise.signals import signal_base
-import numpy as np
 
 year_to_s = 365.25 * 24 * 3600
 

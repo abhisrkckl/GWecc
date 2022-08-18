@@ -4,6 +4,7 @@
 import numpy as np
 import scipy.linalg as sl
 from enterprise.signals import gp_signals, parameter, signal_base, white_signals
+
 from enterprise_GWecc import Fe_statistic_funcs_Plack18
 
 
