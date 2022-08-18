@@ -1,5 +1,5 @@
 """Figure 5 of Susobhanan+ 2020
-+/x polarizations of Earth & Pulsar terms (numerical)
++/x polarizations of Earth & Pulsar terms (adiabatic)
 """
 
 import numpy as np
@@ -68,7 +68,7 @@ for idx, e0 in enumerate([0.1, 0.5, 0.8]):
             D_GW,
             delay,
             z,
-            GWecc.ResidualsMethod_Num,
+            GWecc.ResidualsMethod_Adb,
             term,
             toas,
         )
