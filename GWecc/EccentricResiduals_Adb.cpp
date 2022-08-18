@@ -10,9 +10,6 @@ auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                                      const double DGW,
                                      const EvolveCoeffs_t& ev_coeffs,
                                      const double t){
-    
-    //const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
-    //const auto ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 
     const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, t-bin_init.t);
 
