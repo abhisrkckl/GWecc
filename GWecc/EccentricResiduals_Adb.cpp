@@ -27,6 +27,7 @@ auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                 
                 su = sin(u),
                 cu = cos(u),
+                c2u = cu*cu - su*su,
                         
                 esu = e*su,
                 ecu = e*cu,
@@ -57,15 +58,23 @@ auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                 
                 H0 = GWAmplitude(bin_mass, bin_now, DGW);
     
-    const auto P = (esu*esu + ecu - 1)*2*OTS/(e*e)/(1-ecu),
-               Q = (2*ecu/(e*e) - ecu - 1)*esu/(1-ecu),
+    const auto P = ((e + (-2 + e*e)*cu)*su)/(1 - ecu),
+               Q = (OTS*(ecu - c2u))/(1 - ecu),
                R = esu;
     
-    const auto sA = (H0/n) * (  (1+ci*ci)*(P*s2w - Q*c2w)  +  si*si*R  ),
-               sB = (H0/n) * (      -2*ci*(P*c2w + Q*s2w));
+    const auto A0 = R,
+               A1 = P*c2w + Q*s2w,
+               A2 = P*s2w - Q*c2w;
+    
+    const auto a0 = si*si,
+               a1 = 1+ci*ci,
+               a2 = 2*ci;
+    
+    const auto sA = (H0/n) * ( a1*A1 + a0*A0 ),
+               sB = (H0/n) * ( a2*A2 );
     
     const auto sp = c2Om*sA - s2Om*sB,
-               sx = c2Om*sB + s2Om*sA;
+               sx = s2Om*sA + c2Om*sB;
 
     return std::make_tuple(sp, sx);
 }
@@ -85,7 +94,7 @@ Signal1D EccentricResiduals_Adb(const BinaryMass &bin_mass,
                                 const SkyPosition &psr_pos,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts){
-
+    
     const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
     const auto DGW = bin_pos.DL;
     const auto ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
@@ -124,8 +133,8 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Adb(const BinaryMass &bin_m
     Signal1D Rps(nts), Rxs(nts);
     for(unsigned idx=0; idx<nts; idx++){
         const auto [spE, sxE] = EccentricResiduals_px_fn_pt_Adb(bin_mass, bin_init, DGW, ev_coeffs, ts[idx]);
-        Rps[idx] = -spE;
-        Rxs[idx] = -sxE;
+        Rps[idx] = spE;
+        Rxs[idx] = sxE;
     }
 
     return std::make_tuple(Rps, Rxs);
