@@ -4,6 +4,7 @@
 import enterprise_GWecc as GWecc
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
 year = 365.25 * 24 * 3600
 ns = 1e-9
@@ -32,11 +33,6 @@ l0 = 0
 t0 = 0
 
 z = 0.0
-
-plt.subplot(221)
-plt.suptitle("Comparing numerical and analytic residuals")
-
-import time
 
 
 res_N = GWecc.GWecc.EccentricResiduals(
@@ -152,8 +148,10 @@ for ntoas in ntoass:
     end = time.time()
     runtime_anl.append((end - start) / 10000)
 
-plt.loglog(ntoass, runtime_adb, label="adb")
-plt.loglog(ntoass, runtime_anl, label="anl")
-plt.loglog(ntoass, runtime_num, label="num")
+plt.loglog(ntoass, runtime_adb, label="Analytic")
+plt.loglog(ntoass, runtime_anl, label="Post-circular")
+plt.loglog(ntoass, runtime_num, label="Numerical")
+plt.xlabel("Number of TOAs")
+plt.ylabel("Run time per TOA (s)")
 plt.legend()
 plt.show()
