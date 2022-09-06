@@ -1,7 +1,6 @@
 """Comparing residuals computed from +/x components vs direct function call.
 """
 
-from cProfile import label
 import enterprise_GWecc as GWecc
 import numpy as np
 import matplotlib.pyplot as plt

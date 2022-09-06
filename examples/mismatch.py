@@ -3,11 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from enterprise_GWecc.GWecc import (
-    ResidualsTerms_Earth, 
+    ResidualsTerms_Earth,
     EccentricResiduals,
     ResidualsMethod_Adb,
-    ResidualsMethod_Num
+    ResidualsMethod_Num,
 )
+
 
 def hms_to_rad(hh, mm, ss):
     sgn = np.sign(hh)
@@ -18,18 +19,27 @@ def dms_to_rad(dd, mm, ss):
     sgn = np.sign(dd)
     return sgn * (sgn * dd + mm / 60 + ss / 3600) * np.pi / 180
 
+
 def pulsar_fit_matrix(ts):
-    """ts in days
-    """
+    """ts in days"""
     yr = 365.25
 
     nts = len(ts)
 
     I = np.eye(nts)
 
-    M = np.transpose([np.ones_like(ts), ts, ts**2, np.cos(2*np.pi*ts/yr), np.sin(2*np.pi*ts/yr)])
+    M = np.transpose(
+        [
+            np.ones_like(ts),
+            ts,
+            ts**2,
+            np.cos(2 * np.pi * ts / yr),
+            np.sin(2 * np.pi * ts / yr),
+        ]
+    )
 
     return I - np.dot(M, np.linalg.solve(M.T @ M, M.T))
+
 
 def mismatch_function(ts):
     P = pulsar_fit_matrix(ts)
@@ -39,8 +49,8 @@ def mismatch_function(ts):
         s1_s1 = s1 @ P @ s1
         s2_s2 = s2 @ P @ s2
 
-        return 1 - s1_s2 / np.sqrt(s1_s1*s2_s2)
-    
+        return 1 - s1_s2 / np.sqrt(s1_s1 * s2_s2)
+
     return mismatch
 
 
@@ -60,8 +70,8 @@ RA_GW = hms_to_rad(4, 0, 0)
 DEC_GW = dms_to_rad(-45, 0, 0)
 D_GW = 1e9  # pc
 
-T = 30*365.25
-ntoas = int(T/10) # 10-day cadence
+T = 30 * 365.25
+ntoas = int(T / 10)  # 10-day cadence
 ts = np.linspace(0, T, ntoas)  # days
 
 delay = 1000
@@ -71,13 +81,15 @@ term = ResidualsTerms_Earth
 mismatch = mismatch_function(ts)
 
 es = np.linspace(0.01, 0.85, 20)
-Ms = 10**np.linspace(7, 9, 3)
+Ms = 10 ** np.linspace(7, 9, 3)
 Pb0s = [0.5, 1.5, 5]
 
-for idx,Pb0 in enumerate(Pb0s):
-    ax = plt.subplot(311+idx)
+for idx, Pb0 in enumerate(Pb0s):
+    ax = plt.subplot(311 + idx)
     for M in Ms:
-        print(f"M = {M:e}", )
+        print(
+            f"M = {M:e}",
+        )
         mismatches = []
         for e0 in es:
             res_adb = EccentricResiduals(
@@ -128,15 +140,15 @@ for idx,Pb0 in enumerate(Pb0s):
 
             res_num = np.asarray(res_num) - np.mean(res_num)
 
-            mismatches.append( mismatch(res_adb, res_num) )
+            mismatches.append(mismatch(res_adb, res_num))
 
         plt.plot(es, mismatches, label=f"M={M:.0e} MSun")
-        plt.yscale('log')
+        plt.yscale("log")
         plt.legend(fontsize=14)
         plt.xlabel("e", fontsize=14)
         plt.ylabel("mismatch", fontsize=14)
-        plt.tick_params(axis='both', labelsize=12)
-    
+        plt.tick_params(axis="both", labelsize=12)
+
     plt.text(
         0.3,
         0.6 * ax.yaxis.get_data_interval()[1],
@@ -146,5 +158,5 @@ for idx,Pb0 in enumerate(Pb0s):
         va="center",
         bbox=dict(boxstyle="round", facecolor="grey", alpha=0.4),
     )
-    
+
 plt.show()

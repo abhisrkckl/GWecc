@@ -67,7 +67,7 @@ runtime_anl = []
 ntoass = [10, 50, 100, 500, 1000, 5000]
 for ntoas in ntoass:
     toas = 365.25 * np.linspace(0, 15, ntoas)
-    
+
     start = time.time()
     res_N = [
         GWecc.GWecc.EccentricResiduals(
@@ -95,7 +95,7 @@ for ntoas in ntoass:
     ]
     end = time.time()
     runtime_num.append((end - start) / 10000)
-    
+
     start = time.time()
     res_N = [
         GWecc.GWecc.EccentricResiduals(
@@ -151,7 +151,7 @@ for ntoas in ntoass:
     ]
     end = time.time()
     runtime_anl.append((end - start) / 10000)
-    
+
 plt.loglog(ntoass, runtime_adb, label="adb")
 plt.loglog(ntoass, runtime_anl, label="anl")
 plt.loglog(ntoass, runtime_num, label="num")

@@ -1,7 +1,6 @@
 """Comparing numerical and analytic residuals (High eccentricity)
 """
 
-from cProfile import label
 import enterprise_GWecc as GWecc
 import numpy as np
 import matplotlib.pyplot as plt
