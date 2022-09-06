@@ -114,8 +114,8 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
 
     ax = plt.subplot(321 + idx * 2)
     plt.plot(toas / 365.25, res_p_num, label="$s_+$ Numerical", color="b")
-    plt.plot(toas / 365.25, res_p_anl, "--", label="$s_+$ Analytic", color="g")
-    plt.plot(toas / 365.25, res_p_adb, "--", label="$s_+$ Adiabatic", color="r")
+    #plt.plot(toas / 365.25, res_p_anl, "--", label="$s_+$ Analytic", color="g")
+    plt.plot(toas / 365.25, res_p_adb, "--", label="$s_+$ Analytic", color="r")
     plt.grid()
     plt.xlim([0, 10])
     plt.ylabel("$s_{+,\\times}(t_E)$  (ns)", fontsize=14)
@@ -140,8 +140,8 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
 
     ax = plt.subplot(321 + idx * 2 + 1)
     plt.plot(toas / 365.25, res_x_num, label="$s_\\times$ Numerical", color="b")
-    plt.plot(toas / 365.25, res_x_anl, "--", label="$s_\\times$ Analytic", color="g")
-    plt.plot(toas / 365.25, res_x_adb, "--", label="$s_\\times$ Adiabatic", color="r")
+    #plt.plot(toas / 365.25, res_x_anl, "--", label="$s_\\times$ Analytic", color="g")
+    plt.plot(toas / 365.25, res_x_adb, "--", label="$s_\\times$ Analytic", color="r")
     plt.grid()
     plt.xlim([0, 10])
     # plt.ylabel("$s_{+,\\times}(t)$  (ns)", fontsize=14)

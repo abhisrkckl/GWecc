@@ -72,65 +72,79 @@ mismatch = mismatch_function(ts)
 
 es = np.linspace(0.01, 0.85, 20)
 Ms = 10**np.linspace(7, 9, 3)
+Pb0s = [0.5, 1.5, 5]
 
-for M in Ms:
-    print(f"M = {M:e}", )
-    mismatches = []
-    for e0 in es:
-        res_adb = EccentricResiduals(
-            M,
-            q,
-            Omega,
-            i,
-            T,
-            Pb0,
-            e0,
-            l0,
-            gamma0,
-            D_GW,
-            RA_GW,
-            DEC_GW,
-            D_P,
-            RA_P,
-            DEC_P,
-            z,
-            ResidualsMethod_Adb,
-            ResidualsTerms_Earth,
-            ts,
-        )
+for idx,Pb0 in enumerate(Pb0s):
+    ax = plt.subplot(311+idx)
+    for M in Ms:
+        print(f"M = {M:e}", )
+        mismatches = []
+        for e0 in es:
+            res_adb = EccentricResiduals(
+                M,
+                q,
+                Omega,
+                i,
+                T,
+                Pb0,
+                e0,
+                l0,
+                gamma0,
+                D_GW,
+                RA_GW,
+                DEC_GW,
+                D_P,
+                RA_P,
+                DEC_P,
+                z,
+                ResidualsMethod_Adb,
+                ResidualsTerms_Earth,
+                ts,
+            )
 
-        res_num = EccentricResiduals(
-            M,
-            q,
-            Omega,
-            i,
-            T,
-            Pb0,
-            e0,
-            l0,
-            gamma0,
-            D_GW,
-            RA_GW,
-            DEC_GW,
-            D_P,
-            RA_P,
-            DEC_P,
-            z,
-            ResidualsMethod_Num,
-            ResidualsTerms_Earth,
-            ts,
-        )
+            res_num = EccentricResiduals(
+                M,
+                q,
+                Omega,
+                i,
+                T,
+                Pb0,
+                e0,
+                l0,
+                gamma0,
+                D_GW,
+                RA_GW,
+                DEC_GW,
+                D_P,
+                RA_P,
+                DEC_P,
+                z,
+                ResidualsMethod_Num,
+                ResidualsTerms_Earth,
+                ts,
+            )
 
-        res_adb = np.asarray(res_adb) - np.mean(res_adb)
+            res_adb = np.asarray(res_adb) - np.mean(res_adb)
 
-        res_num = np.asarray(res_num) - np.mean(res_num)
+            res_num = np.asarray(res_num) - np.mean(res_num)
 
-        mismatches.append( mismatch(res_adb, res_num) )
+            mismatches.append( mismatch(res_adb, res_num) )
 
-    plt.plot(es, mismatches, label=f"M={M:.0e}")
-    plt.yscale('log')
-    plt.legend()
-    plt.xlabel("e")
-    plt.ylabel("mismatch")
+        plt.plot(es, mismatches, label=f"M={M:.0e} MSun")
+        plt.yscale('log')
+        plt.legend(fontsize=14)
+        plt.xlabel("e", fontsize=14)
+        plt.ylabel("mismatch", fontsize=14)
+        plt.tick_params(axis='both', labelsize=12)
+    
+    plt.text(
+        0.3,
+        0.6 * ax.yaxis.get_data_interval()[1],
+        f"Pb0={Pb0} yr",
+        size=14,
+        ha="center",
+        va="center",
+        bbox=dict(boxstyle="round", facecolor="grey", alpha=0.4),
+    )
     
 plt.show()

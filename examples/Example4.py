@@ -60,8 +60,14 @@ res_N = GWecc.GWecc.EccentricResiduals(
     GWecc.GWecc.ResidualsTerms_Earth,
     toas,
 )
-for ntoas in [10, 50, 100, 500, 1000, 5000]:
+
+runtime_num = []
+runtime_adb = []
+runtime_anl = []
+ntoass = [10, 50, 100, 500, 1000, 5000]
+for ntoas in ntoass:
     toas = 365.25 * np.linspace(0, 15, ntoas)
+    
     start = time.time()
     res_N = [
         GWecc.GWecc.EccentricResiduals(
@@ -88,4 +94,66 @@ for ntoas in [10, 50, 100, 500, 1000, 5000]:
         for i in range(10000 // ntoas)
     ]
     end = time.time()
-    print(ntoas, (end - start) / 10000)
+    runtime_num.append((end - start) / 10000)
+    
+    start = time.time()
+    res_N = [
+        GWecc.GWecc.EccentricResiduals(
+            M,
+            q,
+            Omega,
+            i,
+            t0,
+            Pb0,
+            e0,
+            l0,
+            gamma0,
+            D_GW,
+            RA_GW,
+            DEC_GW,
+            D_P,
+            RA_P,
+            DEC_P,
+            z,
+            GWecc.GWecc.ResidualsMethod_Adb,
+            GWecc.GWecc.ResidualsTerms_Earth,
+            toas,
+        )
+        for i in range(10000 // ntoas)
+    ]
+    end = time.time()
+    runtime_adb.append((end - start) / 10000)
+
+    start = time.time()
+    res_N = [
+        GWecc.GWecc.EccentricResiduals(
+            M,
+            q,
+            Omega,
+            i,
+            t0,
+            Pb0,
+            e0,
+            l0,
+            gamma0,
+            D_GW,
+            RA_GW,
+            DEC_GW,
+            D_P,
+            RA_P,
+            DEC_P,
+            z,
+            GWecc.GWecc.ResidualsMethod_Anl,
+            GWecc.GWecc.ResidualsTerms_Earth,
+            toas,
+        )
+        for i in range(10000 // ntoas)
+    ]
+    end = time.time()
+    runtime_anl.append((end - start) / 10000)
+    
+plt.loglog(ntoass, runtime_adb, label="adb")
+plt.loglog(ntoass, runtime_anl, label="anl")
+plt.loglog(ntoass, runtime_num, label="num")
+plt.legend()
+plt.show()
