@@ -4,12 +4,27 @@
 #include "PN.hpp"
 #include "ipow.hpp"
 #include <iostream>
+#include <gsl/gsl_sf_bessel.h>
 
-auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
-                                     const BinaryState &bin_init,
-                                     const double DGW,
-                                     const EvolveCoeffs_t& ev_coeffs,
-                                     const double t){
+int get_nharm(const double e){
+    if(e < 0.009){
+        return 2;
+    }  
+    else if(e < 0.063){
+        return 3;
+    }
+    else{
+        double OTS = sqrt(1-e*e),         
+               OTS3 = OTS*OTS*OTS;
+        return int(round(18.64801851/OTS3 - 14.04695398));
+    }
+}
+
+auto EccentricResiduals_px_fn_pt_PM(const BinaryMass &bin_mass,
+                                    const BinaryState &bin_init,
+                                    const double DGW,
+                                    const EvolveCoeffs_t& ev_coeffs,
+                                    const double t){
 
     const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, t-bin_init.t);
 
@@ -27,10 +42,8 @@ auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                 
                 su = sin(u),
                 cu = cos(u),
-                c2u = cu*cu - su*su,
                         
                 esu = e*su,
-                ecu = e*cu,
                 
                 k = advance_of_periastron(bin_mass, bin_now),
                 ephi = angular_eccentricity(bin_mass, bin_now),
@@ -57,23 +70,32 @@ auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                 s2Om = ev_coeffs.sin2Omega,
                 
                 H0 = GWAmplitude(bin_mass, bin_now, DGW);
-    
+
+    const int pmax = get_nharm(e);
+    double P=0, Q=0, R=0;
+    for(int p=1; p<=pmax; p++){
+        P += OTS*(
+            gsl_sf_bessel_Jn(p-2, p*e) + gsl_sf_bessel_Jn(p+2, p*e)
+            - 2*gsl_sf_bessel_Jn(p, p*e)
+        )*cos(p*l);
+
+        Q += -(
+            gsl_sf_bessel_Jn(p-2, p*e) - gsl_sf_bessel_Jn(p+2, p*e)
+            - 2*e*(gsl_sf_bessel_Jn(p-1, p*e) - gsl_sf_bessel_Jn(p+1, p*e))
+            +(2/p)*gsl_sf_bessel_Jn(p, p*e)
+        )*sin(p*l);
+
+        R += (2/p)*gsl_sf_bessel_Jn(p, p*e) * sin(p*l);
+    }
+
     /*const auto P = ((e + (-2 + e*e)*cu)*su)/(1 - ecu),
                Q = (OTS*(ecu - c2u))/(1 - ecu),
-               R = esu;
-    
-    const auto A0 = R,
-               A1 = P*c2w + Q*s2w,
-               A2 = P*s2w - Q*c2w;*/
-    
-    const auto P = (OTS*(c2u - ecu))/(1 - ecu),
-               Q = (((e*e - 2)*cu + e)*su)/(1 - ecu),
-               R = esu;
+               R = esu;*/
     
     const auto A0 = R,
                A1 = -P*s2w + Q*c2w,
                A2 = P*c2w + Q*s2w;
-
+    
     const auto a0 = si*si,
                a1 = 1+ci*ci,
                a2 = 2*ci;
@@ -87,21 +109,21 @@ auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
     return std::make_tuple(sp, sx);
 }
 
-auto EccentricResiduals_fn_pt_Adb(const BinaryMass &bin_mass,
-                                  const BinaryState &bin_init,
-                                  const double Fp, const double Fx, const double DGW,
-                                  const EvolveCoeffs_t& ev_coeffs,
-                                  const double t) {
-    const auto [sp, sx] = EccentricResiduals_px_fn_pt_Adb(bin_mass, bin_init, DGW, ev_coeffs, t);
+auto EccentricResiduals_fn_pt_PM(const BinaryMass &bin_mass,
+                                 const BinaryState &bin_init,
+                                 const double Fp, const double Fx, const double DGW,
+                                 const EvolveCoeffs_t& ev_coeffs,
+                                 const double t) {
+    const auto [sp, sx] = EccentricResiduals_px_fn_pt_PM(bin_mass, bin_init, DGW, ev_coeffs, t);
     return Fp*sp + Fx*sx;
 }
 
-Signal1D EccentricResiduals_Adb(const BinaryMass &bin_mass,
-                                const BinaryState &bin_init,
-                                const SkyPosition &bin_pos,
-                                const SkyPosition &psr_pos,
-                                const ResidualsTerms residuals_terms,
-                                const Signal1D &ts){
+Signal1D EccentricResiduals_PM(const BinaryMass &bin_mass,
+                               const BinaryState &bin_init,
+                               const SkyPosition &bin_pos,
+                               const SkyPosition &psr_pos,
+                               const ResidualsTerms residuals_terms,
+                               const Signal1D &ts){
     
     const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
     const auto DGW = bin_pos.DL;
@@ -113,16 +135,16 @@ Signal1D EccentricResiduals_Adb(const BinaryMass &bin_mass,
         const auto& t = ts[idx];
 
         if(residuals_terms == ResidualsTerms::Earth){
-            Rs[idx] = -EccentricResiduals_fn_pt_Adb(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t);
+            Rs[idx] = -EccentricResiduals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t);
         }
         else{
             const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
             if(residuals_terms == ResidualsTerms::Pulsar){
-                Rs[idx] = EccentricResiduals_fn_pt_Adb(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t + delay);
+                Rs[idx] = EccentricResiduals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t + delay);
             }
             else{
-                Rs[idx] =   EccentricResiduals_fn_pt_Adb(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t + delay) 
-                          - EccentricResiduals_fn_pt_Adb(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t);
+                Rs[idx] =   EccentricResiduals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t + delay) 
+                          - EccentricResiduals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t);
             }
         }
     }
@@ -130,17 +152,17 @@ Signal1D EccentricResiduals_Adb(const BinaryMass &bin_mass,
     return Rs;
 }
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Adb(const BinaryMass &bin_mass,
-                                                         const BinaryState &bin_init,
-                                                         const double DGW,
-                                                         const Signal1D &ts){
+std::tuple<Signal1D, Signal1D> EccentricResiduals_px_PM(const BinaryMass &bin_mass,
+                                                        const BinaryState &bin_init,
+                                                        const double DGW,
+                                                        const Signal1D &ts){
 
     const auto ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 
     const auto nts = ts.size();
     Signal1D Rps(nts), Rxs(nts);
     for(unsigned idx=0; idx<nts; idx++){
-        const auto [spE, sxE] = EccentricResiduals_px_fn_pt_Adb(bin_mass, bin_init, DGW, ev_coeffs, ts[idx]);
+        const auto [spE, sxE] = EccentricResiduals_px_fn_pt_PM(bin_mass, bin_init, DGW, ev_coeffs, ts[idx]);
         Rps[idx] = spE;
         Rxs[idx] = sxE;
     }

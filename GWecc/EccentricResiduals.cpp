@@ -12,6 +12,9 @@ auto choose_EccentricResiduals_fn(const ResidualsMethod residuals_method){
     else if(residuals_method == ResidualsMethod::Adb){
         fn = EccentricResiduals_Adb;
     }
+    else if(residuals_method == ResidualsMethod::PM){
+        fn = EccentricResiduals_PM;
+    }
     return fn;
 }
 
@@ -22,6 +25,9 @@ auto choose_EccentricResiduals_px_fn(const ResidualsMethod residuals_method){
     }
     else if(residuals_method == ResidualsMethod::Adb){
         fn = EccentricResiduals_px_Adb;
+    }
+    else if(residuals_method == ResidualsMethod::PM){
+        fn = EccentricResiduals_px_PM;
     }
     return fn;
 }

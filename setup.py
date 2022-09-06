@@ -4,9 +4,10 @@ import os
 GWecc_sources = (
     "AntennaPattern.cpp",
     "EccentricResiduals_Anl.cpp",
-    "EccentricResiduals.cpp",
     "EccentricResiduals_Num.cpp",
     "EccentricResiduals_Adb.cpp",
+    "EccentricResiduals_PM.cpp",
+    "EccentricResiduals.cpp",
     "GWecc.cpp",
     "Evolve.cpp",
     "FourierWaveform.cpp",
