@@ -60,7 +60,8 @@ res_N = GWecc.GWecc.EccentricResiduals(
 runtime_num = []
 runtime_adb = []
 runtime_anl = []
-ntoass = [10, 50, 100, 500, 1000, 5000]
+runtime_pm = []
+ntoass = [50, 100, 500, 1000, 5000, 10000]
 for ntoas in ntoass:
     toas = 365.25 * np.linspace(0, 15, ntoas)
 
@@ -148,10 +149,39 @@ for ntoas in ntoass:
     end = time.time()
     runtime_anl.append((end - start) / 10000)
 
+    start = time.time()
+    res_N = [
+        GWecc.GWecc.EccentricResiduals(
+            M,
+            q,
+            Omega,
+            i,
+            t0,
+            Pb0,
+            e0,
+            l0,
+            gamma0,
+            D_GW,
+            RA_GW,
+            DEC_GW,
+            D_P,
+            RA_P,
+            DEC_P,
+            z,
+            GWecc.GWecc.ResidualsMethod_PM,
+            GWecc.GWecc.ResidualsTerms_Earth,
+            toas,
+        )
+        for i in range(20000 // ntoas)
+    ]
+    end = time.time()
+    runtime_pm.append((end - start) / 20000)
+
 plt.loglog(ntoass, runtime_adb, label="Analytic")
+plt.loglog(ntoass, runtime_pm, label="Fourier")
 plt.loglog(ntoass, runtime_anl, label="Post-circular")
 plt.loglog(ntoass, runtime_num, label="Numerical")
 plt.xlabel("Number of TOAs")
-plt.ylabel("Run time per TOA (s)")
+plt.ylabel("Run time per TOA")
 plt.legend()
 plt.show()
