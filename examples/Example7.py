@@ -93,7 +93,7 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
     res_x_num = np.asarray(res_px_num[1]) - np.mean(res_px_num[1])
 
     ax = plt.subplot(321 + idx * 2)
-    plt.plot(toas / 365.25, res_p_num, label="$s_+$ Analytic", color="b")
+    plt.plot(toas / 365.25, res_p_num, label="$s_+$ Post-circular", color="b")
     plt.plot(toas / 365.25, res_p_anl, "--", label="$s_+$ Numerical", color="g")
     plt.grid()
     plt.xlim([0, 10])
