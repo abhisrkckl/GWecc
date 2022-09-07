@@ -74,18 +74,17 @@ auto EccentricResiduals_px_fn_pt_PM(const BinaryMass &bin_mass,
     const int pmax = get_nharm(e);
     double P=0, Q=0, R=0;
     for(int p=1; p<=pmax; p++){
-        P += OTS*(
-            gsl_sf_bessel_Jn(p-2, p*e) + gsl_sf_bessel_Jn(p+2, p*e)
-            - 2*gsl_sf_bessel_Jn(p, p*e)
-        )*cos(p*l);
+        const double Jpm2 = gsl_sf_bessel_Jn(p-2, p*e),
+                     Jpm1 = gsl_sf_bessel_Jn(p-1, p*e),
+                     Jp   = gsl_sf_bessel_Jn(p, p*e),
+                     Jpp1 = gsl_sf_bessel_Jn(p+1, p*e),
+                     Jpp2 = gsl_sf_bessel_Jn(p+2, p*e);
 
-        Q += -(
-            gsl_sf_bessel_Jn(p-2, p*e) - gsl_sf_bessel_Jn(p+2, p*e)
-            - 2*e*(gsl_sf_bessel_Jn(p-1, p*e) - gsl_sf_bessel_Jn(p+1, p*e))
-            +(2/p)*gsl_sf_bessel_Jn(p, p*e)
-        )*sin(p*l);
+        const double spl = sin(p*l), cpl = cos(p*l);
 
-        R += (2/p)*gsl_sf_bessel_Jn(p, p*e) * sin(p*l);
+        P += OTS*(Jpm2 + Jpp2 - 2*Jp)*cpl;
+        Q += -(Jpm2 - Jpp2 - 2*e*(Jpm1 - Jpp1) +(2/p)*Jp)*spl;
+        R += (2/p)*Jp*spl;
     }
 
     /*const auto P = ((e + (-2 + e*e)*cu)*su)/(1 - ecu),
