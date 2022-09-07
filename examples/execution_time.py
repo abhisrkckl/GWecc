@@ -1,4 +1,4 @@
-"""Execution time vs ntoas
+"""Execution time vs ntoas 
 """
 
 import enterprise_GWecc as GWecc

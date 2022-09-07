@@ -1,4 +1,5 @@
-"""Comparing numerical and analytic residuals (High eccentricity)
+"""Comparing numerical and post-circular residuals (High eccentricity)
+    -- needs fixing.
 """
 
 import enterprise_GWecc as GWecc
@@ -139,7 +140,7 @@ plt.grid()
 
 plt.subplot(223)
 e0 = 0.5
-plt.suptitle("Comparing numerical and analytic residuals")
+plt.suptitle("Comparing numerical and post-circular residuals (e=0.5)")
 res_N = GWecc.GWecc.EccentricResiduals(
     M,
     q,
