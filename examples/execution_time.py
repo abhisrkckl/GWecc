@@ -27,7 +27,7 @@ M = 5e9
 q = 1
 
 Pb0 = 2
-e0 = 0.5
+#e0 = 0.5
 gamma0 = 0
 l0 = 0
 t0 = 0
@@ -42,7 +42,7 @@ res_N = GWecc.GWecc.EccentricResiduals(
     i,
     t0,
     Pb0,
-    e0,
+    0.5,
     l0,
     gamma0,
     D_GW,
@@ -61,8 +61,11 @@ runtime_num = []
 runtime_adb = []
 runtime_anl = []
 runtime_pm = []
-ntoass = [50, 100, 500, 1000, 5000, 10000]
-for ntoas in ntoass:
+
+ntoas = 100000
+nreps = 2
+es = np.linspace(0.001, 0.8, 10)
+for e0 in es:
     toas = 365.25 * np.linspace(0, 15, ntoas)
 
     start = time.time()
@@ -88,10 +91,10 @@ for ntoas in ntoass:
             GWecc.GWecc.ResidualsTerms_Earth,
             toas,
         )
-        for i in range(10000 // ntoas)
+        for i in range(nreps)
     ]
     end = time.time()
-    runtime_num.append((end - start) / 10000)
+    runtime_num.append((end - start) / (nreps*ntoas))
 
     start = time.time()
     res_N = [
@@ -116,10 +119,10 @@ for ntoas in ntoass:
             GWecc.GWecc.ResidualsTerms_Earth,
             toas,
         )
-        for i in range(10000 // ntoas)
+        for i in range(nreps)
     ]
     end = time.time()
-    runtime_adb.append((end - start) / 10000)
+    runtime_adb.append((end - start) / (nreps*ntoas))
 
     start = time.time()
     res_N = [
@@ -144,10 +147,10 @@ for ntoas in ntoass:
             GWecc.GWecc.ResidualsTerms_Earth,
             toas,
         )
-        for i in range(10000 // ntoas)
+        for i in range(nreps)
     ]
     end = time.time()
-    runtime_anl.append((end - start) / 10000)
+    runtime_anl.append((end - start) / (nreps*ntoas))
 
     start = time.time()
     res_N = [
@@ -172,16 +175,17 @@ for ntoas in ntoass:
             GWecc.GWecc.ResidualsTerms_Earth,
             toas,
         )
-        for i in range(20000 // ntoas)
+        for i in range(nreps)
     ]
     end = time.time()
-    runtime_pm.append((end - start) / 20000)
+    runtime_pm.append((end - start) / (nreps*ntoas))
 
-plt.loglog(ntoass, runtime_adb, label="Analytic")
-plt.loglog(ntoass, runtime_pm, label="Fourier")
-plt.loglog(ntoass, runtime_anl, label="Post-circular")
-plt.loglog(ntoass, runtime_num, label="Numerical")
-plt.xlabel("Number of TOAs")
+plt.plot(es, runtime_adb, marker='+', ls='--', label="Analytic")
+plt.plot(es, runtime_pm, marker='x', ls='--', label="Fourier")
+plt.plot(es, runtime_anl, marker='o', ls='--', label="Post-circular")
+plt.plot(es, runtime_num, marker='^', ls='--', label="Numerical")
+plt.yscale('log')
+plt.xlabel("e")
 plt.ylabel("Run time per TOA")
 plt.legend()
 plt.show()
