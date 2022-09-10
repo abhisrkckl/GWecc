@@ -153,7 +153,7 @@ def Fe_statistic_funcs_Plack18(
     tref,
     log10_zc,
     zp,
-    residuals_method
+    residuals_method=ResidualsMethod_Num
 ):
 
     zc = 10**log10_zc
