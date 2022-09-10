@@ -17,6 +17,7 @@ GWecc_sources = (
     "Precompute_Orbit.cpp",
     "EccentricWaveform.cpp",
     "FeStat.cpp",
+    "FeStat_Adb.cpp",
 )
 src_dir = "GWecc/"
 current_dir = os.path.dirname(os.path.realpath(__file__))

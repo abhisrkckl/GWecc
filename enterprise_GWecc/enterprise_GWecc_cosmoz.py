@@ -153,6 +153,7 @@ def Fe_statistic_funcs_Plack18(
     tref,
     log10_zc,
     zp,
+    residuals_method
 ):
 
     zc = 10**log10_zc
@@ -180,7 +181,7 @@ def Fe_statistic_funcs_Plack18(
     #                    toas))
 
     return np.asarray(
-        FeStatFuncs(M, q, tref, Pb0, e0, l0, D_GW, RA_GW, DEC_GW, RA_P, DEC_P, z, toas)
+        FeStatFuncs(M, q, tref, Pb0, e0, l0, D_GW, RA_GW, DEC_GW, RA_P, DEC_P, z, toas, residuals_method)
     )
 
 

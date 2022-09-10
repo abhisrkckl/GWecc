@@ -221,7 +221,8 @@ std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
                                               const double D_GW, const double RA_GW, const double DEC_GW, 
                                               const double RA_P,  const double DEC_P, 
                                               const double z,
-                                              const std::vector<double> _ts){
+                                              const std::vector<double> _ts,
+                                              const ResidualsMethod residuals_method){
 
 
     const double Pb0 = Pb0E * year_to_s / (1+z),
@@ -239,50 +240,27 @@ std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
 
-    std::array<Signal1D,6> A = FeStatFuncs(bin_mass, bin_init, bin_pos, psr_pos, tzs);
-        
-    std::vector<double>     A0(std::begin(A[0]), std::end(A[0])),
-                 			A1(std::begin(A[1]), std::end(A[1])),
-                 			A2(std::begin(A[2]), std::end(A[2])),
-                 			A3(std::begin(A[3]), std::end(A[3])),
-                 			A4(std::begin(A[4]), std::end(A[4])),
-                 			A5(std::begin(A[5]), std::end(A[5]));
+    std::array<Signal1D,6> A;
+    if(residuals_method == ResidualsMethod::Num){
+        A = FeStatFuncs(bin_mass, bin_init, bin_pos, psr_pos, tzs);
+    }
+    else if(residuals_method == ResidualsMethod::Adb){
+        A = FeStatFuncs_Adb(bin_mass, bin_init, bin_pos, psr_pos, tzs);
+    }
+    else{
+        throw std::invalid_argument("Only Num and Adb methods are supported in FeStatFuncs.");
+    }
 
-    return std::vector<std::vector<double> > {A0, A1, A2, A3, A4, A5};
-}
-
-/*
-std::vector<std::vector<double> > FeStatFuncs_h(const double M, const double q,
-                                              const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
-                                              const double RA_GW, const double DEC_GW, 
-                                              const double RA_P,  const double DEC_P, 
-                                              const double z,
-                                              const std::vector<double> _ts){
-
-
-    const double Pb0 = Pb0E * year_to_s / (1+z),
-                 n0 = 2*M_PI/Pb0;
+    for(auto Ai : A){
+        Ai *= (1+z);
+    }
     
-    const SkyPosition bin_pos {0, RA_GW, DEC_GW, 0},
-                      psr_pos {0,  RA_P,  DEC_P, 0};
-    
-    const BinaryMass bin_mass(M*MSun_to_s, q);
+    std::vector<double> A0(std::begin(A[0]), std::end(A[0])),
+                 		A1(std::begin(A[1]), std::end(A[1])),
+                 		A2(std::begin(A[2]), std::end(A[2])),
+                 		A3(std::begin(A[3]), std::end(A[3])),
+                 		A4(std::begin(A[4]), std::end(A[4])),
+                 		A5(std::begin(A[5]), std::end(A[5]));
 
-    const BinaryState bin_init { day_to_s*t0,
-                                 0, 0,
-                                 n0, e0, l0, gamma0 };
-
-    Signal1D tzs(_ts.data(), _ts.size());
-    tzs *= day_to_s/(1+z);
-
-    std::array<Signal1D,5> B = FeStatFuncs_h(bin_mass, bin_init, bin_pos, psr_pos, tzs);
-        
-    std::vector<double>     B0(std::begin(B[0]), std::end(B[0])),
-                 			B1(std::begin(B[1]), std::end(B[1])),
-                 			B2(std::begin(B[2]), std::end(B[2])),
-                 			B3(std::begin(B[3]), std::end(B[3])),
-                 			B4(std::begin(B[4]), std::end(B[4]));
-
-    return std::vector<std::vector<double> > {B0, B1, B2, B3, B4};
+    return std::vector<std::vector<double>> {A0, A1, A2, A3, A4, A5};
 }
-*/
