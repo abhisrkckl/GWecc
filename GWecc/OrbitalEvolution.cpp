@@ -43,8 +43,8 @@ double compute_alpha_coeff(const double Mchirp, const double n0, const double e0
 
 double compute_beta_coeff(const double Mchirp, const double M, const double n0, const double e0){
     
-    double A = pow(Mchirp,5./3)/5;
-    double e02 = e0*e0;
+    const double A = pow(Mchirp,5./3)/5;
+    const double e02 = e0*e0;
     
     return 9./A * pow(M, 2./3)
                 / n0
@@ -56,8 +56,8 @@ double compute_beta_coeff(const double Mchirp, const double M, const double n0, 
 
 double compute_beta2_coeff(const double Mchirp, const double M, const double n0, const double e0){
     
-    double A = pow(Mchirp,5./3)/5;
-    double e02 = e0*e0;
+    const double A = pow(Mchirp,5./3)/5;
+    const double e02 = e0*e0;
     
     return 3./(4*A) * pow(M, 4./3)
                     / cbrt(n0)
@@ -65,6 +65,17 @@ double compute_beta2_coeff(const double Mchirp, const double M, const double n0,
                     / pow(304 + 121*e02, 435./2299)
                     * sqrt(1-e02);
     
+}
+
+double compute_beta3_coeff(const double Mchirp, const double M, const double n0, const double e0){
+    const double A = pow(Mchirp,5./3);
+    const double e02 = e0*e0;
+
+    return 15./(128*A) * (M*M)
+                       * cbrt(n0)
+                       * pow(e0,6./19)
+                       * pow(304 + 121*e02, 435./2299)
+                       / sqrt(1-e02);
 }
 
 double n_from_e(const double n0, const double e0, const double e){
@@ -96,6 +107,23 @@ double gbar2_from_e(const double e, const double eta){
                                );
 }
 
+double gbar3_from_e(const double e, const double eta){
+    /**
+     * @brief gbar3(e) = (gbar3_0 + eta*gbar3_1(e) + (eta^2)*gbar3_2(e)) / e^(6/19)
+     * 
+     * The functions gbar30 and gbar31 contain Appell F1 functions that are
+     * hard to compute. So I am using Pade approximants here. Since this is a
+     * 3PN correction the error due to this approximation should be negligible.
+     * This probably won't work if e == 0.
+     */
+
+    const double gbar3_0 = -71.19148913450734 + (14.212810668086124*(e*e) - 2.7809293422212327*ipow(e,4) - 0.5247248712090506*ipow(e,6))/(1. + 0.021216346439953203*(e*e) - 0.08582538305359699*ipow(e,4));
+    const double gbar3_1 = 75.17536852020817 + (-11.720605504532221*(e*e) + 0.9937219102426796*ipow(e,4) + 0.3416818503954963*ipow(e,6))/(1. + 0.11825867242669967*(e*e) - 0.05881762636038525*ipow(e,4));
+    const double gbar3_2 = -3.1640661837558817 + (3.109257298381722*(e*e) + 1.0709804529990066*ipow(e,4) + 0.05588268809419086*ipow(e,6))/(1. + 0.46114315553206664*(e*e) + 0.041157522000398405*ipow(e,4));
+
+    return (gbar3_0 + eta*gbar3_1 * eta*eta*gbar3_2) / pow(e,6./19);
+}
+
 EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinaryState &bin_init){
 
     static const Evolve &ev = Evolve::instance();
@@ -118,6 +146,8 @@ EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinarySta
                   gbar0  = gbar_from_e(e0),
                   beta2  = compute_beta2_coeff(Mchirp, M, n0, e0),
                   gbar20 = gbar2_from_e(e0,eta),
+                  beta3  = compute_beta3_coeff(Mchirp, M, n0, e0),
+                  gbar30 = gbar3_from_e(e0,eta),
                 
                   sini   = sin(bin_init.i),
                   cosi   = cos(bin_init.i),
@@ -130,6 +160,7 @@ EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinarySta
                                 lbar0, alpha,
                                 gbar0, beta,
                                 gbar20, beta2,
+                                gbar30, beta3,
                                 eta,
                                 sini, cosi,
                                 sin2Omega, cos2Omega  };    

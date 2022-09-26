@@ -168,7 +168,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
                  M      = bin_mass.mass(),
                  Mchirp = bin_mass.chirp_mass();
     
-    double n, e, gamma, l, gamma1, gamma2;
+    double n, e, gamma, l, gamma1, gamma2, gamma3;
     bool merged = false;
 
     if(e0==0){
@@ -220,7 +220,13 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
             const double gbar20    = gbar2_from_e(e0,eta);
             const double gbar2     = gbar2_from_e(e,eta);
             gamma2 = (gbar20-gbar2)*beta2;
-            gamma  = gamma1+gamma2;
+
+            const double beta3     = compute_beta3_coeff(Mchirp, M, n0, e0);
+            const double gbar30    = gbar3_from_e(e0,eta);
+            const double gbar3     = gbar3_from_e(e,eta);
+            gamma3 = (gbar30-gbar3)*beta3;
+
+            gamma  = gamma1 + gamma2 + gamma3;
         }
     }
 
@@ -244,7 +250,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
               
                  t      = t0 + delay;
     
-    double n, e, gamma, l, gamma1, gamma2;
+    double n, e, gamma, l, gamma1, gamma2, gamma3;
     bool merged = false;
 
     if(e0==0){
@@ -299,7 +305,13 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
             const double &gbar20  = ev_coeffs.gbar20;
             const double gbar2    = gbar2_from_e(e,eta);
             gamma2 = (gbar20-gbar2)*beta2;
-            gamma  = gamma1+gamma2;
+
+            const double &beta3   = ev_coeffs.beta3;
+            const double &gbar30  = ev_coeffs.gbar30;
+            const double gbar3    = gbar3_from_e(e,eta);
+            gamma3 = (gbar30-gbar3)*beta3;
+
+            gamma  = gamma1 + gamma2 + gamma3;
         }
     }
 

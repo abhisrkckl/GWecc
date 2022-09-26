@@ -23,6 +23,7 @@ struct EvolveCoeffs_t{
             lbar0, alpha,
             gbar0, beta,
             gbar20, beta2,
+            gbar30, beta3,
             eta,
             sini, cosi,
             sin2Omega, cos2Omega;
@@ -85,11 +86,13 @@ double compute_P_coeff(const double Mchirp, const double n0, const double e0);
 double compute_alpha_coeff(const double Mchirp, const double n0, const double e0);
 double compute_beta_coeff(const double Mchirp, const double M, const double n0, const double e0);
 double compute_beta2_coeff(const double Mchirp, const double M, const double n0, const double e0);
+double compute_beta3_coeff(const double Mchirp, const double M, const double n0, const double e0);
 
 double n_from_e(const double n0, const double e0, const double e);
 double lbar_from_e(const double e);
 double gbar_from_e(const double e);
 double gbar2_from_e(const double e, const double eta);
+double gbar3_from_e(const double e, const double eta);
 
 BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay);
 
