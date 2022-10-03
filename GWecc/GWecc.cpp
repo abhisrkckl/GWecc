@@ -71,6 +71,42 @@ std::vector<double> EccentricResiduals( const double M, const double q,
     return std::vector<double>(std::begin(result), std::end(result));
 }
 
+std::vector<std::vector<double>> EccentricResidualsAndWaveform( 
+                                        const double M, const double q,
+                                        const double Omega, const double i, 
+                                        const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
+                                        const double D_GW, const double RA_GW, const double DEC_GW, 
+                                        const double D_P,  const double RA_P,  const double DEC_P, 
+                                        const double z,
+                                        const ResidualsTerms residuals_terms,
+                                        const std::vector<double> _ts){
+    
+    const BinaryMass bin_mass(MSun_to_s*M, q);
+    
+    const double Pb0 = Pb0E * year_to_s / (1+z),
+                 n0 = 2*M_PI/Pb0; 
+    
+    const BinaryState bin_init { day_to_s*t0,
+                                 Omega, i,
+                                 n0, e0, l0, gamma0 };
+                     
+    const SkyPosition bin_pos {parsec_to_s*D_GW, RA_GW, DEC_GW, z},
+                      psr_pos {parsec_to_s*D_P,  RA_P,  DEC_P,  0};
+        
+    Signal1D tzs(_ts.data(), _ts.size());
+    tzs *= day_to_s/(1+z);
+    
+    auto [R, h] = EccentricResidualsAndWaveform(bin_mass, bin_init, bin_pos, psr_pos, 
+                                                residuals_terms,
+                                                tzs);
+    R *= (1+z);
+    
+    const std::vector<double> result_R(std::begin(R), std::end(R));
+    const std::vector<double> result_h(std::begin(h), std::end(h));
+
+    return {result_R, result_h};
+}
+
 std::vector<double> EccentricWaveform(  const double M, const double q,
                                         const double Omega, const double i, 
                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
