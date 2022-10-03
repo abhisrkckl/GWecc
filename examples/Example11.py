@@ -28,14 +28,14 @@ def dms_to_rad(dd, mm, ss):
 
 M = 1e9
 q = 1
-Pb0 = 5  # years
+Pb0 = 10  # years
 Omega = 0
 i = 0
 l0 = gamma0 = 0
 z = 0.1
 
-# f0 = 2/(Pb0*year)
-f0 = 10 ** (-7.04040404)
+f0 = 2/(Pb0*year)
+# f0 = 10 ** (-7.04040404)
 print("f0 = ", f0)
 
 psr = Pulsar(
@@ -102,7 +102,7 @@ for idx, e0 in enumerate([0.1, 0.4, 0.6]):
     ecc_gw_fn = ecc_gw("ecc_gw", psr=psr)
     res2 = ecc_gw_fn()
 
-    # Calling EccentricResiduals function through the enterprise interface
+    # Calling EccentricResiduals function through the enterprise spline interface
     ecc_gw_spl = eccentric_cw_delay_Planck18_spline(
         cos_gwtheta=np.sin(DEC_GW),
         gwphi=RA_GW,
