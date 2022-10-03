@@ -62,7 +62,7 @@ runtime_adb = []
 runtime_anl = []
 runtime_pm = []
 
-ntoas = 100000
+ntoas = 10000
 nreps = 2
 es = np.linspace(0.001, 0.8, 10)
 for e0 in es:
@@ -182,10 +182,11 @@ for e0 in es:
 
 plt.plot(es, runtime_adb, marker='+', ls='--', label="Analytic")
 plt.plot(es, runtime_pm, marker='x', ls='--', label="Fourier")
-plt.plot(es, runtime_anl, marker='o', ls='--', label="Post-circular")
+plt.plot(es[es<=0.3], np.array(runtime_anl)[es<=0.3], marker='o', ls='--', label="Post-circular")
 plt.plot(es, runtime_num, marker='^', ls='--', label="Numerical")
 plt.yscale('log')
-plt.xlabel("e")
-plt.ylabel("Run time per TOA")
-plt.legend()
+plt.xlabel("$e_{t0}$", fontsize=12)
+plt.ylabel("Execution time per TOA", fontsize=12)
+plt.legend(fontsize=12)
+plt.tick_params(axis='both', labelsize=11)
 plt.show()
