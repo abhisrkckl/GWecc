@@ -138,6 +138,10 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
         bbox=dict(boxstyle="round", facecolor="cyan", alpha=0.5),
     )
 
+    ax2 = ax.twinx()
+    diff = res_p_num - res_p_adb
+    plt.plot(toas / 365.25, diff, color="k", ls='dotted')
+
     ax = plt.subplot(321 + idx * 2 + 1)
     plt.plot(toas / 365.25, res_x_num, label="$s_\\times$ Numerical", color="b")
     # plt.plot(toas / 365.25, res_x_anl, "--", label="$s_\\times$ Analytic", color="g")
@@ -153,5 +157,11 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
         plt.xlabel("$t=t_E$ (years)", fontsize=14)
     else:
         plt.tick_params(labelbottom=False, labelsize=12)
+
+    ax2 = ax.twinx()
+    diff = res_x_num - res_x_adb
+    plt.plot(toas / 365.25, diff, color="k", ls='dotted')
+    ax2.set_ylabel("Difference (ns)")
+    
 
 plt.show()
