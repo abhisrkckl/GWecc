@@ -215,7 +215,7 @@ plt.plot(es[es<=0.3], np.array(runtime_anl)[es<=0.3]/runtime_circ, marker='o', l
 plt.plot(es, np.array(runtime_num)/runtime_circ, marker='^', ls='--', label="Numerical")
 plt.yscale('log')
 plt.xlabel("$e_{t0}$", fontsize=12)
-plt.ylabel("Execution time per TOA\n(Normalized by execution time for circular)", fontsize=12)
+plt.ylabel("Execution time per TOA\n(Normalized by exec. time for circular case)", fontsize=12)
 plt.legend(fontsize=12)
 plt.tick_params(axis='both', labelsize=11)
 plt.show()

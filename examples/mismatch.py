@@ -142,7 +142,7 @@ for idx, Pb0 in enumerate(Pb0s):
 
             mismatches.append(mismatch(res_adb, res_num))
 
-        plt.plot(es, mismatches, label=f"M={M:.0e} MSun")
+        plt.plot(es, mismatches, label=f"$M=10^{int(np.log10(M))}$ MSun")
         plt.yscale("log")
         plt.legend(fontsize=14)
         plt.xlabel("$e_{t0}$", fontsize=14)
