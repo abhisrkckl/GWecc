@@ -64,6 +64,35 @@ runtime_pm = []
 
 ntoas = 10000
 nreps = 2
+
+start = time.time()
+res_N = [
+    GWecc.GWecc.EccentricResiduals(
+        M,
+        q,
+        Omega,
+        i,
+        t0,
+        Pb0,
+        0,
+        l0,
+        gamma0,
+        D_GW,
+        RA_GW,
+        DEC_GW,
+        D_P,
+        RA_P,
+        DEC_P,
+        z,
+        GWecc.GWecc.ResidualsMethod_Adb,
+        GWecc.GWecc.ResidualsTerms_Earth,
+        toas,
+    )
+    for i in range(nreps)
+]
+end = time.time()
+runtime_circ = (end-start)  / (nreps*ntoas)
+
 es = np.linspace(0.001, 0.8, 10)
 for e0 in es:
     toas = 365.25 * np.linspace(0, 15, ntoas)
@@ -180,13 +209,13 @@ for e0 in es:
     end = time.time()
     runtime_pm.append((end - start) / (nreps*ntoas))
 
-plt.plot(es, runtime_adb, marker='+', ls='--', label="Analytic")
-plt.plot(es, runtime_pm, marker='x', ls='--', label="Fourier")
-plt.plot(es[es<=0.3], np.array(runtime_anl)[es<=0.3], marker='o', ls='--', label="Post-circular")
-plt.plot(es, runtime_num, marker='^', ls='--', label="Numerical")
+plt.plot(es, np.array(runtime_adb)/runtime_circ, marker='+', ls='--', label="Analytic")
+plt.plot(es, np.array(runtime_pm)/runtime_circ, marker='x', ls='--', label="Fourier")
+plt.plot(es[es<=0.3], np.array(runtime_anl)[es<=0.3]/runtime_circ, marker='o', ls='--', label="Post-circular")
+plt.plot(es, np.array(runtime_num)/runtime_circ, marker='^', ls='--', label="Numerical")
 plt.yscale('log')
 plt.xlabel("$e_{t0}$", fontsize=12)
-plt.ylabel("Execution time per TOA", fontsize=12)
+plt.ylabel("Execution time per TOA\n(Normalized by execution time for circular)", fontsize=12)
 plt.legend(fontsize=12)
 plt.tick_params(axis='both', labelsize=11)
 plt.show()
