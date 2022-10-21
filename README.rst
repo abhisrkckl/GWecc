@@ -23,6 +23,7 @@ C/C++ Libraries
 Python Packages
 ***************
 * numpy
+* astropy
 * enterprise-pulsar
 * setuptools
 
