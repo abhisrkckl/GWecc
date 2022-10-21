@@ -43,7 +43,7 @@ To install, type
 
 ``$ conda install -c conda-forge numpy astropy matplotlib enterprise-pulsar gsl eigen``
 
-``$ pip install .``
+``$ python setup.py install``
 
 Note that the C++ extension uses C++17 features and requires a new C++ compiler. I have tested this only with g++-8 and later.
 
