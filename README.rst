@@ -15,6 +15,8 @@ The code itself can be cited using the ASCL record
 Dependencies
 ============
 
+GWecc requires a C++17 compiler. This should work with g++-8 or later.
+
 C/C++ Libraries
 ***************
 * GSL
@@ -24,6 +26,7 @@ Python Packages
 ***************
 * numpy
 * astropy
+* matplotlib
 * enterprise-pulsar
 * setuptools
 
@@ -38,7 +41,7 @@ Installation
 I suggest installing this in a conda environment.
 To install, type
 
-``$ conda install -c conda-forge enterprise-pulsar gsl eigen``
+``$ conda install -c conda-forge numpy astropy matplotlib enterprise-pulsar gsl eigen``
 
 ``$ pip install .``
 
