@@ -15,7 +15,7 @@ The code itself can be cited using the ASCL record
 Dependencies
 ============
 
-GWecc requires a C++17 compiler. This should work with g++-8 or later.
+GWecc requires a C++17 compiler (should work with g++-8 or later) and Python3.8 or later.
 
 C/C++ Libraries
 ***************
