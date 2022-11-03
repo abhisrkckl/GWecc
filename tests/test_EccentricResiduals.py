@@ -1,26 +1,30 @@
 import pytest
 import numpy as np
 from itertools import product as outer_product
-from enterprise_GWecc.GWecc import (
-    EccentricResiduals,
-    EccentricResiduals_px,
-    ResidualsMethod_Num,
-    ResidualsMethod_Adb,
-    ResidualsMethod_Anl,
-    ResidualsMethod_PM,
-    ResidualsTerms_Both,
-    ResidualsTerms_Earth,
-    ResidualsTerms_Pulsar,
+from enterprise_GWecc.GWecc import EccentricResiduals, EccentricResiduals_px
+from default_test_params import (
+    M,
+    q,
+    Omega,
+    i,
+    t0,
+    Pb0,
+    e0,
+    l0,
+    gamma0,
+    D_GW,
+    RA_GW,
+    DEC_GW,
+    D_P,
+    RA_P,
+    DEC_P,
+    z,
+    methods,
+    terms,
+    toas,
+    ntoas,
+    delay,
 )
-from default_test_params import *
-
-methods = [
-    ResidualsMethod_Num,
-    ResidualsMethod_Adb,
-    ResidualsMethod_Anl,
-    ResidualsMethod_PM,
-]
-terms = [ResidualsTerms_Both, ResidualsTerms_Earth, ResidualsTerms_Pulsar]
 
 
 @pytest.mark.parametrize("method, term", outer_product(methods, terms))
@@ -49,10 +53,9 @@ def test_EccentricResiduals(method, term):
 
     assert np.all(np.isfinite(res)) and not np.all(res == 0) and len(res) == ntoas
 
+
 @pytest.mark.parametrize("method, term", outer_product(methods, terms))
 def test_EccentricResiduals_px(method, term):
-
-    delay = -1000  # -D_P*(1-cosmu) / (1+z)
 
     res_p, res_x = EccentricResiduals_px(
         M,

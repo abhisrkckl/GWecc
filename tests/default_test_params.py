@@ -1,4 +1,13 @@
 import numpy as np
+from enterprise_GWecc.GWecc import (
+    ResidualsMethod_Num,
+    ResidualsMethod_Adb,
+    ResidualsMethod_Anl,
+    ResidualsMethod_PM,
+    ResidualsTerms_Both,
+    ResidualsTerms_Earth,
+    ResidualsTerms_Pulsar,
+)
 
 year = 365.25 * 24 * 3600
 day = 24 * 3600
@@ -37,3 +46,13 @@ D_GW = 1e9  # pc
 
 ntoas = 5000
 toas = 365.25 * np.linspace(0, 10, ntoas)  # days
+
+delay = -1000  # -D_P*(1-cosmu) / (1+z)
+
+terms = [ResidualsTerms_Both, ResidualsTerms_Earth, ResidualsTerms_Pulsar]
+methods = [
+    ResidualsMethod_Num,
+    ResidualsMethod_Adb,
+    ResidualsMethod_Anl,
+    ResidualsMethod_PM,
+]
