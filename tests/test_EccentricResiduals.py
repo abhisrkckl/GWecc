@@ -9,12 +9,18 @@ from enterprise_GWecc.GWecc import (
     ResidualsMethod_PM,
     ResidualsTerms_Both,
     ResidualsTerms_Earth,
-    ResidualsTerms_Pulsar
+    ResidualsTerms_Pulsar,
 )
 from default_test_params import *
 
-methods = [ResidualsMethod_Num, ResidualsMethod_Adb, ResidualsMethod_Anl, ResidualsMethod_PM]
+methods = [
+    ResidualsMethod_Num,
+    ResidualsMethod_Adb,
+    ResidualsMethod_Anl,
+    ResidualsMethod_PM,
+]
 terms = [ResidualsTerms_Both, ResidualsTerms_Earth, ResidualsTerms_Pulsar]
+
 
 @pytest.mark.parametrize("method, term", outer_product(methods, terms))
 def test_EccentricResiduals(method, term):
@@ -40,4 +46,4 @@ def test_EccentricResiduals(method, term):
         toas,
     )
 
-    assert np.all(np.isfinite(res)) and len(res) == ntoas
+    assert np.all(np.isfinite(res)) and not np.all(res == 0) and len(res) == ntoas
