@@ -35,6 +35,7 @@ def eccentric_cw_delay(
     p_dist=1.0,
     psrTerm=False,
     evolve=True,
+    residuals_method=ResidualsMethod_Num
 ):
     """
     ======================================================================================================================
@@ -117,8 +118,29 @@ def eccentric_cw_delay(
         eta = q / (1 + q) ** 2
         D_GW = M * eta * x0 / H0
 
-    residuals_method = ResidualsMethod_Num
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
+
+    print(
+            M,
+            q,
+            psi,
+            i,
+            tref,
+            Pb0,
+            e0,
+            l0,
+            gamma0,
+            D_GW,
+            RA_GW,
+            DEC_GW,
+            D_psr,
+            RA_psr,
+            DEC_psr,
+            z,
+            residuals_method,
+            residuals_terms,
+            toas,
+        )
 
     return np.asarray(
         EccentricResiduals(
