@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 from itertools import product as outer_product
 from enterprise_GWecc.GWecc import (
     EccentricResiduals,
@@ -38,3 +39,5 @@ def test_EccentricResiduals(method, term):
         term,
         toas,
     )
+
+    assert np.all(np.isfinite(res)) and len(res) == ntoas
