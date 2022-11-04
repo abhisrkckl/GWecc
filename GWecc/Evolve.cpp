@@ -3,7 +3,13 @@
 #include <cstdio>
 #include <stdexcept>
 
-void write_data_file(const char *datafilename, const std::vector<double> &taus, const std::vector<double> &es){
+
+using std::runtime_error, std::nullopt;
+
+
+void write_data_file(const char *datafilename, 
+                     const vector<double> &taus, 
+                     const vector<double> &es){
     const size_t rows = taus.size();
 
     FILE *outfile = fopen(datafilename, "wb");
@@ -14,6 +20,7 @@ void write_data_file(const char *datafilename, const std::vector<double> &taus, 
 
     printf("Successfully wrote %s.\n",datafilename);
 }
+
 
 Evolve::Evolve(const char *datafilename){
 
@@ -26,9 +33,7 @@ Evolve::Evolve(const char *datafilename){
         constexpr double emin   = 2.5e-9,  // Initial condition
                          taumax = 1000;    // Stopping condition
 
-        std::vector<double> taus, es;
-        std::tie(taus,es) = precompute_orbit(emin,taumax);
-        //const auto [taus,es] = precompute_orbit(emin,taumax);
+        const auto [taus, es] = precompute_orbit(emin,taumax);
 
         initialize(taus, es);
 
@@ -47,11 +52,11 @@ Evolve::Evolve(const char *datafilename){
         if(filesize_expected!=filesize){
             fprintf(stderr, "ERROR : Unable to read pre-computed integral from %s. Re-computing integral...\n", datafilename);
             
-            //Evolve();
-            const/*expr*/ double emin   = 2.5e-9,  // Initial condition
-                                          taumax = 1000;
-            std::vector<double> taus, es;
-            std::tie(taus,es) = precompute_orbit(emin,taumax);
+            // Initial condition
+            constexpr double emin   = 2.5e-9,  
+                             taumax = 1000;
+            
+            const auto [taus, es] = precompute_orbit(emin,taumax);
 
             initialize(taus, es);
 
@@ -59,8 +64,8 @@ Evolve::Evolve(const char *datafilename){
         }
         else{
 
-            std::vector<double> taus_pre(_rows);
-            std::vector<double> es_pre(_rows);
+            vector<double> taus_pre(_rows);
+            vector<double> es_pre(_rows);
 
             fread(taus_pre.data() ,sizeof(double),_rows,datafile);
             fread(es_pre.data()   ,sizeof(double),_rows,datafile);
@@ -79,8 +84,7 @@ Evolve::Evolve(){
     constexpr double emin   = 2.5e-9,  // Initial condition
                      taumax = 1000;    // Stopping condition
     
-    std::vector<double> taus, es;
-    std::tie(taus,es) = precompute_orbit(emin,taumax);
+    const auto [taus, es] = precompute_orbit(emin,taumax);
     
     initialize(taus, es);
 }
@@ -93,7 +97,7 @@ Evolve::~Evolve(){
     gsl_interp_accel_free(acci);
 }
 
-void Evolve::initialize(const std::vector<double> &taus_pre, const std::vector<double> &es_pre){
+void Evolve::initialize(const vector<double> &taus_pre, const vector<double> &es_pre){
 
     rows = taus_pre.size();
 
@@ -154,6 +158,7 @@ double Evolve::tau_from_e(const double e) const{
  */ 
 BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass, 
                                           const BinaryState &bin_init, 
+                                          const optional<PulsarTermPhase> ptphase,
                                           const double delay) const{
 
     const double &t0    = bin_init.t,
@@ -177,16 +182,21 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
         const double T     = 256*A*pow(n0,8./3)*delay;
 
         if(T>1){
-            //fprintf(stderr, "Error: The binary has already merged.\n");
-            //e=n=l=gamma=NAN;
             merged = true;
-            throw std::runtime_error("tau<0 found in solve_orbit_equations");
+            throw runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             e     = e0;
             n     = n0 / pow(1-T, 3./8);
-            l     = l0 + (pow(n0,-5./3) - pow(n,-5./3))/(160*A);
-            gamma = gamma0 + (1./n0 - 1./n) * pow(M,2./3) / (32*A);
+            
+            if(ptphase){
+                l = ptphase->lp;
+                gamma = ptphase->gammap;
+            }
+            else{
+                l     = l0 + (pow(n0,-5./3) - pow(n,-5./3))/(160*A);
+                gamma = gamma0 + (1./n0 - 1./n) * pow(M,2./3) / (32*A);
+            }
         }
     }
     else{
@@ -199,34 +209,41 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
-            throw std::runtime_error("tau<0 found in solve_orbit_equations");
+            throw runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             
             e = e_from_tau(tau);
             n = n_from_e(n0, e0, e);
             
-            const double alpha     = compute_alpha_coeff(Mchirp, n0, e0);
-            const double lbar0     = lbar_from_e(e0);  
-            double       lbar      = lbar_from_e(e);         
-            l = l0 + (lbar0-lbar)*alpha;
+            if(ptphase){
+                l = ptphase->lp;
+                gamma = ptphase->gammap;
+            }
+            else{
+                const double alpha     = compute_alpha_coeff(Mchirp, n0, e0);
+                const double lbar0     = lbar_from_e(e0);  
+                double       lbar      = lbar_from_e(e);         
+                l = l0 + (lbar0-lbar)*alpha;
+                
+                const double beta      = compute_beta_coeff(Mchirp, M, n0, e0);
+                const double gbar0     = gbar_from_e(e0);
+                const double gbar      = gbar_from_e(e);
+                gamma1 = gamma0 + (gbar0-gbar)*beta;
+
+                const double beta2     = compute_beta2_coeff(Mchirp, M, n0, e0);
+                const double gbar20    = gbar2_from_e(e0,eta);
+                const double gbar2     = gbar2_from_e(e,eta);
+                gamma2 = (gbar20-gbar2)*beta2;
+
+                const double beta3     = compute_beta3_coeff(Mchirp, M, n0, e0);
+                const double gbar30    = gbar3_from_e(e0,eta);
+                const double gbar3     = gbar3_from_e(e,eta);
+                gamma3 = (gbar30-gbar3)*beta3;
+
+                gamma  = gamma1 + gamma2 + gamma3;
+            }
             
-            const double beta      = compute_beta_coeff(Mchirp, M, n0, e0);
-            const double gbar0     = gbar_from_e(e0);
-            const double gbar      = gbar_from_e(e);
-            gamma1 = gamma0 + (gbar0-gbar)*beta;
-
-            const double beta2     = compute_beta2_coeff(Mchirp, M, n0, e0);
-            const double gbar20    = gbar2_from_e(e0,eta);
-            const double gbar2     = gbar2_from_e(e,eta);
-            gamma2 = (gbar20-gbar2)*beta2;
-
-            const double beta3     = compute_beta3_coeff(Mchirp, M, n0, e0);
-            const double gbar30    = gbar3_from_e(e0,eta);
-            const double gbar3     = gbar3_from_e(e,eta);
-            gamma3 = (gbar30-gbar3)*beta3;
-
-            gamma  = gamma1 + gamma2 + gamma3;
         }
     }
 
@@ -238,6 +255,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
 
 BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
                                           const EvolveCoeffs_t &ev_coeffs, 
+                                          const optional<PulsarTermPhase> ptphase,
                                           const double delay) const{
 
     const double &t0    = bin_init.t,
@@ -265,13 +283,20 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
-            throw std::runtime_error("tau<0 found in solve_orbit_equations");
+            throw runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             e     = e0;
             n     = n0 / pow(1-T, 3./8);
-            l     = l0 + (pow(n0,-5./3) - pow(n,-5./3))/(160*A);
-            gamma = gamma0 + (1./n0 - 1./n) * AG;
+            if(ptphase){
+                l = ptphase->lp;
+                gamma = ptphase->gammap;
+            }
+            else{
+                l     = l0 + (pow(n0,-5./3) - pow(n,-5./3))/(160*A);
+                gamma = gamma0 + (1./n0 - 1./n) * AG;
+            }
+            
         }
     }
     else{
@@ -284,34 +309,40 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
             //fprintf(stderr, "Error: The binary has already merged.\n");
             //e=n=l=gamma=NAN;
             merged = true;
-            throw std::runtime_error("tau<0 found in solve_orbit_equations");
+            throw runtime_error("tau<0 found in solve_orbit_equations");
         }
         else{
             
             e = e_from_tau(tau);
             n = n_from_e(n0, e0, e);
             
-            const double &alpha  = ev_coeffs.alpha;
-            const double &lbar0  = ev_coeffs.lbar0;
-            const double lbar    = lbar_from_e(e);         
-            l = l0 + (lbar0-lbar)*alpha;
-            
-            const double &beta   = ev_coeffs.beta;
-            const double &gbar0  = ev_coeffs.gbar0;
-            const double gbar    = gbar_from_e(e);
-            gamma1 = gamma0 + (gbar0-gbar)*beta;
+            if(ptphase){
+                l = ptphase->lp;
+                gamma = ptphase->gammap;
+            }
+            else{
+                const double &alpha  = ev_coeffs.alpha;
+                const double &lbar0  = ev_coeffs.lbar0;
+                const double lbar    = lbar_from_e(e);         
+                l = l0 + (lbar0-lbar)*alpha;
+                
+                const double &beta   = ev_coeffs.beta;
+                const double &gbar0  = ev_coeffs.gbar0;
+                const double gbar    = gbar_from_e(e);
+                gamma1 = gamma0 + (gbar0-gbar)*beta;
 
-            const double &beta2   = ev_coeffs.beta2;
-            const double &gbar20  = ev_coeffs.gbar20;
-            const double gbar2    = gbar2_from_e(e,eta);
-            gamma2 = (gbar20-gbar2)*beta2;
+                const double &beta2   = ev_coeffs.beta2;
+                const double &gbar20  = ev_coeffs.gbar20;
+                const double gbar2    = gbar2_from_e(e,eta);
+                gamma2 = (gbar20-gbar2)*beta2;
 
-            const double &beta3   = ev_coeffs.beta3;
-            const double &gbar30  = ev_coeffs.gbar30;
-            const double gbar3    = gbar3_from_e(e,eta);
-            gamma3 = (gbar30-gbar3)*beta3;
+                const double &beta3   = ev_coeffs.beta3;
+                const double &gbar30  = ev_coeffs.gbar30;
+                const double gbar3    = gbar3_from_e(e,eta);
+                gamma3 = (gbar30-gbar3)*beta3;
 
-            gamma  = gamma1 + gamma2 + gamma3;
+                gamma  = gamma1 + gamma2 + gamma3;
+            }
         }
     }
 
@@ -325,7 +356,7 @@ double Evolve::phase_err(const BinaryMass &bin_mass,
                          const BinaryState &bin_init, 
                          const double delay) const{
     
-    const BinaryState bin_end = this->solve_orbit_equations(bin_mass, bin_init, delay);
+    const BinaryState bin_end = this->solve_orbit_equations(bin_mass, bin_init, nullopt, delay);
     
     const double k0 = advance_of_periastron(bin_mass, bin_init);
     

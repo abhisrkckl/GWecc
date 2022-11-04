@@ -6,18 +6,18 @@
 #include <gsl/gsl_spline.h>
 #include <vector>
 #include <tuple>
+#include <optional>
+
+using std::vector, std::tuple, std::optional;
 
 /*
  * [e, tau, lbar, gammabar]
  */
-typedef std::tuple<std::vector<double>, std::vector<double> > OrbitIntegrals;
+typedef tuple<vector<double>, vector<double>> OrbitIntegrals;
 
 OrbitIntegrals precompute_orbit(const double emin, const double taumax);
 
-/****************/
-
 struct EvolveCoeffs_t{
-
     double  A, AT, AG,
             tau0, P,
             lbar0, alpha,
@@ -28,8 +28,6 @@ struct EvolveCoeffs_t{
             sini, cosi,
             sin2Omega, cos2Omega;
 };
-
-/****************/
 
 class Evolve{
 
@@ -45,7 +43,7 @@ private:
     const double a  = 2*sqrt(2.)/5/pow(5,  63./2299)/pow(17,1181./2299);
     double b;
 
-    void initialize(const std::vector<double> &taus_pre, const std::vector<double> &es_pre);
+    void initialize(const vector<double> &taus_pre, const vector<double> &es_pre);
     
     // Don't allow instantiation
     Evolve(const char *datafilename);
@@ -69,10 +67,12 @@ public:
     
     BinaryState solve_orbit_equations(const BinaryMass &bin_mass, 
                                       const BinaryState &bin_init, 
+                                      const optional<PulsarTermPhase> ptphase,
                                       const double delay) const;
     
     BinaryState solve_orbit_equations(const BinaryState &bin_init,
                                       const EvolveCoeffs_t &ev_coeffs, 
+                                      const optional<PulsarTermPhase> ptphase,
                                       const double delay) const;
     
     double phase_err(const BinaryMass &bin_mass, 
@@ -94,13 +94,24 @@ double gbar_from_e(const double e);
 double gbar2_from_e(const double e, const double eta);
 double gbar3_from_e(const double e, const double eta);
 
-BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay);
+BinaryState solve_orbit_equations(const BinaryMass &bin_mass, 
+                                  const BinaryState &bin_init, 
+                                  const optional<PulsarTermPhase> ptphase,
+                                  const double delay);
 
-EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinaryState &bin_init);
-BinaryState solve_orbit_equations(const BinaryState &bin_init, const EvolveCoeffs_t &ev_coeffs, const double delay);
+EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, 
+                                     const BinaryState &bin_init);
 
-double phase_err(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay);
+BinaryState solve_orbit_equations(const BinaryState &bin_init, 
+                                  const EvolveCoeffs_t &ev_coeffs, 
+                                  const optional<PulsarTermPhase> ptphase,
+                                  const double delay);
 
-double compute_phi(BinaryMass &bin_mass, BinaryState &bin_state);
+double phase_err(const BinaryMass &bin_mass, 
+                 const BinaryState &bin_init, 
+                 const double delay);
+
+double compute_phi(BinaryMass &bin_mass, 
+                   BinaryState &bin_state);
 
 #endif

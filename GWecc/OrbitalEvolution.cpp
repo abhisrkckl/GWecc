@@ -6,20 +6,31 @@
 #include "PN.hpp"
 #include "mikkola.h"
 
-BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay){
-    return Evolve::instance().solve_orbit_equations(bin_mass, bin_init, delay);    
+
+BinaryState 
+solve_orbit_equations(const BinaryMass &bin_mass, 
+                      const BinaryState &bin_init, 
+                      const optional<PulsarTermPhase> ptphase,
+                      const double delay){
+    return Evolve::instance().solve_orbit_equations(bin_mass, bin_init, ptphase, delay);    
 }
 
-BinaryState solve_orbit_equations(const BinaryState &bin_init, const EvolveCoeffs_t &ev_coeffs, const double delay){
-    return Evolve::instance().solve_orbit_equations(bin_init, ev_coeffs, delay);    
+
+BinaryState 
+solve_orbit_equations(const BinaryState &bin_init, 
+                      const EvolveCoeffs_t &ev_coeffs, 
+                      const optional<PulsarTermPhase> ptphase,
+                      const double delay){
+    return Evolve::instance().solve_orbit_equations(bin_init, ev_coeffs, ptphase, delay);    
 }
+
 
 double phase_err(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay){
     return Evolve::instance().phase_err(bin_mass, bin_init, delay);
 }
 
-double compute_P_coeff(const double Mchirp, const double n0, const double e0){
 
+double compute_P_coeff(const double Mchirp, const double n0, const double e0){
     double A   = pow(Mchirp,5./3)/5;
     double e02 = e0*e0;    
     
@@ -28,6 +39,7 @@ double compute_P_coeff(const double Mchirp, const double n0, const double e0){
                 * pow(304 + 121*e02, 3480./2299)
                 / pow(1-e02,4);
 }
+
 
 double compute_alpha_coeff(const double Mchirp, const double n0, const double e0){
     
@@ -40,6 +52,7 @@ double compute_alpha_coeff(const double Mchirp, const double n0, const double e0
                 * pow(1-e02,2.5);
     
 }
+
 
 double compute_beta_coeff(const double Mchirp, const double M, const double n0, const double e0){
     
@@ -54,6 +67,7 @@ double compute_beta_coeff(const double Mchirp, const double M, const double n0, 
     
 }
 
+
 double compute_beta2_coeff(const double Mchirp, const double M, const double n0, const double e0){
     
     const double A = pow(Mchirp,5./3)/5;
@@ -67,6 +81,7 @@ double compute_beta2_coeff(const double Mchirp, const double M, const double n0,
     
 }
 
+
 double compute_beta3_coeff(const double Mchirp, const double M, const double n0, const double e0){
     const double A = pow(Mchirp,5./3);
     const double e02 = e0*e0;
@@ -78,6 +93,7 @@ double compute_beta3_coeff(const double Mchirp, const double M, const double n0,
                        / sqrt(1-e02);
 }
 
+
 double n_from_e(const double n0, const double e0, const double e){
     double e02 = e0*e0,
            e2  = e*e; 
@@ -86,15 +102,18 @@ double n_from_e(const double n0, const double e0, const double e){
                 * pow((304 + 121*e02)/(304 + 121*e2),1305./2299);
 }
 
+
 double lbar_from_e(const double e){
     const/*expr*/ double coeff = pow(19,2175./2299)/30/pow(2, 496./2299);
     return  coeff * e * pow(e,11./19) * gsl_sf_hyperg_2F1(124./2299, 15./19, 34./19, -121.*e*e/304);
 }
 
+
 double gbar_from_e(const double e){
     const/*expr*/ double coeff = pow(19,1305./2299)/36/pow(2,1677./2299);
     return  coeff * pow(e,18./19) * gsl_sf_hyperg_2F1(994./2299,  9./19, 28./19, -121.*e*e/304);
 }
+
 
 double gbar2_from_e(const double e, const double eta){
     
@@ -106,6 +125,7 @@ double gbar2_from_e(const double e, const double eta){
                                     + coeff*(23+ 2*eta)*gsl_sf_hyperg_2F1(3./19, 1864./2299, 22./19, -121*e2/304)
                                );
 }
+
 
 double gbar3_from_e(const double e, const double eta){
     /**
@@ -123,6 +143,7 @@ double gbar3_from_e(const double e, const double eta){
 
     return (gbar3_0 + eta*gbar3_1 * eta*eta*gbar3_2) / pow(e,6./19);
 }
+
 
 EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinaryState &bin_init){
 
@@ -166,6 +187,7 @@ EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinarySta
                                 sin2Omega, cos2Omega  };    
     
 }
+
 
 double compute_phi(BinaryMass &bin_mass, BinaryState &bin_state){
     const auto e    = bin_state.e,
