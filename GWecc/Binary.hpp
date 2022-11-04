@@ -4,10 +4,10 @@
 #include <cmath>
 
 /*
- * t0        in s
+ * t0       in s
  * Omega    in rad
  * i        in rad
- * n         in rad/s
+ * n        in rad/s
  * l        in rad
  * gamma    in rad 
  */
