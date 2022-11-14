@@ -2,8 +2,13 @@
 Singh et al (In prep)
 """
 
-from turtle import color
-import enterprise_GWecc as GWecc
+from enterprise_GWecc.GWecc import (
+    ResidualsMethod_Adb,
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
+    eccentric_residuals,
+    fe_stat_funcs,
+)
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -37,7 +42,7 @@ z = 0.0
 
 e0s = [0.1, 0.3, 0.6]
 for jdx, e0 in enumerate(e0s):
-    res_N = GWecc.GWecc.EccentricResiduals(
+    res_N = eccentric_residuals(
         M,
         q,
         Omega,
@@ -54,12 +59,12 @@ for jdx, e0 in enumerate(e0s):
         RA_P,
         DEC_P,
         z,
-        GWecc.GWecc.ResidualsMethod_Num,
-        GWecc.GWecc.ResidualsTerms_Earth,
+        ResidualsMethod_Num,
+        ResidualsTerms_Earth,
         toas,
     )
 
-    As = GWecc.GWecc.FeStatFuncs(
+    As = fe_stat_funcs(
         M,
         q,
         tref,
@@ -73,7 +78,7 @@ for jdx, e0 in enumerate(e0s):
         DEC_P,
         z,
         toas,
-        GWecc.GWecc.ResidualsMethod_Adb,
+        ResidualsMethod_Adb,
     )
 
     plt.subplot(331 + jdx)
