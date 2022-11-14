@@ -3,7 +3,13 @@
 """
 
 import numpy as np
-from enterprise_GWecc import GWecc
+from enterprise_GWecc.GWecc import (
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
+    ResidualsTerms_Pulsar,
+    antenna_pattern,
+    eccentric_residuals_px,
+)
 import matplotlib.pyplot as plt
 
 year = 365.25 * 24 * 3600
@@ -44,18 +50,16 @@ D_GW = 1e9  # pc
 ntoas = 5000
 toas = 365.25 * np.linspace(0, 10, ntoas)  # days
 
-cosmu, Fp, Fx = GWecc.AntennaPattern(RA_GW, DEC_GW, RA_P, DEC_P)
+cosmu, Fp, Fx = antenna_pattern(RA_GW, DEC_GW, RA_P, DEC_P)
 delay = -1000  # -D_P*(1-cosmu) / (1+z)
 
 for idx, e0 in enumerate([0.1, 0.5, 0.8]):
 
-    for jdx, term in enumerate(
-        [GWecc.ResidualsTerms_Earth, GWecc.ResidualsTerms_Pulsar]
-    ):
+    for jdx, term in enumerate([ResidualsTerms_Earth, ResidualsTerms_Pulsar]):
 
         ax = plt.subplot(321 + idx * 2 + jdx)
 
-        res_px = GWecc.EccentricResiduals_px(
+        res_px = eccentric_residuals_px(
             M,
             q,
             Omega,
@@ -68,7 +72,7 @@ for idx, e0 in enumerate([0.1, 0.5, 0.8]):
             D_GW,
             delay,
             z,
-            GWecc.ResidualsMethod_Num,
+            ResidualsMethod_Num,
             term,
             toas,
         )
@@ -79,7 +83,7 @@ for idx, e0 in enumerate([0.1, 0.5, 0.8]):
         plt.grid()
         plt.xlim([0, 10])
 
-        if term == GWecc.ResidualsTerms_Earth:
+        if term == ResidualsTerms_Earth:
             plt.ylabel("$s_{+,\\times}(t)$  (ns)", fontsize=14)
             plt.text(
                 1,
@@ -92,9 +96,7 @@ for idx, e0 in enumerate([0.1, 0.5, 0.8]):
             )
 
         if idx == 0:
-            title = (
-                "Earth term" if term == GWecc.ResidualsTerms_Earth else "Pulsar term"
-            )
+            title = "Earth term" if term == ResidualsTerms_Earth else "Pulsar term"
             plt.title(title)
 
         if idx == 2 and jdx == 1:
