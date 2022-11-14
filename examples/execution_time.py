@@ -1,7 +1,7 @@
 """Execution time vs ntoas 
 """
 
-import enterprise_GWecc as GWecc
+from enterprise_GWecc.GWecc import ResidualsMethod_Adb, ResidualsMethod_Anl, ResidualsMethod_Num, ResidualsMethod_PM, ResidualsTerms_Earth, eccentric_residuals
 import numpy as np
 import matplotlib.pyplot as plt
 import time
@@ -27,7 +27,7 @@ M = 5e9
 q = 1
 
 Pb0 = 2
-#e0 = 0.5
+# e0 = 0.5
 gamma0 = 0
 l0 = 0
 t0 = 0
@@ -35,7 +35,7 @@ t0 = 0
 z = 0.0
 
 
-res_N = GWecc.GWecc.EccentricResiduals(
+res_N = eccentric_residuals(
     M,
     q,
     Omega,
@@ -52,8 +52,8 @@ res_N = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Num,
-    GWecc.GWecc.ResidualsTerms_Earth,
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
     toas,
 )
 
@@ -67,7 +67,7 @@ nreps = 2
 
 start = time.time()
 res_N = [
-    GWecc.GWecc.EccentricResiduals(
+    eccentric_residuals(
         M,
         q,
         Omega,
@@ -84,14 +84,14 @@ res_N = [
         RA_P,
         DEC_P,
         z,
-        GWecc.GWecc.ResidualsMethod_Adb,
-        GWecc.GWecc.ResidualsTerms_Earth,
+        ResidualsMethod_Adb,
+        ResidualsTerms_Earth,
         toas,
     )
     for i in range(nreps)
 ]
 end = time.time()
-runtime_circ = (end-start)  / (nreps*ntoas)
+runtime_circ = (end - start) / (nreps * ntoas)
 
 es = np.linspace(0.001, 0.8, 10)
 for e0 in es:
@@ -99,7 +99,7 @@ for e0 in es:
 
     start = time.time()
     res_N = [
-        GWecc.GWecc.EccentricResiduals(
+        eccentric_residuals(
             M,
             q,
             Omega,
@@ -116,18 +116,18 @@ for e0 in es:
             RA_P,
             DEC_P,
             z,
-            GWecc.GWecc.ResidualsMethod_Num,
-            GWecc.GWecc.ResidualsTerms_Earth,
+            ResidualsMethod_Num,
+            ResidualsTerms_Earth,
             toas,
         )
         for i in range(nreps)
     ]
     end = time.time()
-    runtime_num.append((end - start) / (nreps*ntoas))
+    runtime_num.append((end - start) / (nreps * ntoas))
 
     start = time.time()
     res_N = [
-        GWecc.GWecc.EccentricResiduals(
+        eccentric_residuals(
             M,
             q,
             Omega,
@@ -144,18 +144,18 @@ for e0 in es:
             RA_P,
             DEC_P,
             z,
-            GWecc.GWecc.ResidualsMethod_Adb,
-            GWecc.GWecc.ResidualsTerms_Earth,
+            ResidualsMethod_Adb,
+            ResidualsTerms_Earth,
             toas,
         )
         for i in range(nreps)
     ]
     end = time.time()
-    runtime_adb.append((end - start) / (nreps*ntoas))
+    runtime_adb.append((end - start) / (nreps * ntoas))
 
     start = time.time()
     res_N = [
-        GWecc.GWecc.EccentricResiduals(
+        eccentric_residuals(
             M,
             q,
             Omega,
@@ -172,18 +172,18 @@ for e0 in es:
             RA_P,
             DEC_P,
             z,
-            GWecc.GWecc.ResidualsMethod_Anl,
-            GWecc.GWecc.ResidualsTerms_Earth,
+            ResidualsMethod_Anl,
+            ResidualsTerms_Earth,
             toas,
         )
         for i in range(nreps)
     ]
     end = time.time()
-    runtime_anl.append((end - start) / (nreps*ntoas))
+    runtime_anl.append((end - start) / (nreps * ntoas))
 
     start = time.time()
     res_N = [
-        GWecc.GWecc.EccentricResiduals(
+        eccentric_residuals(
             M,
             q,
             Omega,
@@ -200,22 +200,34 @@ for e0 in es:
             RA_P,
             DEC_P,
             z,
-            GWecc.GWecc.ResidualsMethod_PM,
-            GWecc.GWecc.ResidualsTerms_Earth,
+            ResidualsMethod_PM,
+            ResidualsTerms_Earth,
             toas,
         )
         for i in range(nreps)
     ]
     end = time.time()
-    runtime_pm.append((end - start) / (nreps*ntoas))
+    runtime_pm.append((end - start) / (nreps * ntoas))
 
-plt.plot(es, np.array(runtime_adb)/runtime_circ, marker='+', ls='--', label="Analytic")
-plt.plot(es, np.array(runtime_pm)/runtime_circ, marker='x', ls='--', label="Fourier")
-plt.plot(es[es<=0.3], np.array(runtime_anl)[es<=0.3]/runtime_circ, marker='o', ls='--', label="Post-circular")
-plt.plot(es, np.array(runtime_num)/runtime_circ, marker='^', ls='--', label="Numerical")
-plt.yscale('log')
+plt.plot(
+    es, np.array(runtime_adb) / runtime_circ, marker="+", ls="--", label="Analytic"
+)
+plt.plot(es, np.array(runtime_pm) / runtime_circ, marker="x", ls="--", label="Fourier")
+plt.plot(
+    es[es <= 0.3],
+    np.array(runtime_anl)[es <= 0.3] / runtime_circ,
+    marker="o",
+    ls="--",
+    label="Post-circular",
+)
+plt.plot(
+    es, np.array(runtime_num) / runtime_circ, marker="^", ls="--", label="Numerical"
+)
+plt.yscale("log")
 plt.xlabel("$e_{t0}$", fontsize=12)
-plt.ylabel("Execution time per TOA\n(Normalized by exec. time for circular case)", fontsize=12)
+plt.ylabel(
+    "Execution time per TOA\n(Normalized by exec. time for circular case)", fontsize=12
+)
 plt.legend(fontsize=12)
-plt.tick_params(axis='both', labelsize=11)
+plt.tick_params(axis="both", labelsize=11)
 plt.show()
