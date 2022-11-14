@@ -1,7 +1,7 @@
 #ifndef _ipow_hpp_
 #define _ipow_hpp_ 1
 
-constexpr static double ipow(const double x, const unsigned int n){
+constexpr double ipow(const double x, const unsigned n){
     
     double result{1}, temp{x};
     
@@ -16,12 +16,12 @@ constexpr static double ipow(const double x, const unsigned int n){
 }
 
 
-template<unsigned int n>
-constexpr static double ipow(const double x){
+template<unsigned n>
+constexpr double ipow(const double x){
     
     double result{1}, temp{x};
     
-    for(unsigned int j=1; j<=n; j<<=1){
+    for(unsigned j=1; j<=n; j<<=1){
        if(n&j){
            result *= temp;
        }
