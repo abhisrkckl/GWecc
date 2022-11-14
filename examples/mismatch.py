@@ -1,10 +1,9 @@
-from cProfile import label
 import numpy as np
 import matplotlib.pyplot as plt
 
 from enterprise_GWecc.GWecc import (
     ResidualsTerms_Earth,
-    EccentricResiduals,
+    eccentric_residuals,
     ResidualsMethod_Adb,
     ResidualsMethod_Num,
 )
@@ -92,7 +91,7 @@ for idx, Pb0 in enumerate(Pb0s):
         )
         mismatches = []
         for e0 in es:
-            res_adb = EccentricResiduals(
+            res_adb = eccentric_residuals(
                 M,
                 q,
                 Omega,
@@ -114,7 +113,7 @@ for idx, Pb0 in enumerate(Pb0s):
                 ts,
             )
 
-            res_num = EccentricResiduals(
+            res_num = eccentric_residuals(
                 M,
                 q,
                 Omega,
