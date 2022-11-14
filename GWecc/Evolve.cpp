@@ -26,9 +26,7 @@ Evolve::Evolve(const char *datafilename){
         constexpr double emin   = 2.5e-9,  // Initial condition
                          taumax = 1000;    // Stopping condition
 
-        std::vector<double> taus, es;
-        std::tie(taus,es) = precompute_orbit(emin,taumax);
-        //const auto [taus,es] = precompute_orbit(emin,taumax);
+        const auto [taus,es] = precompute_orbit(emin,taumax);
 
         initialize(taus, es);
 
@@ -50,8 +48,7 @@ Evolve::Evolve(const char *datafilename){
             //Evolve();
             const/*expr*/ double emin   = 2.5e-9,  // Initial condition
                                           taumax = 1000;
-            std::vector<double> taus, es;
-            std::tie(taus,es) = precompute_orbit(emin,taumax);
+            const auto [taus, es] = precompute_orbit(emin,taumax);
 
             initialize(taus, es);
 
@@ -79,8 +76,7 @@ Evolve::Evolve(){
     constexpr double emin   = 2.5e-9,  // Initial condition
                      taumax = 1000;    // Stopping condition
     
-    std::vector<double> taus, es;
-    std::tie(taus,es) = precompute_orbit(emin,taumax);
+    const auto [taus, es] = precompute_orbit(emin,taumax);
     
     initialize(taus, es);
 }

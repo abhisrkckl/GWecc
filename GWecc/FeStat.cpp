@@ -108,8 +108,7 @@ std::array<Signal1D, 6> FeStatFuncs(const BinaryMass &bin_mass,
                                     const SkyPosition &psr_pos,
                                     const Signal1D &ts){
 
-    double cosmu, Fp, Fx;
-    std::tie(cosmu, Fp, Fx) = antenna_pattern(bin_pos, psr_pos);
+    const auto [cosmu, Fp, Fx] = antenna_pattern(bin_pos, psr_pos);
 
     gsl_set_error_handler_off();
 

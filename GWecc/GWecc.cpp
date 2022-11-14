@@ -181,12 +181,11 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
 
-    Signal1D _Rp, _Rx;
-    std::tie(_Rp, _Rx) = EccentricResiduals_px(bin_mass, bin_init,
-                                               parsec_to_s*DGW, parsec_to_s*delay,
-                                               residuals_method,
-                                               residuals_terms,
-                                               tzs);
+    auto [_Rp, _Rx] = EccentricResiduals_px(bin_mass, bin_init,
+                                            parsec_to_s*DGW, parsec_to_s*delay,
+                                            residuals_method,
+                                            residuals_terms,
+                                            tzs);
     _Rp *= (1+z);
     _Rx *= (1+z);
 
@@ -215,10 +214,9 @@ std::vector<std::vector<double> > EccentricWaveform_px( const double M, const do
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
 
-    Signal1D _hp, _hx;
-    std::tie(_hp, _hx) = EccentricWaveform_px( bin_mass, bin_init, 
-                                                     DGW*parsec_to_s,
-                                                     tzs);
+    const auto [_hp, _hx] = EccentricWaveform_px(bin_mass, bin_init, 
+                                                 DGW*parsec_to_s,
+                                                 tzs);
 
     std::vector<double>     hp(std::begin(_hp), std::end(_hp)),
                  			hx(std::begin(_hx), std::end(_hx));
@@ -227,8 +225,7 @@ std::vector<std::vector<double> > EccentricWaveform_px( const double M, const do
 }
 
 std::vector<double> antenna_pattern(const double RA_GW, const double DEC_GW, const double RA_P, const double DEC_P){
-    double cos_th, Fp, Fx;
-    std::tie(cos_th, Fp, Fx) = antenna_pattern(SkyPosition{0, RA_GW, DEC_GW, 0}, SkyPosition{0, RA_P, DEC_P, 0});
+    const auto [cos_th, Fp, Fx] = antenna_pattern(SkyPosition{0, RA_GW, DEC_GW, 0}, SkyPosition{0, RA_P, DEC_P, 0});
     return std::vector<double>{cos_th, Fp, Fx};
 }
 

@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 from itertools import product as outer_product
 from enterprise_GWecc.GWecc import (
-    AntennaPattern,
+    antenna_pattern,
     EccentricResiduals,
     EccentricResiduals_px,
 )
@@ -32,7 +32,7 @@ from default_test_params import (
 
 @pytest.mark.parametrize("method, term", outer_product(methods, terms))
 def test_AntennaPattern(method, term):
-    cosmu, Fp, Fx = AntennaPattern(RA_GW, DEC_GW, RA_P, DEC_P)
+    cosmu, Fp, Fx = antenna_pattern(RA_GW, DEC_GW, RA_P, DEC_P)
 
     assert np.all(np.isfinite([cosmu, Fp, Fx]))
 
