@@ -2,7 +2,14 @@
 """
 
 import numpy as np
-from enterprise_GWecc import GWecc
+from enterprise_GWecc.GWecc import (
+    ResidualsMethod_Anl,
+    ResidualsMethod_Num,
+    ResidualsMethod_PM,
+    ResidualsTerms_Earth,
+    antenna_pattern,
+    eccentric_residuals_px,
+)
 import matplotlib.pyplot as plt
 
 year = 365.25 * 24 * 3600
@@ -42,14 +49,14 @@ D_GW = 1e9  # pc
 ntoas = 5000
 toas = 365.25 * np.linspace(0, 10, ntoas)  # days
 
-cosmu, Fp, Fx = GWecc.AntennaPattern(RA_GW, DEC_GW, RA_P, DEC_P)
+cosmu, Fp, Fx = antenna_pattern(RA_GW, DEC_GW, RA_P, DEC_P)
 delay = -1000  # -D_P*(1-cosmu) / (1+z)
 
-term = GWecc.ResidualsTerms_Earth
+term = ResidualsTerms_Earth
 
 for idx, e0 in enumerate([0.001, 0.3, 0.6]):
 
-    res_px_pm = GWecc.EccentricResiduals_px(
+    res_px_pm = eccentric_residuals_px(
         M,
         q,
         Omega,
@@ -62,12 +69,12 @@ for idx, e0 in enumerate([0.001, 0.3, 0.6]):
         D_GW,
         delay,
         z,
-        GWecc.ResidualsMethod_PM,
+        ResidualsMethod_PM,
         term,
         toas,
     )
 
-    res_px_anl = GWecc.EccentricResiduals_px(
+    res_px_anl = eccentric_residuals_px(
         M,
         q,
         Omega,
@@ -80,12 +87,12 @@ for idx, e0 in enumerate([0.001, 0.3, 0.6]):
         D_GW,
         delay,
         z,
-        GWecc.ResidualsMethod_Anl,
+        ResidualsMethod_Anl,
         term,
         toas,
     )
 
-    res_px_num = GWecc.EccentricResiduals_px(
+    res_px_num = eccentric_residuals_px(
         M,
         q,
         Omega,
@@ -98,7 +105,7 @@ for idx, e0 in enumerate([0.001, 0.3, 0.6]):
         D_GW,
         delay,
         z,
-        GWecc.ResidualsMethod_Num,
+        ResidualsMethod_Num,
         term,
         toas,
     )
@@ -106,8 +113,8 @@ for idx, e0 in enumerate([0.001, 0.3, 0.6]):
     res_p_pm = np.asarray(res_px_pm[0]) - np.mean(res_px_pm[0])
     res_x_pm = np.asarray(res_px_pm[1]) - np.mean(res_px_pm[1])
 
-    #res_p_anl = np.asarray(res_px_anl[0]) - np.mean(res_px_anl[0])
-    #res_x_anl = np.asarray(res_px_anl[1]) - np.mean(res_px_anl[1])
+    # res_p_anl = np.asarray(res_px_anl[0]) - np.mean(res_px_anl[0])
+    # res_x_anl = np.asarray(res_px_anl[1]) - np.mean(res_px_anl[1])
 
     res_p_num = np.asarray(res_px_num[0]) - np.mean(res_px_num[0])
     res_x_num = np.asarray(res_px_num[1]) - np.mean(res_px_num[1])
@@ -139,7 +146,9 @@ for idx, e0 in enumerate([0.001, 0.3, 0.6]):
 
     ax = plt.subplot(321 + idx * 2 + 1)
     plt.plot(toas / 365.25, res_x_num, label="$s_\\times$ Numerical", color="b")
-    plt.plot(toas / 365.25, res_x_pm, "--", label="$s_\\times$ Peters-Mathews", color="r")
+    plt.plot(
+        toas / 365.25, res_x_pm, "--", label="$s_\\times$ Peters-Mathews", color="r"
+    )
     plt.grid()
     plt.xlim([0, 10])
     # plt.ylabel("$s_{+,\\times}(t)$  (ns)", fontsize=14)

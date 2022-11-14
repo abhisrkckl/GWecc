@@ -3,7 +3,13 @@ Comparison of analytical vs numerical residuals
 """
 
 import numpy as np
-from enterprise_GWecc import GWecc
+from enterprise_GWecc.GWecc import (
+    ResidualsMethod_Anl,
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
+    antenna_pattern,
+    eccentric_residuals_px,
+)
 import matplotlib.pyplot as plt
 
 year = 365.25 * 24 * 3600
@@ -43,14 +49,14 @@ D_GW = 1e9  # pc
 ntoas = 5000
 toas = 365.25 * np.linspace(0, 10, ntoas)  # days
 
-cosmu, Fp, Fx = GWecc.AntennaPattern(RA_GW, DEC_GW, RA_P, DEC_P)
+cosmu, Fp, Fx = antenna_pattern(RA_GW, DEC_GW, RA_P, DEC_P)
 delay = -1000  # -D_P*(1-cosmu) / (1+z)
 
-term = GWecc.ResidualsTerms_Earth
+term = ResidualsTerms_Earth
 
 for idx, e0 in enumerate([0.1, 0.3, 0.6]):
 
-    res_px_anl = GWecc.EccentricResiduals_px(
+    res_px_anl = eccentric_residuals_px(
         M,
         q,
         Omega,
@@ -63,12 +69,12 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
         D_GW,
         delay,
         z,
-        GWecc.ResidualsMethod_Anl,
+        ResidualsMethod_Anl,
         term,
         toas,
     )
 
-    res_px_num = GWecc.EccentricResiduals_px(
+    res_px_num = eccentric_residuals_px(
         M,
         q,
         Omega,
@@ -81,7 +87,7 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
         D_GW,
         delay,
         z,
-        GWecc.ResidualsMethod_Num,
+        ResidualsMethod_Num,
         term,
         toas,
     )
