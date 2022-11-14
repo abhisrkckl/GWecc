@@ -14,7 +14,7 @@ static constexpr double MSun_to_s   = 4.92703806e-6,       // Solar mass in s (g
  * M        is Total Mass               in SolarMass
  * q        is Mass Ratio
  *
- * Omega    is Polarization Angle       in rad
+ * psi      is Polarization Angle       in rad
  * i        is Inclination              in rad
  *
  * t0       is Epoch                    in MJD
@@ -38,7 +38,7 @@ static constexpr double MSun_to_s   = 4.92703806e-6,       // Solar mass in s (g
  * ts       are TOAs                    in MJD        in Earth frame
  */
 std::vector<double> EccentricResiduals( const double M, const double q,
-                                        const double Omega, const double i, 
+                                        const double psi, const double i, 
                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                         const double D_GW, const double RA_GW, const double DEC_GW, 
                                         const double D_P,  const double RA_P,  const double DEC_P, 
@@ -53,7 +53,7 @@ std::vector<double> EccentricResiduals( const double M, const double q,
                  n0 = 2*M_PI/Pb0; 
     
     const BinaryState bin_init { day_to_s*t0,
-                                 Omega, i,
+                                 psi, i,
                                  n0, e0, l0, gamma0 };
                      
     const SkyPosition bin_pos {parsec_to_s*D_GW, RA_GW, DEC_GW, z},
@@ -73,7 +73,7 @@ std::vector<double> EccentricResiduals( const double M, const double q,
 
 std::vector<std::vector<double>> EccentricResidualsAndWaveform( 
                                         const double M, const double q,
-                                        const double Omega, const double i, 
+                                        const double psi, const double i, 
                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                         const double D_GW, const double RA_GW, const double DEC_GW, 
                                         const double D_P,  const double RA_P,  const double DEC_P, 
@@ -87,7 +87,7 @@ std::vector<std::vector<double>> EccentricResidualsAndWaveform(
                  n0 = 2*M_PI/Pb0; 
     
     const BinaryState bin_init { day_to_s*t0,
-                                 Omega, i,
+                                 psi, i,
                                  n0, e0, l0, gamma0 };
                      
     const SkyPosition bin_pos {parsec_to_s*D_GW, RA_GW, DEC_GW, z},
@@ -108,7 +108,7 @@ std::vector<std::vector<double>> EccentricResidualsAndWaveform(
 }
 
 std::vector<double> EccentricWaveform(  const double M, const double q,
-                                        const double Omega, const double i, 
+                                        const double psi, const double i, 
                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                         const double D_GW, const double RA_GW, const double DEC_GW, 
                                         const double D_P,  const double RA_P,  const double DEC_P, 
@@ -122,7 +122,7 @@ std::vector<double> EccentricWaveform(  const double M, const double q,
                  n0 = 2*M_PI/Pb0; 
     
     const BinaryState bin_init { day_to_s*t0,
-                                 Omega, i,
+                                 psi, i,
                                  n0, e0, l0, gamma0 };
                      
     const SkyPosition bin_pos {parsec_to_s*D_GW, RA_GW, DEC_GW, z},
@@ -143,7 +143,7 @@ std::vector<double> EccentricWaveform(  const double M, const double q,
  * M        is Total Mass               in SolarMass
  * q        is Mass Ratio
  *
- * Omega    is Polarization Angle       in rad
+ * psi      is Polarization Angle       in rad
  * i        is Inclination              in rad
  *
  * t0       is Epoch                    in MJD
@@ -161,7 +161,7 @@ std::vector<double> EccentricWaveform(  const double M, const double q,
  * ts       are TOAs                    in MJD        in Earth frame
  */
 std::vector<std::vector<double> > EccentricResiduals_px(const double M, const double q,
-                                                        const double Omega, const double i,
+                                                        const double psi, const double i,
                                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double delay,
                                                         const double z,
@@ -175,7 +175,7 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
                  n0 = 2*M_PI/Pb0; 
 
     const BinaryState bin_init { day_to_s*t0,
-                                 Omega, i,
+                                 psi, i,
                                  n0, e0, l0, gamma0 };
 
     Signal1D tzs(_ts.data(), _ts.size());
@@ -197,7 +197,7 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
 
 
 std::vector<std::vector<double> > EccentricWaveform_px( const double M, const double q,
-                                                        const double Omega, const double i,
+                                                        const double psi, const double i,
                                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double z,
                                                         const std::vector<double> _ts){
@@ -208,7 +208,7 @@ std::vector<std::vector<double> > EccentricWaveform_px( const double M, const do
     const BinaryMass bin_mass(M*MSun_to_s, q);
 
     const BinaryState bin_init { day_to_s*t0,
-                                 Omega, i,
+                                 psi, i,
                                  n0, e0, l0, gamma0 };
 
     Signal1D tzs(_ts.data(), _ts.size());

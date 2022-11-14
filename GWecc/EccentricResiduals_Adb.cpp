@@ -53,8 +53,8 @@ auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                         
                 OTS = sqrt(1-e*e),
                 
-                c2Om = ev_coeffs.cos2Omega,
-                s2Om = ev_coeffs.sin2Omega,
+                c2psi = ev_coeffs.cos2psi,
+                s2psi = ev_coeffs.sin2psi,
                 
                 H0 = GWAmplitude(bin_mass, bin_now, DGW);
     
@@ -81,8 +81,8 @@ auto EccentricResiduals_px_fn_pt_Adb(const BinaryMass &bin_mass,
     const auto sA = (H0/n) * ( a1*A1 + a0*A0 ),
                sB = (H0/n) * ( a2*A2 );
     
-    const auto sp = c2Om*sA - s2Om*sB,
-               sx = s2Om*sA + c2Om*sB;
+    const auto sp = c2psi*sA - s2psi*sB,
+               sx = s2psi*sA + c2psi*sB;
 
     return std::make_tuple(sp, sx);
 }
@@ -138,8 +138,8 @@ auto EccentricResidualsAndWaveform_px_fn_pt_Adb(const BinaryMass &bin_mass,
                         
                 OTS = sqrt(1-e*e),
                 
-                c2Om = ev_coeffs.cos2Omega,
-                s2Om = ev_coeffs.sin2Omega,
+                c2psi = ev_coeffs.cos2psi,
+                s2psi = ev_coeffs.sin2psi,
                 
                 H0 = GWAmplitude(bin_mass, bin_now, DGW);
     
@@ -158,8 +158,8 @@ auto EccentricResidualsAndWaveform_px_fn_pt_Adb(const BinaryMass &bin_mass,
     const auto sA = (H0/n) * ( a1*A1 + a0*A0 ),
                sB = (H0/n) * ( a2*A2 );
     
-    const auto sp = c2Om*sA - s2Om*sB,
-               sx = s2Om*sA + c2Om*sB;
+    const auto sp = c2psi*sA - s2psi*sB,
+               sx = s2psi*sA + c2psi*sB;
 
     const auto h_mq_A   = 1./ipow(1-ecu,2) * (    - (ci*ci+1)*(2*OTS*esu)         *s2phi
                             + (ci*ci+1)*(2*e*e - ecu*ecu + ecu - 2)    *c2phi
@@ -171,8 +171,8 @@ auto EccentricResidualsAndWaveform_px_fn_pt_Adb(const BinaryMass &bin_mass,
     const auto hA       = H0 * h_mq_A, 
                hB       = H0 * h_mq_B;
      
-    const auto hp       = c2Om*hA - s2Om*hB,
-               hx       = c2Om*hB + s2Om*hA;
+    const auto hp       = c2psi*hA - s2psi*hB,
+               hx       = c2psi*hB + s2psi*hA;
 
     return std::make_tuple(sp, sx, hp, hx);
 }

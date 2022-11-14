@@ -228,7 +228,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
 
     return merged ? BinaryState()
                   : BinaryState { t, 
-                                  bin_init.Omega, bin_init.i, 
+                                  bin_init.psi, bin_init.i, 
                                   n, e, l, gamma };
 }
 
@@ -313,7 +313,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
 
     return merged ? BinaryState()
                   : BinaryState { t, 
-                                  bin_init.Omega, bin_init.i, 
+                                  bin_init.psi, bin_init.i, 
                                   n, e, l, gamma };
 }
 

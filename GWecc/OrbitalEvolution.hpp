@@ -26,7 +26,7 @@ struct EvolveCoeffs_t{
             gbar30, beta3,
             eta,
             sini, cosi,
-            sin2Omega, cos2Omega;
+            sin2psi, cos2psi;
 };
 
 /****************/

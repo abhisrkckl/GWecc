@@ -131,8 +131,8 @@ double EccentricResiduals_fn_pt(double t, void *_params){
                     
                OTS      = sqrt(1-e*e),
                
-               c2Om     = ev_coeffs.cos2Omega,    //cos(2*bin_now.Omega),
-               s2Om     = ev_coeffs.sin2Omega,    //sin(2*bin_now.Omega),
+               c2psi     = ev_coeffs.cos2psi,
+               s2psi     = ev_coeffs.sin2psi,
                
                H0       = (DGW==-1) ?1 :GWAmplitude(bin_mass, bin_now, DGW);    
     
@@ -157,8 +157,8 @@ double EccentricResiduals_fn_pt(double t, void *_params){
     const auto hA       = h_mq_A + sqrtx*h_cq_A,
                hB       = h_mq_B + sqrtx*h_cq_B; 
     
-    const auto hp       = c2Om*hA - s2Om*hB,
-               hx       = c2Om*hB + s2Om*hA;
+    const auto hp       = c2psi*hA - s2psi*hB,
+               hx       = c2psi*hB + s2psi*hA;
     
     return H0*(Fp*hp + Fx*hx);
 }

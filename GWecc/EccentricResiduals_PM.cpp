@@ -66,8 +66,8 @@ auto EccentricResiduals_px_fn_pt_PM(const BinaryMass &bin_mass,
                         
                 OTS = sqrt(1-e*e),
                 
-                c2Om = ev_coeffs.cos2Omega,
-                s2Om = ev_coeffs.sin2Omega,
+                c2psi = ev_coeffs.cos2psi,
+                s2psi = ev_coeffs.sin2psi,
                 
                 H0 = GWAmplitude(bin_mass, bin_now, DGW);
 
@@ -102,8 +102,8 @@ auto EccentricResiduals_px_fn_pt_PM(const BinaryMass &bin_mass,
     const auto sA = (H0/n) * ( a1*A1 + a0*A0 ),
                sB = (H0/n) * ( a2*A2 );
     
-    const auto sp = c2Om*sA - s2Om*sB,
-               sx = s2Om*sA + c2Om*sB;
+    const auto sp = c2psi*sA - s2psi*sB,
+               sx = s2psi*sA + c2psi*sB;
 
     return std::make_tuple(sp, sx);
 }

@@ -152,8 +152,8 @@ EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinarySta
                   sini   = sin(bin_init.i),
                   cosi   = cos(bin_init.i),
                 
-                  sin2Omega = sin(2*bin_init.Omega),
-                  cos2Omega = cos(2*bin_init.Omega);
+                  sin2psi = sin(2*bin_init.psi),
+                  cos2psi = cos(2*bin_init.psi);
 
     return EvolveCoeffs_t {    A, AA, AG,
                                 tau0, P,
@@ -163,7 +163,7 @@ EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinarySta
                                 gbar30, beta3,
                                 eta,
                                 sini, cosi,
-                                sin2Omega, cos2Omega  };    
+                                sin2psi, cos2psi  };    
     
 }
 

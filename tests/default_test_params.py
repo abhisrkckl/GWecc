@@ -30,7 +30,7 @@ M = 1e9
 q = 1
 Pb0 = 5  # years
 e0 = 0.3
-Omega = 0
+psi = 0
 i = 0
 t0 = 0
 l0 = gamma0 = 0

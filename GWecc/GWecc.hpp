@@ -9,7 +9,7 @@
  * Computes R(t)
  */
 std::vector<double> EccentricResiduals( const double M, const double q,
-                    const double Omega, const double i, 
+                    const double psi, const double i, 
                     const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                     const double D_GW, const double RA_GW, const double DEC_GW, 
                     const double D_P,  const double RA_P,  const double DEC_P, 
@@ -19,7 +19,7 @@ std::vector<double> EccentricResiduals( const double M, const double q,
                     const std::vector<double> ts);
 
 std::vector<double> EccentricWaveform( const double M, const double q,
-                    const double Omega, const double i, 
+                    const double psi, const double i, 
                     const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                     const double D_GW, const double RA_GW, const double DEC_GW, 
                     const double D_P,  const double RA_P,  const double DEC_P, 
@@ -28,7 +28,7 @@ std::vector<double> EccentricWaveform( const double M, const double q,
                     const std::vector<double> ts);
 
 std::vector<std::vector<double>> EccentricResidualsAndWaveform(const double M, const double q,
-                    const double Omega, const double i, 
+                    const double psi, const double i, 
                     const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                     const double D_GW, const double RA_GW, const double DEC_GW, 
                     const double D_P,  const double RA_P,  const double DEC_P, 
@@ -37,7 +37,7 @@ std::vector<std::vector<double>> EccentricResidualsAndWaveform(const double M, c
                     const std::vector<double> ts);
 
 std::vector<std::vector<double> > EccentricResiduals_px(const double M, const double q,
-                                                        const double Omega, const double i,
+                                                        const double psi, const double i,
                                                         const double t0, const double n0, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double delay,
                                                         const double z,
@@ -46,13 +46,13 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
                                                         const std::vector<double> _ts);
 
 std::vector<std::vector<double> > EccentricWaveform_px( const double M, const double q,
-                                                        const double Omega, const double i,
+                                                        const double psi, const double i,
                                                         const double t0, const double n0, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double z,
                                                         const std::vector<double> _ts);
 
 std::vector<double> EccentricWaveform_fn(const double M, const double q,
-                                         const double Omega, const double i,
+                                         const double psi, const double i,
                                          const double n, const double e, const double l, const double gamma,
                                          const double DGW); 
 

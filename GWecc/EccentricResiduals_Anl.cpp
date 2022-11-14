@@ -50,8 +50,8 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Anl(const BinaryMass &bin_m
     
     const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
     
-    const auto cos2Omega = cos(2*bin_init.Omega),
-               sin2Omega = sin(2*bin_init.Omega);
+    const auto cos2psi = cos(2*bin_init.psi),
+               sin2psi = sin(2*bin_init.psi);
     
     Signal1D Rp(length), Rx(length);
     
@@ -74,8 +74,8 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Anl(const BinaryMass &bin_m
 
         const auto H0 = GWAmplitude(bin_mass, bin_now, DGW);
         
-        Rp[i] = H0*(cos2Omega*RA - sin2Omega*RB);
-        Rx[i] = H0*(cos2Omega*RB + sin2Omega*RA);
+        Rp[i] = H0*(cos2psi*RA - sin2psi*RB);
+        Rx[i] = H0*(cos2psi*RB + sin2psi*RA);
     }
     
     return std::make_tuple(Rp, Rx);

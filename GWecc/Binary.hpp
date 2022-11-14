@@ -4,24 +4,24 @@
 #include <cmath>
 
 /*
- * t0        in s
- * Omega    in rad
+ * t0       in s
+ * psi      in rad
  * i        in rad
- * n         in rad/s
+ * n        in rad/s
  * l        in rad
  * gamma    in rad 
  */
 struct BinaryState{
     double t;
-    double Omega, i;
+    double psi, i;
     double n, e, l, gamma;
     bool merged;
 
-    BinaryState(double _t, double _Om, double _i, double _n, double _e, double _l, double _gamma)
-       : t(_t), Omega(_Om), i(_i), n(_n), e(_e), l(_l), gamma(_gamma), merged(false) {}
+    BinaryState(double _t, double _psi, double _i, double _n, double _e, double _l, double _gamma)
+       : t(_t), psi(_psi), i(_i), n(_n), e(_e), l(_l), gamma(_gamma), merged(false) {}
 
     BinaryState()
-       : t(NAN), Omega(NAN), i(NAN), n(NAN), e(NAN), l(NAN), gamma(NAN), 
+       : t(NAN), psi(NAN), i(NAN), n(NAN), e(NAN), l(NAN), gamma(NAN), 
          merged(true) {} 
 };
 

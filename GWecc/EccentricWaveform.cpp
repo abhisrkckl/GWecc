@@ -7,13 +7,13 @@
 #include "AntennaPattern.hpp"
 
 std::vector<double> EccentricWaveform_fn(const double M, const double q,
-                                         const double Omega, const double i,
+                                         const double psi, const double i,
                                          const double n, const double e, const double l, const double gamma,
                                          const double DGW){
 
     const BinaryMass bin_mass{M, q};
     const BinaryState bin_now { 0,
-                                Omega, i,
+                                psi, i,
                                 n, e, l, gamma};
     
     const double  u        = mikkola(l,e),
@@ -52,8 +52,8 @@ std::vector<double> EccentricWaveform_fn(const double M, const double q,
                         
                   OTS      = sqrt(1-e*e),
                   
-                  c2Om     = cos(2*Omega),    //cos(2*bin_now.Omega),
-                  s2Om     = sin(2*Omega),    //sin(2*bin_now.Omega),
+                  c2Om     = cos(2*psi),
+                  s2Om     = sin(2*psi),
                   
                   H0       = (DGW==-1) ?1 :GWAmplitude(bin_mass, bin_now, DGW);
     
