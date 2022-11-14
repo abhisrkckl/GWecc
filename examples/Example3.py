@@ -1,7 +1,13 @@
 """Comparing residuals computed from +/x components vs direct function call.
 """
 
-import enterprise_GWecc as GWecc
+from enterprise_GWecc.GWecc import (
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
+    antenna_pattern,
+    eccentric_residuals,
+    eccentric_residuals_px,
+)
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -32,9 +38,9 @@ t0 = 0
 
 z = 0.0
 
-cosmu, Fp, Fx = GWecc.GWecc.AntennaPattern(RA_GW, DEC_GW, RA_P, DEC_P)
+cosmu, Fp, Fx = antenna_pattern(RA_GW, DEC_GW, RA_P, DEC_P)
 delay = -D_P * (1 - cosmu) / (1 + z)
-res_px = GWecc.GWecc.EccentricResiduals_px(
+res_px = eccentric_residuals_px(
     M,
     q,
     Omega,
@@ -47,14 +53,14 @@ res_px = GWecc.GWecc.EccentricResiduals_px(
     D_GW,
     delay,
     z,
-    GWecc.GWecc.ResidualsMethod_Num,
-    GWecc.GWecc.ResidualsTerms_Earth,
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
     toas,
 )
 
 
 res_from_px = np.array(res_px[0]) * Fp + np.array(res_px[1]) * Fx
-res = GWecc.GWecc.EccentricResiduals(
+res = eccentric_residuals(
     M,
     q,
     Omega,
@@ -71,8 +77,8 @@ res = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Num,
-    GWecc.GWecc.ResidualsTerms_Earth,
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
     toas,
 )
 
