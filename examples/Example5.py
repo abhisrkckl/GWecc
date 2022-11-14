@@ -3,7 +3,11 @@ Full residuals (Earth and pulsar term)
 """
 
 import numpy as np
-from enterprise_GWecc import GWecc
+from enterprise_GWecc.GWecc import (
+    ResidualsMethod_Num,
+    ResidualsTerms_Both,
+    eccentric_residuals,
+)
 import matplotlib.pyplot as plt
 
 year = 365.25 * 24 * 3600
@@ -47,7 +51,7 @@ for idx, e0 in enumerate([0.1, 0.5, 0.8]):
 
     ax = plt.subplot(311 + idx)
 
-    res = GWecc.EccentricResiduals(
+    res = eccentric_residuals(
         M,
         q,
         Omega,
@@ -64,8 +68,8 @@ for idx, e0 in enumerate([0.1, 0.5, 0.8]):
         RA_P,
         DEC_P,
         z,
-        GWecc.ResidualsMethod_Num,
-        GWecc.ResidualsTerms_Both,
+        ResidualsMethod_Num,
+        ResidualsTerms_Both,
         toas,
     )
     res = np.asarray(res) - np.mean(res)
