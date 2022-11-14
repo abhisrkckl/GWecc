@@ -2,7 +2,9 @@
 """
 
 import numpy as np
-from enterprise_GWecc import GWecc, eccentric_cw_delay
+from enterprise_GWecc import eccentric_cw_delay
+from enterprise_GWecc.GWecc import ResidualsMethod_Num, ResidualsTerms_Both
+from enterprise_GWecc._GWecc import eccentric_residuals
 from enterprise.pulsar import Pulsar
 import matplotlib.pyplot as plt
 
@@ -50,28 +52,8 @@ for idx, e0 in enumerate([0.1, 0.5, 0.8]):
 
     ax = plt.subplot(311 + idx)
 
-    print(
-        "==>",
-        M,
-        q,
-        Omega,
-        i,
-        tref,
-        Pb0,
-        e0,
-        l0,
-        gamma0,
-        D_GW,
-        RA_GW,
-        DEC_GW,
-        D_P,
-        RA_P,
-        DEC_P,
-        z,
-    )
-
     # Directly calling the EccentricResiduals function
-    res = GWecc.EccentricResiduals(
+    res = eccentric_residuals(
         M,
         q,
         Omega,
@@ -88,8 +70,8 @@ for idx, e0 in enumerate([0.1, 0.5, 0.8]):
         RA_P,
         DEC_P,
         z,
-        GWecc.ResidualsMethod_Num,
-        GWecc.ResidualsTerms_Both,
+        ResidualsMethod_Num,
+        ResidualsTerms_Both,
         toas,
     )
 
