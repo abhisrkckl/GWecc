@@ -193,7 +193,7 @@ Signal1D EccentricResiduals_Adb(const BinaryMass &bin_mass,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts){
     
-    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
+    const auto [cosmu, Fp, Fx] = antenna_pattern(bin_pos, psr_pos);
     const auto DGW = bin_pos.DL;
     const auto ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 
@@ -227,7 +227,7 @@ std::tuple<Signal1D,Signal1D> EccentricResidualsAndWaveform(const BinaryMass &bi
                                                             const ResidualsTerms residuals_terms,
                                                             const Signal1D &ts){
     
-    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
+    const auto [cosmu, Fp, Fx] = antenna_pattern(bin_pos, psr_pos);
     const auto DGW = bin_pos.DL;
     const auto ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 

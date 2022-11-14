@@ -92,7 +92,7 @@ Signal1D EccentricWaveform( const BinaryMass &bin_mass,
                             const ResidualsTerms residuals_terms,
                             const Signal1D &ts){
     
-    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
+    const auto [cosmu, Fp, Fx] = antenna_pattern(bin_pos, psr_pos);
 
     const size_t length = ts.size();                                                
     Signal1D h(length);

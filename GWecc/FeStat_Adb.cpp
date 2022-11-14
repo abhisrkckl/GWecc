@@ -68,7 +68,7 @@ std::array<Signal1D, 6> FeStatFuncs_Adb(const BinaryMass &bin_mass,
                                         const SkyPosition &psr_pos,
                                         const Signal1D &ts){
 
-    const auto [cosmu, Fp, Fx] = AntennaPattern(bin_pos, psr_pos);
+    const auto [cosmu, Fp, Fx] = antenna_pattern(bin_pos, psr_pos);
 
     const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 

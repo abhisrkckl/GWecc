@@ -8,6 +8,6 @@
  * Returns:
  *	[cos(eta), Fp, Fx]
  */
-std::tuple<double,double,double> AntennaPattern(const SkyPosition &bin_pos, const SkyPosition &psr_pos);
+std::tuple<double,double,double> antenna_pattern(const SkyPosition &bin_pos, const SkyPosition &psr_pos);
 
 #endif
