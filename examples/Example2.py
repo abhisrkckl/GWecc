@@ -2,7 +2,13 @@
     -- needs fixing.
 """
 
-import enterprise_GWecc as GWecc
+from enterprise_GWecc.GWecc import (
+    eccentric_residuals,
+    ResidualsMethod_Anl,
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
+    ResidualsTerms_Pulsar,
+)
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -38,7 +44,7 @@ z = 0.0
 plt.subplot(221)
 plt.suptitle("Comparing numerical and analytic residuals")
 
-res_N = GWecc.GWecc.EccentricResiduals(
+res_N = eccentric_residuals(
     M,
     q,
     Omega,
@@ -55,11 +61,11 @@ res_N = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Num,
-    GWecc.GWecc.ResidualsTerms_Earth,
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
     toas,
 )
-res_A = GWecc.GWecc.EccentricResiduals(
+res_A = eccentric_residuals(
     M,
     q,
     Omega,
@@ -76,8 +82,8 @@ res_A = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Anl,
-    GWecc.GWecc.ResidualsTerms_Earth,
+    ResidualsMethod_Anl,
+    ResidualsTerms_Earth,
     toas,
 )
 res_N = np.array(res_N) + res_A[0]
@@ -89,7 +95,7 @@ plt.legend()
 plt.grid()
 
 plt.subplot(222)
-res_N = GWecc.GWecc.EccentricResiduals(
+res_N = eccentric_residuals(
     M,
     q,
     Omega,
@@ -106,11 +112,11 @@ res_N = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Num,
-    GWecc.GWecc.ResidualsTerms_Pulsar,
+    ResidualsMethod_Num,
+    ResidualsTerms_Pulsar,
     toas,
 )
-res_A = GWecc.GWecc.EccentricResiduals(
+res_A = eccentric_residuals(
     M,
     q,
     Omega,
@@ -127,8 +133,8 @@ res_A = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Anl,
-    GWecc.GWecc.ResidualsTerms_Pulsar,
+    ResidualsMethod_Anl,
+    ResidualsTerms_Pulsar,
     toas,
 )
 res_N = np.array(res_N) + res_A[0]
@@ -141,7 +147,7 @@ plt.grid()
 plt.subplot(223)
 e0 = 0.5
 plt.suptitle("Comparing numerical and post-circular residuals (e=0.5)")
-res_N = GWecc.GWecc.EccentricResiduals(
+res_N = eccentric_residuals(
     M,
     q,
     Omega,
@@ -158,11 +164,11 @@ res_N = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Num,
-    GWecc.GWecc.ResidualsTerms_Earth,
+    ResidualsMethod_Num,
+    ResidualsTerms_Earth,
     toas,
 )
-res_A = GWecc.GWecc.EccentricResiduals(
+res_A = eccentric_residuals(
     M,
     q,
     Omega,
@@ -179,8 +185,8 @@ res_A = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Anl,
-    GWecc.GWecc.ResidualsTerms_Earth,
+    ResidualsMethod_Anl,
+    ResidualsTerms_Earth,
     toas,
 )
 res_N = np.array(res_N) + res_A[0]
@@ -191,7 +197,7 @@ plt.ylabel("$\Delta_{GW}$ (ns)")
 plt.grid()
 
 plt.subplot(224)
-res_N = GWecc.GWecc.EccentricResiduals(
+res_N = eccentric_residuals(
     M,
     q,
     Omega,
@@ -208,11 +214,11 @@ res_N = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Num,
-    GWecc.GWecc.ResidualsTerms_Pulsar,
+    ResidualsMethod_Num,
+    ResidualsTerms_Pulsar,
     toas,
 )
-res_A = GWecc.GWecc.EccentricResiduals(
+res_A = eccentric_residuals(
     M,
     q,
     Omega,
@@ -229,8 +235,8 @@ res_A = GWecc.GWecc.EccentricResiduals(
     RA_P,
     DEC_P,
     z,
-    GWecc.GWecc.ResidualsMethod_Anl,
-    GWecc.GWecc.ResidualsTerms_Pulsar,
+    ResidualsMethod_Anl,
+    ResidualsTerms_Pulsar,
     toas,
 )
 res_N = np.array(res_N) + res_A[0]
