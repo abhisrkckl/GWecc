@@ -23,7 +23,7 @@ constexpr int sign(T val) {
  * Returns the eccentric anomaly u which is the solution of the Kepler equation.
  *     l = u - e sin(u)
  */
-double MIKKOLA(double l, const double e){
+double mikkola(double l, const double e){
 
     constexpr double Pi=M_PI, TwoPi=2*M_PI;
 
@@ -85,19 +85,19 @@ double MIKKOLA(double l, const double e){
     return u;
 }
 
-std::vector<double> MIKKOLA(const std::vector<double> &ls, const double e){
+std::vector<double> mikkola(const std::vector<double> &ls, const double e){
     
     size_t length = ls.size();
     std::vector<double> us(length);
 
     for(unsigned int i=0; i<length; i++){
-        us[i] = MIKKOLA(ls[i],e);
+        us[i] = mikkola(ls[i],e);
     }
 
     return us;
 }
 
-std::vector<double> MIKKOLA(const std::vector<double> &ls, const std::vector<double> &es){
+std::vector<double> mikkola(const std::vector<double> &ls, const std::vector<double> &es){
     
     size_t length = ls.size();
 
@@ -110,7 +110,7 @@ std::vector<double> MIKKOLA(const std::vector<double> &ls, const std::vector<dou
         std::vector<double> us(length);
 
         for(unsigned int i=0; i<length; i++){
-            us[i] = MIKKOLA(ls[i],es[i]);
+            us[i] = mikkola(ls[i],es[i]);
         }
         return us;
     }

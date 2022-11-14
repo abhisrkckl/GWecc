@@ -30,7 +30,7 @@ double FeStat_A_fn_pt(double t, void *_params){
                &g       = bin_now.gamma,
                &l       = bin_now.l,
                     
-               u        = MIKKOLA(l,e),
+               u        = mikkola(l,e),
                L        = l+g,
                
                su       = sin(u),

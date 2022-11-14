@@ -172,7 +172,7 @@ double compute_phi(BinaryMass &bin_mass, BinaryState &bin_state){
                g    = bin_state.gamma,
                l    = bin_state.l,
                
-               u    = MIKKOLA(l,e),
+               u    = mikkola(l,e),
                L    = l+g,
                
                su   = sin(u),

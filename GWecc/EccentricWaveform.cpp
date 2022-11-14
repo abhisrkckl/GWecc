@@ -16,7 +16,7 @@ std::vector<double> EccentricWaveform_fn(const double M, const double q,
                                 Omega, i,
                                 n, e, l, gamma};
     
-    const double  u        = MIKKOLA(l,e),
+    const double  u        = mikkola(l,e),
                	  L        = l+gamma,
                
                   su       = sin(u),

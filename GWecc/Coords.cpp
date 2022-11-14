@@ -15,7 +15,7 @@ std::array<double,2> coords(const BinaryMass &bin_mass, const BinaryState &bin_n
                M        = bin_mass.mass(),
                eta      = bin_mass.symmetric_mass_ratio(), 
                     
-               u        = MIKKOLA(l,e),
+               u        = mikkola(l,e),
                L        = l+g,
                
                su       = sin(u),

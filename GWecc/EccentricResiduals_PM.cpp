@@ -37,7 +37,7 @@ auto EccentricResiduals_px_fn_pt_PM(const BinaryMass &bin_mass,
                 &g = bin_now.gamma,
                 &l = bin_now.l,
                         
-                u = MIKKOLA(l,e),
+                u = mikkola(l,e),
                 L = l+g,
                 
                 su = sin(u),
