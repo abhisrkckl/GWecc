@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 from astropy.cosmology import Planck18
 from enterprise.pulsar import Pulsar
-from enterprise_GWecc.GWecc import EccentricResiduals
+from enterprise_GWecc.GWecc import eccentric_residuals
 from enterprise_GWecc import eccentric_cw_delay, eccentric_cw_delay_Planck18
 from default_test_params import (
     M,
@@ -34,16 +34,17 @@ def testpsr():
 z = 0.01
 D_GW = 1e6 * Planck18.luminosity_distance(z).value
 
+
 @pytest.mark.parametrize("method", methods)
 def test_eccentric_cw_delay(testpsr, method):
     toas = testpsr.toas / (24 * 3600)  # MJD
     tref = max(toas)  # MJD
-    
+
     RA_P = testpsr.phi
-    DEC_P = np.pi/2 - testpsr.theta
+    DEC_P = np.pi / 2 - testpsr.theta
     D_P = testpsr.pdist[0] * 1000  # pc
 
-    res = EccentricResiduals(
+    res = eccentric_residuals(
         M,
         q,
         psi,

@@ -2,8 +2,8 @@ import numpy as np
 from enterprise.signals import signal_base
 
 from enterprise_GWecc.GWecc import (
-    EccentricResiduals,
-    FeStatFuncs,
+    eccentric_residuals,
+    fe_stat_funcs,
     ResidualsMethod_Num,
     ResidualsTerms_Both,
     ResidualsTerms_Earth,
@@ -143,7 +143,7 @@ def eccentric_cw_delay(
         )
 
     return np.asarray(
-        EccentricResiduals(
+        eccentric_residuals(
             M,
             q,
             psi,
@@ -201,5 +201,5 @@ def Fe_statistic_funcs(
     Pb0 = 2 * np.pi / n0 / year_to_s
 
     return np.asarray(
-        FeStatFuncs(M, q, tref, Pb0, e0, l0, D_GW, RA_GW, DEC_GW, RA_P, DEC_P, z, toas)
+        fe_stat_funcs(M, q, tref, Pb0, e0, l0, D_GW, RA_GW, DEC_GW, RA_P, DEC_P, z, toas)
     )

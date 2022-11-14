@@ -1,10 +1,10 @@
 import pytest
 import numpy as np
-from enterprise_GWecc.GWecc import EccentricWaveform, EccentricWaveform_px
+from enterprise_GWecc.GWecc import eccentric_waveform, eccentric_waveform_px
 from default_test_params import (
     M,
     q,
-    Omega,
+    psi,
     i,
     t0,
     Pb0,
@@ -25,11 +25,11 @@ from default_test_params import (
 
 
 @pytest.mark.parametrize("term", terms)
-def test_EccentricWaveform(term):
-    h = EccentricWaveform(
+def test_eccentric_waveform(term):
+    h = eccentric_waveform(
         M,
         q,
-        Omega,
+        psi,
         i,
         t0,
         Pb0,
@@ -50,11 +50,11 @@ def test_EccentricWaveform(term):
     assert np.all(np.isfinite(h)) and not np.all(h == 0) and len(h) == ntoas
 
 
-def test_EccentricWaveform_px():
-    hp, hx = EccentricWaveform_px(
+def test_eccentric_waveform_px():
+    hp, hx = eccentric_waveform_px(
         M,
         q,
-        Omega,
+        psi,
         i,
         t0,
         Pb0,

@@ -3,8 +3,8 @@ import numpy as np
 from itertools import product as outer_product
 from enterprise_GWecc.GWecc import (
     antenna_pattern,
-    EccentricResiduals,
-    EccentricResiduals_px,
+    eccentric_residuals,
+    eccentric_residuals_px,
 )
 from default_test_params import (
     RA_GW,
@@ -13,7 +13,7 @@ from default_test_params import (
     DEC_P,
     M,
     q,
-    Omega,
+    psi,
     i,
     t0,
     Pb0,
@@ -31,15 +31,15 @@ from default_test_params import (
 
 
 @pytest.mark.parametrize("method, term", outer_product(methods, terms))
-def test_AntennaPattern(method, term):
+def test_antenna_pattern(method, term):
     cosmu, Fp, Fx = antenna_pattern(RA_GW, DEC_GW, RA_P, DEC_P)
 
     assert np.all(np.isfinite([cosmu, Fp, Fx]))
 
-    res_px = EccentricResiduals_px(
+    res_px = eccentric_residuals_px(
         M,
         q,
-        Omega,
+        psi,
         i,
         t0,
         Pb0,
@@ -55,10 +55,10 @@ def test_AntennaPattern(method, term):
     )
     res_from_px = np.array(res_px[0]) * Fp + np.array(res_px[1]) * Fx
 
-    res = EccentricResiduals(
+    res = eccentric_residuals(
         M,
         q,
-        Omega,
+        psi,
         i,
         t0,
         Pb0,

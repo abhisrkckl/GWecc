@@ -1,11 +1,11 @@
 import pytest
 import numpy as np
 from itertools import product as outer_product
-from enterprise_GWecc.GWecc import EccentricResiduals, EccentricResiduals_px
+from enterprise_GWecc.GWecc import eccentric_residuals, eccentric_residuals_px
 from default_test_params import (
     M,
     q,
-    Omega,
+    psi,
     i,
     t0,
     Pb0,
@@ -28,11 +28,11 @@ from default_test_params import (
 
 
 @pytest.mark.parametrize("method, term", outer_product(methods, terms))
-def test_EccentricResiduals(method, term):
-    res = EccentricResiduals(
+def test_eccentric_residuals(method, term):
+    res = eccentric_residuals(
         M,
         q,
-        Omega,
+        psi,
         i,
         t0,
         Pb0,
@@ -55,12 +55,12 @@ def test_EccentricResiduals(method, term):
 
 
 @pytest.mark.parametrize("method, term", outer_product(methods, terms))
-def test_EccentricResiduals_px(method, term):
+def test_eccentric_residuals_px(method, term):
 
-    res_p, res_x = EccentricResiduals_px(
+    res_p, res_x = eccentric_residuals_px(
         M,
         q,
-        Omega,
+        psi,
         i,
         t0,
         Pb0,

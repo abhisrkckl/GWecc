@@ -8,7 +8,7 @@
 /*
  * Computes R(t)
  */
-std::vector<double> EccentricResiduals( const double M, const double q,
+std::vector<double> eccentric_residuals( const double M, const double q,
                     const double psi, const double i, 
                     const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                     const double D_GW, const double RA_GW, const double DEC_GW, 
@@ -18,7 +18,7 @@ std::vector<double> EccentricResiduals( const double M, const double q,
                     const ResidualsTerms residuals_terms,
                     const std::vector<double> ts);
 
-std::vector<double> EccentricWaveform( const double M, const double q,
+std::vector<double> eccentric_waveform( const double M, const double q,
                     const double psi, const double i, 
                     const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                     const double D_GW, const double RA_GW, const double DEC_GW, 
@@ -27,7 +27,7 @@ std::vector<double> EccentricWaveform( const double M, const double q,
                     const ResidualsTerms residuals_terms,
                     const std::vector<double> ts);
 
-std::vector<std::vector<double>> EccentricResidualsAndWaveform(const double M, const double q,
+std::vector<std::vector<double>> eccentric_residuals_and_waveform(const double M, const double q,
                     const double psi, const double i, 
                     const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                     const double D_GW, const double RA_GW, const double DEC_GW, 
@@ -36,7 +36,7 @@ std::vector<std::vector<double>> EccentricResidualsAndWaveform(const double M, c
                     const ResidualsTerms residuals_terms,
                     const std::vector<double> ts);
 
-std::vector<std::vector<double> > EccentricResiduals_px(const double M, const double q,
+std::vector<std::vector<double> > eccentric_residuals_px(const double M, const double q,
                                                         const double psi, const double i,
                                                         const double t0, const double n0, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double delay,
@@ -45,16 +45,16 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
                                                         const ResidualsTerms residuals_terms,
                                                         const std::vector<double> _ts);
 
-std::vector<std::vector<double> > EccentricWaveform_px( const double M, const double q,
+std::vector<std::vector<double> > eccentric_waveform_px( const double M, const double q,
                                                         const double psi, const double i,
                                                         const double t0, const double n0, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double z,
                                                         const std::vector<double> _ts);
 
-std::vector<double> EccentricWaveform_fn(const double M, const double q,
+/* std::vector<double> eccentric_waveform_fn(const double M, const double q,
                                          const double psi, const double i,
                                          const double n, const double e, const double l, const double gamma,
-                                         const double DGW); 
+                                         const double DGW);  */
 
 BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay);
 
@@ -65,7 +65,7 @@ bool mergeq(const double M, const double q,
             const double z,
             const double t0, const double max_toa);
 
-std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
+std::vector<std::vector<double> > fe_stat_funcs(const double M, const double q,
                                               const double t0, const double Pb0E, const double e0, const double l0,
                                               const double D_GW, const double RA_GW, const double DEC_GW, 
                                               const double RA_P,  const double DEC_P, 

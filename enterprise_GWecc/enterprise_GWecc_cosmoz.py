@@ -3,9 +3,9 @@ from astropy.cosmology import Planck18
 from enterprise.signals import signal_base
 
 from enterprise_GWecc.GWecc import (
-    EccentricResiduals,
-    EccentricWaveform,
-    FeStatFuncs,
+    eccentric_residuals,
+    eccentric_waveform,
+    fe_stat_funcs,
     ResidualsMethod_Num,
     ResidualsTerms_Both,
     ResidualsTerms_Earth,
@@ -131,7 +131,7 @@ def eccentric_cw_delay_Planck18(
         )
 
     return np.asarray(
-        EccentricResiduals(
+        eccentric_residuals(
             M,
             q,
             psi,
@@ -198,7 +198,7 @@ def Fe_statistic_funcs_Plack18(
     #                    toas))
 
     return np.asarray(
-        FeStatFuncs(M, q, tref, Pb0, e0, l0, D_GW, RA_GW, DEC_GW, RA_P, DEC_P, z, toas, residuals_method)
+        fe_stat_funcs(M, q, tref, Pb0, e0, l0, D_GW, RA_GW, DEC_GW, RA_P, DEC_P, z, toas, residuals_method)
     )
 
 
@@ -299,7 +299,7 @@ def eccentric_cw_waveform_Planck18(
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
 
     return np.asarray(
-        EccentricWaveform(
+        eccentric_waveform(
             M,
             q,
             psi,

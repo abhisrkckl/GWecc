@@ -37,7 +37,7 @@ static constexpr double MSun_to_s   = 4.92703806e-6,       // Solar mass in s (g
  *    
  * ts       are TOAs                    in MJD        in Earth frame
  */
-std::vector<double> EccentricResiduals( const double M, const double q,
+std::vector<double> eccentric_residuals(const double M, const double q,
                                         const double psi, const double i, 
                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                         const double D_GW, const double RA_GW, const double DEC_GW, 
@@ -71,7 +71,7 @@ std::vector<double> EccentricResiduals( const double M, const double q,
     return std::vector<double>(std::begin(result), std::end(result));
 }
 
-std::vector<std::vector<double>> EccentricResidualsAndWaveform( 
+std::vector<std::vector<double>> eccentric_residuals_and_waveform( 
                                         const double M, const double q,
                                         const double psi, const double i, 
                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
@@ -107,7 +107,7 @@ std::vector<std::vector<double>> EccentricResidualsAndWaveform(
     return {result_R, result_h};
 }
 
-std::vector<double> EccentricWaveform(  const double M, const double q,
+std::vector<double> eccentric_waveform( const double M, const double q,
                                         const double psi, const double i, 
                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                         const double D_GW, const double RA_GW, const double DEC_GW, 
@@ -160,7 +160,7 @@ std::vector<double> EccentricWaveform(  const double M, const double q,
  *    
  * ts       are TOAs                    in MJD        in Earth frame
  */
-std::vector<std::vector<double> > EccentricResiduals_px(const double M, const double q,
+std::vector<std::vector<double> > eccentric_residuals_px(const double M, const double q,
                                                         const double psi, const double i,
                                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double delay,
@@ -196,7 +196,7 @@ std::vector<std::vector<double> > EccentricResiduals_px(const double M, const do
 }
 
 
-std::vector<std::vector<double> > EccentricWaveform_px( const double M, const double q,
+std::vector<std::vector<double> > eccentric_waveform_px( const double M, const double q,
                                                         const double psi, const double i,
                                                         const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
                                                         const double DGW, const double z,
@@ -249,7 +249,7 @@ bool mergeq(const double M, const double q,
     return bin_last.merged;
 }
 
-std::vector<std::vector<double> > FeStatFuncs(const double M, const double q,
+std::vector<std::vector<double> > fe_stat_funcs(const double M, const double q,
                                               const double t0, const double Pb0E, const double e0, const double l0,
                                               const double D_GW, const double RA_GW, const double DEC_GW, 
                                               const double RA_P,  const double DEC_P, 
