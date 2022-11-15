@@ -1,11 +1,11 @@
-#include "EccentricResiduals.hpp"
+#include <sstream>
+#include "eccentric_residuals.hpp"
 #include "orbital_evolution.hpp"
 #include "antenna_pattern.hpp"
 #include "post_newtonian.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
 #include "FeStat.hpp"
-#include <sstream>
 
 template<unsigned i>
 double fe_stat_A_fn_pt(double t, void *_params){

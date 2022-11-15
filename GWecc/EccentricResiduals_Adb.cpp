@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "orbital_evolution.hpp"
-#include "EccentricResiduals.hpp"
+#include "eccentric_residuals.hpp"
 #include "antenna_pattern.hpp"
 #include "mikkola.h"
 #include "post_newtonian.hpp"

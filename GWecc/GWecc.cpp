@@ -1,5 +1,5 @@
 #include "GWecc.hpp"
-#include "EccentricResiduals.hpp"
+#include "eccentric_residuals.hpp"
 #include "FeStat.hpp"
 #include "antenna_pattern.hpp"
 

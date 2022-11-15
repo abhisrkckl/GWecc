@@ -1,8 +1,7 @@
-#include "GWecc.hpp"
 #include "mikkola.h"
 #include "post_newtonian.hpp"
 #include "ipow.hpp"
-#include "EccentricResiduals.hpp"
+#include "eccentric_residuals.hpp"
 #include "numerical_residuals.hpp"
 #include "antenna_pattern.hpp"
 

@@ -1,9 +1,9 @@
-#include "EccentricResiduals.hpp"
+#include <iostream>
+#include "eccentric_residuals.hpp"
 #include "orbital_evolution.hpp"
 #include "antenna_pattern.hpp"
-#include "FourierWaveform.hpp"
+#include "fourier_residuals.hpp"
 #include "post_newtonian.hpp"
-#include <iostream>
 
 Signal1D eccentric_residuals_Anl(const BinaryMass &bin_mass,
                                 const BinaryState &bin_init,
@@ -64,13 +64,13 @@ std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Anl(const BinaryMass &bin_
         
         //const auto k = advance_of_periastron(bin_mass, bin_now);
     
-        const auto res_coeffs  = FourierResidualCoeffs(bin_mass, bin_now, 0);
+        const auto res_coeffs  = fourier_residual_coeffs(bin_mass, bin_now, 0);
         
         const auto //nt     = bin_now.n,                //bin_init.n * (ts[i]-bin_init.t),
                    l      = bin_now.l,                  //      nt + bin_init.l,
                    lambda = l+bin_now.gamma;            //(1+k)*nt + bin_init.l + bin_init.gamma;
         
-        const auto [RA, RB] = FourierResidual_pt(res_coeffs, l, lambda);
+        const auto [RA, RB] = fourier_residual_pt(res_coeffs, l, lambda);
 
         const auto H0 = gw_amplitude(bin_mass, bin_now, DGW);
         

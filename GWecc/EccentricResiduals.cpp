@@ -1,5 +1,5 @@
 #include <stdexcept>
-#include "EccentricResiduals.hpp"
+#include "eccentric_residuals.hpp"
 #include "orbital_evolution.hpp"
 #include "antenna_pattern.hpp"
 #include "post_newtonian.hpp"

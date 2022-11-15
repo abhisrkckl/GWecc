@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
-#include "EccentricResiduals.hpp"
+#include "eccentric_residuals.hpp"
 #include "orbital_evolution.hpp"
 
 

@@ -1,11 +1,11 @@
-#include "EccentricResiduals.hpp"
+#include <iostream>
+#include <gsl/gsl_sf_bessel.h>
+#include "eccentric_residuals.hpp"
 #include "orbital_evolution.hpp"
 #include "antenna_pattern.hpp"
 #include "mikkola.h"
 #include "post_newtonian.hpp"
 #include "ipow.hpp"
-#include <iostream>
-#include <gsl/gsl_sf_bessel.h>
 
 int get_nharm(const double e){
     if(e < 0.009){

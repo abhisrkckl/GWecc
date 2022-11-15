@@ -3,13 +3,13 @@ import os
 
 GWecc_sources = (
     "antenna_pattern.cpp",
-    "EccentricResiduals_Anl.cpp",
+    "fourier_residuals_1.cpp",
+    "fourier_residuals_2.cpp",
     "numerical_residuals.cpp",
     "EccentricResiduals_Adb.cpp",
     "EccentricResiduals_PM.cpp",
     "EccentricResiduals.cpp",
     "GWecc.cpp",
-    "FourierWaveform.cpp",
     "mikkola.cpp",
     "orbital_evolution_1.cpp",
     "orbital_evolution_2.cpp",
