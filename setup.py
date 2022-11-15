@@ -14,7 +14,7 @@ GWecc_sources = (
     "mikkola.cpp",
     "OrbitalEvolution.cpp",
     "PN.cpp",
-    "Precompute_Orbit.cpp",
+    "precompute_orbit.cpp",
     "EccentricWaveform.cpp",
     "FeStat.cpp",
     "FeStat_Adb.cpp",
