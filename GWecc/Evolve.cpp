@@ -1,5 +1,5 @@
 #include "OrbitalEvolution.hpp"
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 #include <cstdio>
 #include <stdexcept>
 

@@ -1,6 +1,6 @@
 #include "NumericalWaveform.hpp"
 #include "antenna_pattern.hpp"
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
 #include <iostream>
@@ -104,7 +104,7 @@ double eccentric_residuals_fn_pt(double t, void *_params){
                esu      = e*su,
                ecu      = e*cu,
                
-               x        = PN_param_x(bin_mass, bin_now),
+               x        = pn_param_x(bin_mass, bin_now),
                sqrtx    = sqrt(x),
                k        = advance_of_periastron(bin_mass, bin_now),
                ephi     = angular_eccentricity(bin_mass, bin_now),

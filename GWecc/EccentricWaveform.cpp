@@ -1,6 +1,6 @@
 #include "GWecc.hpp"
 #include "mikkola.h"
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 #include "ipow.hpp"
 #include "EccentricResiduals.hpp"
 #include "NumericalWaveform.hpp"
@@ -25,7 +25,7 @@ std::vector<double> eccentric_waveform_fn(const double M, const double q,
                   esu      = e*su,
                   ecu      = e*cu,
                   
-                  x        = PN_param_x(bin_mass, bin_now),
+                  x        = pn_param_x(bin_mass, bin_now),
                   sqrtx    = sqrt(x),
                   k        = advance_of_periastron(bin_mass, bin_now),
                   ephi     = angular_eccentricity(bin_mass, bin_now),

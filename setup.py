@@ -13,7 +13,7 @@ GWecc_sources = (
     "FourierWaveform.cpp",
     "mikkola.cpp",
     "OrbitalEvolution.cpp",
-    "PN.cpp",
+    "post_newtonian.cpp",
     "precompute_orbit.cpp",
     "EccentricWaveform.cpp",
     "FeStat.cpp",

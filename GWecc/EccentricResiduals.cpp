@@ -1,8 +1,8 @@
+#include <stdexcept>
 #include "EccentricResiduals.hpp"
 #include "OrbitalEvolution.hpp"
 #include "antenna_pattern.hpp"
-#include "PN.hpp"
-#include <stdexcept>
+#include "post_newtonian.hpp"
 
 auto choose_eccentric_residuals_fn(const ResidualsMethod residuals_method){
     switch (residuals_method){
@@ -77,7 +77,7 @@ double gw_amplitude(const BinaryMass &bin_mass,
     }
 
     const auto eta = bin_mass.symmetric_mass_ratio(),
-               x   = PN_param_x(bin_mass, bin_init);
+               x   = pn_param_x(bin_mass, bin_init);
 
     return bin_mass.mass()*eta/DGW * x;
 }

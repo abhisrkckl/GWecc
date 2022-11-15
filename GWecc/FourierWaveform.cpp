@@ -1,7 +1,7 @@
 #include "FourierWaveform.hpp"
 #include <cmath>
 #include "ipow.hpp"
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 
 /*
 Fourier2DCoeffs_t FourierWaveformCoeffs(const BinaryMass &binmass, const BinaryState &binstate, const double beta){
@@ -80,7 +80,7 @@ Fourier2DCoeffs_t FourierResidualCoeffs(const BinaryMass &binmass, const BinaryS
                  n     = binstate.n,
                  eta   = binmass.symmetric_mass_ratio(),
                  delta = binmass.differential_mass_ratio(),
-                 xi    = PN_param_xi(binmass, binstate),
+                 xi    = pn_param_xi(binmass, binstate),
                  k     = advance_of_periastron(binmass, binstate),
                  x     = pow((1+k)*xi, 3./2);
     

@@ -2,7 +2,7 @@
 #include "OrbitalEvolution.hpp"
 #include "antenna_pattern.hpp"
 #include "NumericalWaveform.hpp"
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
 #include "FeStat.hpp"

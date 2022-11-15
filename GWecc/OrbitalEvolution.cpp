@@ -3,7 +3,7 @@
 #include <cmath>
 #include <gsl/gsl_sf_hyperg.h>
 #include "ipow.hpp"
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 #include "mikkola.h"
 
 BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay){

@@ -2,7 +2,7 @@
 #include "OrbitalEvolution.hpp"
 #include "antenna_pattern.hpp"
 #include "FourierWaveform.hpp"
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 #include <iostream>
 
 Signal1D eccentric_residuals_Anl(const BinaryMass &bin_mass,

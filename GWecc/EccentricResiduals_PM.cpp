@@ -1,7 +1,7 @@
 #include "NumericalWaveform.hpp"
 #include "antenna_pattern.hpp"
 #include "mikkola.h"
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 #include "ipow.hpp"
 #include <iostream>
 #include <gsl/gsl_sf_bessel.h>
