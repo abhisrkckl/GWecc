@@ -8,7 +8,7 @@
 auto eccentric_residuals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                                      const BinaryState &bin_init,
                                      const double DGW,
-                                     const EvolveCoeffs_t& ev_coeffs,
+                                     const EvolveCoeffs& ev_coeffs,
                                      const double t){
 
     const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, t-bin_init.t);
@@ -90,7 +90,7 @@ auto eccentric_residuals_px_fn_pt_Adb(const BinaryMass &bin_mass,
 auto eccentric_residuals_and_waveform_px_fn_pt_Adb(const BinaryMass &bin_mass,
                                                 const BinaryState &bin_init,
                                                 const double DGW,
-                                                const EvolveCoeffs_t& ev_coeffs,
+                                                const EvolveCoeffs& ev_coeffs,
                                                 const double t){
 
     const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, t-bin_init.t);
@@ -180,7 +180,7 @@ auto eccentric_residuals_and_waveform_px_fn_pt_Adb(const BinaryMass &bin_mass,
 auto eccentric_residuals_fn_pt_Adb(const BinaryMass &bin_mass,
                                   const BinaryState &bin_init,
                                   const double Fp, const double Fx, const double DGW,
-                                  const EvolveCoeffs_t& ev_coeffs,
+                                  const EvolveCoeffs& ev_coeffs,
                                   const double t) {
     const auto [sp, sx] = eccentric_residuals_px_fn_pt_Adb(bin_mass, bin_init, DGW, ev_coeffs, t);
     return Fp*sp + Fx*sx;

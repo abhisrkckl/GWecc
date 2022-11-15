@@ -2,7 +2,7 @@
 %{
 #include "GWecc/residual_options.hpp"
 #include "GWecc/binary.hpp"
-#include "GWecc/OrbitalEvolution.hpp"
+#include "GWecc/orbital_evolution.hpp"
 #include "GWecc/GWecc.hpp"
 %}
 
@@ -15,5 +15,5 @@ namespace std {
 
 %include "GWecc/residual_options.hpp"
 %include "GWecc/binary.hpp"
-%include "GWecc/OrbitalEvolution.hpp"
+%include "GWecc/orbital_evolution.hpp"
 %include "GWecc/GWecc.hpp"

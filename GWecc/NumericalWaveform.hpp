@@ -1,18 +1,19 @@
 #ifndef _NumericalWaveform_hpp_
 #define _NumericalWaveform_hpp_
 
-#include "EccentricResiduals.hpp"
-#include "OrbitalEvolution.hpp"
-#include <gsl/gsl_integration.h>
-#include <gsl/gsl_errno.h>
 #include <tuple>
 #include <stdexcept>
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_errno.h>
+#include "EccentricResiduals.hpp"
+#include "orbital_evolution.hpp"
+
 
 struct WaveformParams{
 	const double Fp, Fx, DGW;
 	const BinaryMass &bin_mass;
 	const BinaryState &bin_init;
-	const EvolveCoeffs_t &ev_coeffs;
+	const EvolveCoeffs &ev_coeffs;
 };
 
 class GSL_CQUAD_Integrator{

@@ -1,16 +1,16 @@
 
-#include "OrbitalEvolution.hpp"
 #include <cmath>
 #include <gsl/gsl_sf_hyperg.h>
 #include "ipow.hpp"
 #include "post_newtonian.hpp"
 #include "mikkola.h"
+#include "orbital_evolution.hpp"
 
 BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay){
     return Evolve::instance().solve_orbit_equations(bin_mass, bin_init, delay);    
 }
 
-BinaryState solve_orbit_equations(const BinaryState &bin_init, const EvolveCoeffs_t &ev_coeffs, const double delay){
+BinaryState solve_orbit_equations(const BinaryState &bin_init, const EvolveCoeffs &ev_coeffs, const double delay){
     return Evolve::instance().solve_orbit_equations(bin_init, ev_coeffs, delay);    
 }
 
@@ -124,7 +124,7 @@ double gbar3_from_e(const double e, const double eta){
     return (gbar3_0 + eta*gbar3_1 * eta*eta*gbar3_2) / pow(e,6./19);
 }
 
-EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinaryState &bin_init){
+EvolveCoeffs compute_evolve_coeffs(const BinaryMass &bin_mass, const BinaryState &bin_init){
 
     static const Evolve &ev = Evolve::instance();
     
@@ -155,15 +155,15 @@ EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinarySta
                   sin2psi = sin(2*bin_init.psi),
                   cos2psi = cos(2*bin_init.psi);
 
-    return EvolveCoeffs_t {    A, AA, AG,
-                                tau0, P,
-                                lbar0, alpha,
-                                gbar0, beta,
-                                gbar20, beta2,
-                                gbar30, beta3,
-                                eta,
-                                sini, cosi,
-                                sin2psi, cos2psi  };    
+    return EvolveCoeffs{A, AA, AG,
+                        tau0, P,
+                        lbar0, alpha,
+                        gbar0, beta,
+                        gbar20, beta2,
+                        gbar30, beta3,
+                        eta,
+                        sini, cosi,
+                        sin2psi, cos2psi  };    
     
 }
 

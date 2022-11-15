@@ -23,7 +23,7 @@ int get_nharm(const double e){
 auto eccentric_residuals_px_fn_pt_PM(const BinaryMass &bin_mass,
                                     const BinaryState &bin_init,
                                     const double DGW,
-                                    const EvolveCoeffs_t& ev_coeffs,
+                                    const EvolveCoeffs& ev_coeffs,
                                     const double t){
 
     const auto bin_now = solve_orbit_equations(bin_init, ev_coeffs, t-bin_init.t);
@@ -111,7 +111,7 @@ auto eccentric_residuals_px_fn_pt_PM(const BinaryMass &bin_mass,
 auto eccentric_residuals_fn_pt_PM(const BinaryMass &bin_mass,
                                  const BinaryState &bin_init,
                                  const double Fp, const double Fx, const double DGW,
-                                 const EvolveCoeffs_t& ev_coeffs,
+                                 const EvolveCoeffs& ev_coeffs,
                                  const double t) {
     const auto [sp, sx] = eccentric_residuals_px_fn_pt_PM(bin_mass, bin_init, DGW, ev_coeffs, t);
     return Fp*sp + Fx*sx;

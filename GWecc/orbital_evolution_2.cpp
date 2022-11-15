@@ -1,7 +1,8 @@
-#include "OrbitalEvolution.hpp"
-#include "post_newtonian.hpp"
 #include <cstdio>
 #include <stdexcept>
+#include "orbital_evolution.hpp"
+#include "post_newtonian.hpp"
+
 
 void write_data_file(const char *datafilename, const std::vector<double> &taus, const std::vector<double> &es){
     const size_t rows = taus.size();
@@ -233,7 +234,7 @@ BinaryState Evolve::solve_orbit_equations(const BinaryMass &bin_mass,
 }
 
 BinaryState Evolve::solve_orbit_equations(const BinaryState &bin_init,
-                                          const EvolveCoeffs_t &ev_coeffs, 
+                                          const EvolveCoeffs &ev_coeffs, 
                                           const double delay) const{
 
     const double &t0    = bin_init.t,

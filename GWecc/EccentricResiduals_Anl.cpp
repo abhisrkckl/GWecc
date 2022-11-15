@@ -1,5 +1,5 @@
 #include "EccentricResiduals.hpp"
-#include "OrbitalEvolution.hpp"
+#include "orbital_evolution.hpp"
 #include "antenna_pattern.hpp"
 #include "FourierWaveform.hpp"
 #include "post_newtonian.hpp"
@@ -48,7 +48,7 @@ std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Anl(const BinaryMass &bin_
     
     const auto length = ts.size();
     
-    const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
+    const EvolveCoeffs ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
     
     const auto cos2psi = cos(2*bin_init.psi),
                sin2psi = sin(2*bin_init.psi);

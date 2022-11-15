@@ -1,5 +1,5 @@
 #include "EccentricResiduals.hpp"
-#include "OrbitalEvolution.hpp"
+#include "orbital_evolution.hpp"
 #include "antenna_pattern.hpp"
 #include "NumericalWaveform.hpp"
 #include "post_newtonian.hpp"
@@ -70,7 +70,7 @@ std::array<Signal1D, 6> fe_stat_funcs_Adb(const BinaryMass &bin_mass,
 
     const auto [cosmu, Fp, Fx] = antenna_pattern(bin_pos, psr_pos);
 
-    const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
+    const EvolveCoeffs ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 
     WaveformParams params { Fp, Fx, 1,
                             bin_mass,

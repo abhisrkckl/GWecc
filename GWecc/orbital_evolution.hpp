@@ -16,7 +16,7 @@ OrbitIntegrals precompute_orbit(const double emin, const double taumax);
 
 /****************/
 
-struct EvolveCoeffs_t{
+struct EvolveCoeffs{
 
     double  A, AT, AG,
             tau0, P,
@@ -72,7 +72,7 @@ public:
                                       const double delay) const;
     
     BinaryState solve_orbit_equations(const BinaryState &bin_init,
-                                      const EvolveCoeffs_t &ev_coeffs, 
+                                      const EvolveCoeffs &ev_coeffs, 
                                       const double delay) const;
     
     double phase_err(const BinaryMass &bin_mass, 
@@ -96,8 +96,8 @@ double gbar3_from_e(const double e, const double eta);
 
 BinaryState solve_orbit_equations(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay);
 
-EvolveCoeffs_t compute_evolve_coeffs(const BinaryMass &bin_mass, const BinaryState &bin_init);
-BinaryState solve_orbit_equations(const BinaryState &bin_init, const EvolveCoeffs_t &ev_coeffs, const double delay);
+EvolveCoeffs compute_evolve_coeffs(const BinaryMass &bin_mass, const BinaryState &bin_init);
+BinaryState solve_orbit_equations(const BinaryState &bin_init, const EvolveCoeffs &ev_coeffs, const double delay);
 
 double phase_err(const BinaryMass &bin_mass, const BinaryState &bin_init, const double delay);
 

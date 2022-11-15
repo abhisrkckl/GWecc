@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv2.h>
-#include "OrbitalEvolution.hpp"
+#include "orbital_evolution.hpp"
 
 /*
  * Function containing expressions for the RHS of the system of ODEs.

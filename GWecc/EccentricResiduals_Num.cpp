@@ -45,7 +45,7 @@ Signal1D eccentric_residuals_fn_Num(const BinaryMass &bin_mass,
                integ_eps_rel = 1e-12;
     const GSL_CQUAD_Integrator cquad_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15); 
     
-    const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
+    const EvolveCoeffs ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
     
     WaveformParams params { Fp, Fx, DGW,
                             bin_mass,
@@ -173,7 +173,7 @@ std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Num(const BinaryMass &bin_
                    integ_eps_rel = 1e-6;
         const GSL_CQUAD_Integrator cquad_integrator(integrator_size, integ_eps_abs, integ_eps_rel, GSL_INTEG_GAUSS15);
 
-        const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
+        const EvolveCoeffs ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 
         WaveformParams params_p { 1, 0, DGW,
                                   bin_mass,

@@ -97,7 +97,7 @@ Signal1D eccentric_waveform( const BinaryMass &bin_mass,
     const size_t length = ts.size();                                                
     Signal1D h(length);
     
-    const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
+    const EvolveCoeffs ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
     
     WaveformParams params { Fp, Fx, bin_pos.DL,
                             bin_mass,
@@ -132,7 +132,7 @@ std::tuple<Signal1D, Signal1D> eccentric_waveform_px(const BinaryMass &bin_mass,
     const size_t length = ts.size();                                                
     Signal1D hp(length), hx(length);
     
-    const EvolveCoeffs_t ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
+    const EvolveCoeffs ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
     
     WaveformParams params_p { 1, 0, DGW,
                               bin_mass,
