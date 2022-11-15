@@ -108,28 +108,6 @@ def eccentric_cw_delay_Planck18(
 
     residuals_terms = ResidualsTerms_Both if psrTerm else ResidualsTerms_Earth
 
-    print(
-            M,
-            q,
-            psi,
-            i,
-            tref,
-            Pb0,
-            e0,
-            l0,
-            gamma0,
-            D_GW,
-            RA_GW,
-            DEC_GW,
-            D_psr,
-            RA_psr,
-            DEC_psr,
-            z,
-            residuals_method,
-            residuals_terms,
-            toas,
-        )
-
     return np.asarray(
         eccentric_residuals(
             M,
