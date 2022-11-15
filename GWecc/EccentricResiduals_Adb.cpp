@@ -1,9 +1,12 @@
-#include "NumericalWaveform.hpp"
+#include <iostream>
+#include <stdexcept>
+#include "orbital_evolution.hpp"
+#include "EccentricResiduals.hpp"
 #include "antenna_pattern.hpp"
 #include "mikkola.h"
 #include "post_newtonian.hpp"
 #include "ipow.hpp"
-#include <iostream>
+
 
 auto eccentric_residuals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                                      const BinaryState &bin_init,

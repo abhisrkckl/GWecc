@@ -1,9 +1,9 @@
-#include "NumericalWaveform.hpp"
+#include <iostream>
+#include "numerical_residuals.hpp"
 #include "antenna_pattern.hpp"
 #include "post_newtonian.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
-#include <iostream>
 
 double eccentric_residuals_fn_pt(double t, void *_params);
 

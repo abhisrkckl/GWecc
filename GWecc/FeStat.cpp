@@ -1,7 +1,6 @@
 #include "EccentricResiduals.hpp"
 #include "orbital_evolution.hpp"
 #include "antenna_pattern.hpp"
-#include "NumericalWaveform.hpp"
 #include "post_newtonian.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"

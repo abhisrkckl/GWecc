@@ -4,7 +4,7 @@ import os
 GWecc_sources = (
     "antenna_pattern.cpp",
     "EccentricResiduals_Anl.cpp",
-    "EccentricResiduals_Num.cpp",
+    "numerical_residuals.cpp",
     "EccentricResiduals_Adb.cpp",
     "EccentricResiduals_PM.cpp",
     "EccentricResiduals.cpp",

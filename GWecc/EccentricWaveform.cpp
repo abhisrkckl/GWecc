@@ -3,7 +3,7 @@
 #include "post_newtonian.hpp"
 #include "ipow.hpp"
 #include "EccentricResiduals.hpp"
-#include "NumericalWaveform.hpp"
+#include "numerical_residuals.hpp"
 #include "antenna_pattern.hpp"
 
 std::vector<double> eccentric_waveform_fn(const double M, const double q,

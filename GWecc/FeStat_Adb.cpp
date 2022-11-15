@@ -1,12 +1,11 @@
+#include <sstream>
 #include "EccentricResiduals.hpp"
 #include "orbital_evolution.hpp"
 #include "antenna_pattern.hpp"
-#include "NumericalWaveform.hpp"
 #include "post_newtonian.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"
 #include "FeStat.hpp"
-#include <sstream>
 
 std::array<double, 3> fe_stat_A_fn_pt_Adb(double t, void *_params){
 
