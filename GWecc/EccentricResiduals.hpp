@@ -4,7 +4,7 @@
 #include <valarray>
 #include <tuple>
 #include "binary.hpp"
-#include "ResidualsOptions.hpp"
+#include "residual_options.hpp"
 
 typedef std::valarray<double> Signal1D;
 

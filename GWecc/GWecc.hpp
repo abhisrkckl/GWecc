@@ -2,7 +2,7 @@
 #define _EccentricResiduals_py_hpp_
 
 #include <vector>
-#include "ResidualsOptions.hpp"
+#include "residual_options.hpp"
 #include "binary.hpp"
 
 /*

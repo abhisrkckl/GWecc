@@ -1,9 +1,9 @@
 %module GWecc
 %{
-#include "GWecc/GWecc.hpp"
-#include "GWecc/ResidualsOptions.hpp"
+#include "GWecc/residual_options.hpp"
 #include "GWecc/binary.hpp"
 #include "GWecc/OrbitalEvolution.hpp"
+#include "GWecc/GWecc.hpp"
 %}
 
 %include "std_vector.i"
@@ -13,7 +13,7 @@ namespace std {
    %template(DoubleVectorVector) vector<vector<double> >;
 }
 
-%include "GWecc/GWecc.hpp"
-%include "GWecc/ResidualsOptions.hpp"
+%include "GWecc/residual_options.hpp"
 %include "GWecc/binary.hpp"
 %include "GWecc/OrbitalEvolution.hpp"
+%include "GWecc/GWecc.hpp"
