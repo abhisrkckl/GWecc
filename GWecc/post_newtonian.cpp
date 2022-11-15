@@ -2,15 +2,15 @@
 #include <cmath>
 #include <stdexcept>
 #include <sstream>
-#include "PN.hpp"
+#include "post_newtonian.hpp"
 #include "ipow.hpp"
 
-double PN_param_xi(const BinaryMass &bin_mass,
+double pn_param_xi(const BinaryMass &bin_mass,
                    const BinaryState &bin_state){
     return bin_mass.mass() * bin_state.n;
 }
 
-double PN_param_x(const BinaryMass &bin_mass,
+double pn_param_x(const BinaryMass &bin_mass,
                   const BinaryState &bin_state){
 
     const double xi = bin_mass.mass() * bin_state.n;
@@ -56,7 +56,7 @@ double advance_of_periastron(const BinaryMass &binmass, const BinaryState &binst
 double angular_eccentricity(const BinaryMass &bin_mass, 
                             const BinaryState &bin_state){
     
-    const double x   = PN_param_x(bin_mass, bin_state),
+    const double x   = pn_param_x(bin_mass, bin_state),
                  e     = bin_state.e,
                  OTS = sqrt(1 - e*e),
                  eta = bin_mass.symmetric_mass_ratio();

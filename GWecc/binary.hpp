@@ -63,8 +63,8 @@ public:
 };
 
 /*
- * DL         in s (geometric units)
- * RA, DEC     in rad
+ * DL           in s (geometric units)
+ * RA, DEC      in rad
  */
 struct SkyPosition{
     double DL;

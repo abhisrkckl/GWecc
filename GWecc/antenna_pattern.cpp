@@ -1,7 +1,6 @@
 
-#include "antenna_pattern.hpp"
-#include <Eigen/Dense>
 #include <cmath>
+#include "antenna_pattern.hpp"
 #include "ipow.hpp"
 
 /*
