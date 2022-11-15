@@ -32,7 +32,7 @@ GWecc_cpp_module = Extension(
     include_dirs=[include_dir, current_dir],
     libraries=["gsl", "gslcblas"],
     swig_opts=["-c++", "-threads"],
-    extra_compile_args=["-std=c++17", "-Wno-unused-result"],
+    extra_compile_args=["-std=c++17", "-Wno-unused-result", "-Werror"],
 )
 
 setup(

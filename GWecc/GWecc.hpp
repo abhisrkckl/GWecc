@@ -27,6 +27,11 @@ std::vector<double> eccentric_waveform( const double M, const double q,
                     const ResidualsTerms residuals_terms,
                     const std::vector<double> ts);
 
+std::vector<double> eccentric_waveform_fn(const double M, const double q,
+                                          const double psi, const double i,
+                                          const double n, const double e, const double l, const double gamma,
+                                          const double DGW);
+
 std::vector<std::vector<double>> eccentric_residuals_and_waveform(const double M, const double q,
                     const double psi, const double i, 
                     const double t0, const double Pb0E, const double e0, const double l0, const double gamma0,
@@ -67,5 +72,6 @@ std::vector<std::vector<double> > fe_stat_funcs(const double M, const double q,
                                               const double z,
                                               const std::vector<double> _ts,
                                               const ResidualsMethod residuals_method);
+
 
 #endif

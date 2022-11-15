@@ -3,11 +3,8 @@ Comparison of eccentric waveforms with and without reactive evolution.
 """
 
 import numpy as np
-from enterprise_GWecc import GWecc
+from enterprise_GWecc.GWecc import eccentric_waveform_px, eccentric_waveform_fn
 import matplotlib.pyplot as plt
-import faulthandler
-
-faulthandler.enable()
 
 year = 365.25 * 24 * 3600
 parsec = 102927125.0
@@ -67,12 +64,12 @@ for idx, t in enumerate(ts):
     l = n0 * t
     gamma = k * n0 * t
 
-    hp, hx = GWecc.EccentricWaveform_fn(M, q, Omega, i, n0, e0, l, gamma, DGW)
+    hp, hx = eccentric_waveform_fn(M, q, Omega, i, n0, e0, l, gamma, DGW)
 
     hpx0[idx] = hp, hx
 
 
-hp1, hx1 = GWecc.EccentricWaveform_px(
+hp1, hx1 = eccentric_waveform_px(
     M / MSun,
     q,
     Omega,
@@ -119,10 +116,10 @@ for idx, t in enumerate(ts):
     l = n0 * t
     gamma = k * n0 * t
 
-    hp, hx = GWecc.EccentricWaveform_fn(M, q, Omega, i, n0, e0, l, gamma, DGW)
+    hp, hx = eccentric_waveform_fn(M, q, Omega, i, n0, e0, l, gamma, DGW)
 
     hpx0[idx] = hp, hx
-hp1, hx1 = GWecc.EccentricWaveform_px(
+hp1, hx1 = eccentric_waveform_px(
     M / MSun,
     q,
     Omega,
@@ -167,10 +164,10 @@ for idx, t in enumerate(ts):
     l = n0 * t
     gamma = k * n0 * t
 
-    hp, hx = GWecc.EccentricWaveform_fn(M, q, Omega, i, n0, e0, l, gamma, DGW)
+    hp, hx = eccentric_waveform_fn(M, q, Omega, i, n0, e0, l, gamma, DGW)
 
     hpx0[idx] = hp, hx
-hp1, hx1 = GWecc.EccentricWaveform_px(
+hp1, hx1 = eccentric_waveform_px(
     M / MSun,
     q,
     Omega,

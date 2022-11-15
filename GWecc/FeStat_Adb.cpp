@@ -21,8 +21,7 @@ std::array<double, 3> fe_stat_A_fn_pt_Adb(double t, void *_params){
         return {0,0,0};
     }
     
-    const auto  &n = bin_now.n,
-                &e = bin_now.e,
+    const auto  &e = bin_now.e,
                 &g = bin_now.gamma,
                 &l = bin_now.l,
                         
@@ -34,7 +33,6 @@ std::array<double, 3> fe_stat_A_fn_pt_Adb(double t, void *_params){
                 c2u = cu*cu - su*su,
                         
                 esu = e*su,
-                ecu = e*cu,
                 
                 k = advance_of_periastron(bin_mass, bin_now),
                 ephi = angular_eccentricity(bin_mass, bin_now),

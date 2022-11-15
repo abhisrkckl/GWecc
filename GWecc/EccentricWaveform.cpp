@@ -6,9 +6,9 @@
 #include "antenna_pattern.hpp"
 
 std::vector<double> eccentric_waveform_fn(const double M, const double q,
-                                         const double psi, const double i,
-                                         const double n, const double e, const double l, const double gamma,
-                                         const double DGW){
+                                          const double psi, const double i,
+                                          const double n, const double e, const double l, const double gamma,
+                                          const double DGW){
 
     const BinaryMass bin_mass{M, q};
     const BinaryState bin_now { 0,
