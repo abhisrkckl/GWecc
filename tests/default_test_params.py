@@ -2,7 +2,7 @@ import numpy as np
 from enterprise_GWecc.GWecc import (
     ResidualsMethod_Num,
     ResidualsMethod_Adb,
-    ResidualsMethod_Anl,
+    ResidualsMethod_PC,
     ResidualsMethod_PM,
     ResidualsTerms_Both,
     ResidualsTerms_Earth,
@@ -53,6 +53,6 @@ terms = [ResidualsTerms_Both, ResidualsTerms_Earth, ResidualsTerms_Pulsar]
 methods = [
     ResidualsMethod_Num,
     ResidualsMethod_Adb,
-    ResidualsMethod_Anl,
+    ResidualsMethod_PC,
     ResidualsMethod_PM,
 ]

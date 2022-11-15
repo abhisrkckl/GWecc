@@ -4,7 +4,7 @@ Comparison of analytical vs numerical residuals
 
 import numpy as np
 from enterprise_GWecc.GWecc import (
-    ResidualsMethod_Anl,
+    ResidualsMethod_PC,
     ResidualsMethod_Num,
     ResidualsTerms_Earth,
     antenna_pattern,
@@ -69,7 +69,7 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
         D_GW,
         delay,
         z,
-        ResidualsMethod_Anl,
+        ResidualsMethod_PC,
         term,
         toas,
     )

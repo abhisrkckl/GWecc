@@ -6,7 +6,7 @@
 
 auto choose_eccentric_residuals_fn(const ResidualsMethod residuals_method){
     switch (residuals_method){
-        break; case ResidualsMethod::Anl: return eccentric_residuals_Anl;
+        break; case ResidualsMethod::PC : return eccentric_residuals_Anl;
         break; case ResidualsMethod::Adb: return eccentric_residuals_Adb;
         break; case ResidualsMethod::Num: return eccentric_residuals_Num;
         break; case ResidualsMethod::PM : return eccentric_residuals_PM;
@@ -16,7 +16,7 @@ auto choose_eccentric_residuals_fn(const ResidualsMethod residuals_method){
 
 auto choose_eccentric_residuals_px_fn(const ResidualsMethod residuals_method){
     switch (residuals_method){
-        break; case ResidualsMethod::Anl: return eccentric_residuals_px_Anl;
+        break; case ResidualsMethod::PC : return eccentric_residuals_px_Anl;
         break; case ResidualsMethod::Adb: return eccentric_residuals_px_Adb;
         break; case ResidualsMethod::Num: return eccentric_residuals_px_Num;
         break; case ResidualsMethod::PM : return eccentric_residuals_px_PM;

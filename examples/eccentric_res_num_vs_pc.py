@@ -4,7 +4,7 @@
 
 from enterprise_GWecc.GWecc import (
     eccentric_residuals,
-    ResidualsMethod_Anl,
+    ResidualsMethod_PC,
     ResidualsMethod_Num,
     ResidualsTerms_Earth,
     ResidualsTerms_Pulsar,
@@ -82,12 +82,12 @@ res_A = eccentric_residuals(
     RA_P,
     DEC_P,
     z,
-    ResidualsMethod_Anl,
+    ResidualsMethod_PC,
     ResidualsTerms_Earth,
     toas,
 )
 res_N = np.array(res_N) + res_A[0]
-plt.plot(toas / 365.25, np.asarray(res_A) / ns, label="Anl")
+plt.plot(toas / 365.25, np.asarray(res_A) / ns, label="PC")
 plt.plot(toas / 365.25, np.asarray(res_N) / ns, label="Num")
 plt.xlabel("t (year)")
 plt.ylabel("$\Delta_{GW}$ (ns)")
@@ -133,7 +133,7 @@ res_A = eccentric_residuals(
     RA_P,
     DEC_P,
     z,
-    ResidualsMethod_Anl,
+    ResidualsMethod_PC,
     ResidualsTerms_Pulsar,
     toas,
 )
@@ -185,7 +185,7 @@ res_A = eccentric_residuals(
     RA_P,
     DEC_P,
     z,
-    ResidualsMethod_Anl,
+    ResidualsMethod_PC,
     ResidualsTerms_Earth,
     toas,
 )
@@ -235,7 +235,7 @@ res_A = eccentric_residuals(
     RA_P,
     DEC_P,
     z,
-    ResidualsMethod_Anl,
+    ResidualsMethod_PC,
     ResidualsTerms_Pulsar,
     toas,
 )

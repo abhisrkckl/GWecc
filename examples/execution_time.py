@@ -1,7 +1,7 @@
 """Execution time vs ntoas 
 """
 
-from enterprise_GWecc.GWecc import ResidualsMethod_Adb, ResidualsMethod_Anl, ResidualsMethod_Num, ResidualsMethod_PM, ResidualsTerms_Earth, eccentric_residuals
+from enterprise_GWecc.GWecc import ResidualsMethod_Adb, ResidualsMethod_PC, ResidualsMethod_Num, ResidualsMethod_PM, ResidualsTerms_Earth, eccentric_residuals
 import numpy as np
 import matplotlib.pyplot as plt
 import time
@@ -172,7 +172,7 @@ for e0 in es:
             RA_P,
             DEC_P,
             z,
-            ResidualsMethod_Anl,
+            ResidualsMethod_PC,
             ResidualsTerms_Earth,
             toas,
         )
