@@ -1,5 +1,5 @@
-#ifndef _EccentricResiduals_hpp_
-#define _EccentricResiduals_hpp_ 1
+#ifndef _eccentric_residuals_hpp_
+#define _eccentric_residuals_hpp_ 1
 
 #include <valarray>
 #include <tuple>
@@ -11,16 +11,16 @@ typedef std::valarray<double> Signal1D;
 /*
  * Computes H0
  */
-double GWAmplitude(const BinaryMass &bin_mass,
-                   const BinaryState &bin_init,
-                   const double DGW);
+double gw_amplitude(const BinaryMass &bin_mass,
+                    const BinaryState &bin_init,
+                    const double DGW);
 
 
 /*
  * This is to abstract over different methods of computing RA and RB.
  */
 //typedef std::tuple<Signal1D, Signal1D> (*)(const BinaryMass&, const BinaryState&, const Signal1D&);
-typedef Signal1D (*EccentricResiduals_func_t) ( const BinaryMass &,
+typedef Signal1D (*eccentric_residuals_func_t) ( const BinaryMass &,
                                                 const BinaryState &,
                                                 const SkyPosition &,
                                                 const SkyPosition &,
@@ -30,7 +30,7 @@ typedef Signal1D (*EccentricResiduals_func_t) ( const BinaryMass &,
 /*
  * Computes R(t)
  */
-Signal1D EccentricResiduals(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals(const BinaryMass &bin_mass,
                             const BinaryState &bin_init,
                             const SkyPosition &bin_pos,
                             const SkyPosition &psr_pos,
@@ -41,7 +41,7 @@ Signal1D EccentricResiduals(const BinaryMass &bin_mass,
 /*
  * Computes h(t)
  */
-Signal1D EccentricWaveform( const BinaryMass &bin_mass,
+Signal1D eccentric_waveform( const BinaryMass &bin_mass,
                             const BinaryState &bin_init,
                             const SkyPosition &bin_pos,
                             const SkyPosition &psr_pos,
@@ -51,21 +51,21 @@ Signal1D EccentricWaveform( const BinaryMass &bin_mass,
 /*
  * Computes R(t) and h(t)
  */
-std::tuple<Signal1D,Signal1D> EccentricResidualsAndWaveform(const BinaryMass &bin_mass,
+std::tuple<Signal1D,Signal1D> eccentric_residuals_and_waveform(const BinaryMass &bin_mass,
                                                             const BinaryState &bin_init,
                                                             const SkyPosition &bin_pos,
                                                             const SkyPosition &psr_pos,
                                                             const ResidualsTerms residuals_terms,
                                                             const Signal1D &ts);
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px(const BinaryMass &bin_mass,
                                                      const BinaryState &bin_init,
                                                      const double DGW, const double delay,
                                                      const ResidualsMethod residuals_method,
                                                      const ResidualsTerms residuals_terms,
                                                      const Signal1D &ts);
 
-std::tuple<Signal1D, Signal1D> EccentricWaveform_px( const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_waveform_px( const BinaryMass &bin_mass,
                                                      const BinaryState &bin_init,
                                                      const double DGW,
                                                      const Signal1D &ts);
@@ -74,39 +74,39 @@ std::tuple<Signal1D, Signal1D> EccentricWaveform_px( const BinaryMass &bin_mass,
  * Compute Rp and Rx using analytic expressions. Valid for low eccentricities (e<0.3).
  * Based on Boetzel et al. 2017
  */
-Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_Anl(const BinaryMass &bin_mass,
                                 const BinaryState &bin_init,
                                 const SkyPosition &bin_pos,
                                 const SkyPosition &psr_pos,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts);
                     
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Anl(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Anl(const BinaryMass &bin_mass,
                                                          const BinaryState &bin_init,
                                                          const double DGW,
                                                          const Signal1D &ts);
 
 
-Signal1D EccentricResiduals_Adb(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_Adb(const BinaryMass &bin_mass,
                                 const BinaryState &bin_init,
                                 const SkyPosition &bin_pos,
                                 const SkyPosition &psr_pos,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts);
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Adb(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Adb(const BinaryMass &bin_mass,
                                                          const BinaryState &bin_init,
                                                          const double DGW,
                                                          const Signal1D &ts);
 
-Signal1D EccentricResiduals_PM(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_PM(const BinaryMass &bin_mass,
                                const BinaryState &bin_init,
                                const SkyPosition &bin_pos,
                                const SkyPosition &psr_pos,
                                const ResidualsTerms residuals_terms,
                                const Signal1D &ts);
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_PM(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px_PM(const BinaryMass &bin_mass,
                                                         const BinaryState &bin_init,
                                                         const double DGW,
                                                         const Signal1D &ts);
@@ -116,7 +116,7 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_PM(const BinaryMass &bin_ma
  * Based on Tessmer & Gopakumar 2006
  */
 /*
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_FFT(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px_FFT(const BinaryMass &bin_mass,
                                                          const BinaryState &bin_init,
                                                          const Signal1D &ts);
 */
@@ -124,23 +124,23 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_FFT(const BinaryMass &bin_m
 /*
  * Compute Rp and Rx using numerical integration. Valid for all eccentricities.
  */
-Signal1D EccentricResiduals_Num(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_Num(const BinaryMass &bin_mass,
                                 const BinaryState &bin_init,
                                 const SkyPosition &bin_pos,
                                 const SkyPosition &psr_pos,
                                 const ResidualsTerms residuals_terms,
                                 const Signal1D &ts);
                     
-Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_fn_Num(const BinaryMass &bin_mass,
                                    const BinaryState &bin_init,
                                    const double Fp, const double Fx, const double DGW,
                                    const Signal1D &ts);
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Num(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Num(const BinaryMass &bin_mass,
                                                          const BinaryState &bin_init,
                                                          const double DGW,
                                                          const Signal1D &ts);
 
-double EccentricResiduals_fn_pt(double t, void *_params);
+double eccentric_residuals_fn_pt(double t, void *_params);
 
 #endif

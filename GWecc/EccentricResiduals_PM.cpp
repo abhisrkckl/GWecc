@@ -20,7 +20,7 @@ int get_nharm(const double e){
     }
 }
 
-auto EccentricResiduals_px_fn_pt_PM(const BinaryMass &bin_mass,
+auto eccentric_residuals_px_fn_pt_PM(const BinaryMass &bin_mass,
                                     const BinaryState &bin_init,
                                     const double DGW,
                                     const EvolveCoeffs_t& ev_coeffs,
@@ -69,7 +69,7 @@ auto EccentricResiduals_px_fn_pt_PM(const BinaryMass &bin_mass,
                 c2psi = ev_coeffs.cos2psi,
                 s2psi = ev_coeffs.sin2psi,
                 
-                H0 = GWAmplitude(bin_mass, bin_now, DGW);
+                H0 = gw_amplitude(bin_mass, bin_now, DGW);
 
     const int pmax = get_nharm(e);
     double P=0, Q=0, R=0;
@@ -108,16 +108,16 @@ auto EccentricResiduals_px_fn_pt_PM(const BinaryMass &bin_mass,
     return std::make_tuple(sp, sx);
 }
 
-auto EccentricResiduals_fn_pt_PM(const BinaryMass &bin_mass,
+auto eccentric_residuals_fn_pt_PM(const BinaryMass &bin_mass,
                                  const BinaryState &bin_init,
                                  const double Fp, const double Fx, const double DGW,
                                  const EvolveCoeffs_t& ev_coeffs,
                                  const double t) {
-    const auto [sp, sx] = EccentricResiduals_px_fn_pt_PM(bin_mass, bin_init, DGW, ev_coeffs, t);
+    const auto [sp, sx] = eccentric_residuals_px_fn_pt_PM(bin_mass, bin_init, DGW, ev_coeffs, t);
     return Fp*sp + Fx*sx;
 }
 
-Signal1D EccentricResiduals_PM(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_PM(const BinaryMass &bin_mass,
                                const BinaryState &bin_init,
                                const SkyPosition &bin_pos,
                                const SkyPosition &psr_pos,
@@ -134,16 +134,16 @@ Signal1D EccentricResiduals_PM(const BinaryMass &bin_mass,
         const auto& t = ts[idx];
 
         if(residuals_terms == ResidualsTerms::Earth){
-            Rs[idx] = -EccentricResiduals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t);
+            Rs[idx] = -eccentric_residuals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t);
         }
         else{
             const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
             if(residuals_terms == ResidualsTerms::Pulsar){
-                Rs[idx] = EccentricResiduals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t + delay);
+                Rs[idx] = eccentric_residuals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t + delay);
             }
             else{
-                Rs[idx] =   EccentricResiduals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t + delay) 
-                          - EccentricResiduals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t);
+                Rs[idx] =   eccentric_residuals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t + delay) 
+                          - eccentric_residuals_fn_pt_PM(bin_mass, bin_init, Fp, Fx, DGW, ev_coeffs, t);
             }
         }
     }
@@ -151,7 +151,7 @@ Signal1D EccentricResiduals_PM(const BinaryMass &bin_mass,
     return Rs;
 }
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_PM(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px_PM(const BinaryMass &bin_mass,
                                                         const BinaryState &bin_init,
                                                         const double DGW,
                                                         const Signal1D &ts){
@@ -161,7 +161,7 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_PM(const BinaryMass &bin_ma
     const auto nts = ts.size();
     Signal1D Rps(nts), Rxs(nts);
     for(unsigned idx=0; idx<nts; idx++){
-        const auto [spE, sxE] = EccentricResiduals_px_fn_pt_PM(bin_mass, bin_init, DGW, ev_coeffs, ts[idx]);
+        const auto [spE, sxE] = eccentric_residuals_px_fn_pt_PM(bin_mass, bin_init, DGW, ev_coeffs, ts[idx]);
         Rps[idx] = spE;
         Rxs[idx] = sxE;
     }

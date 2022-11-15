@@ -5,7 +5,7 @@
 #include "PN.hpp"
 #include <iostream>
 
-Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_Anl(const BinaryMass &bin_mass,
                                 const BinaryState &bin_init,
                                 const SkyPosition &bin_pos,
                                 const SkyPosition &psr_pos,
@@ -16,7 +16,7 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
     
     if(residuals_terms==ResidualsTerms::Earth){
         
-        const auto [RpE, RxE] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
+        const auto [RpE, RxE] = eccentric_residuals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
         
         return -(Fp*RpE + Fx*RxE);
     }
@@ -25,7 +25,7 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
+        const auto [RpP, RxP] = eccentric_residuals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
         
         return (Fp*RpP + Fx*RxP);
     }
@@ -33,15 +33,15 @@ Signal1D EccentricResiduals_Anl(const BinaryMass &bin_mass,
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        const auto [RpP, RxP] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
-        const auto [RpE, RxE] = EccentricResiduals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
+        const auto [RpP, RxP] = eccentric_residuals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts + delay);
+        const auto [RpE, RxE] = eccentric_residuals_px_Anl(bin_mass, bin_init, bin_pos.DL, ts);
         
         return    (Fp*RpP + Fx*RxP) 
                 - (Fp*RpE + Fx*RxE);
     }
 }
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Anl(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Anl(const BinaryMass &bin_mass,
                                                          const BinaryState &bin_init,
                                                          const double DGW,
                                                          const Signal1D &ts){
@@ -72,7 +72,7 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Anl(const BinaryMass &bin_m
         
         const auto [RA, RB] = FourierResidual_pt(res_coeffs, l, lambda);
 
-        const auto H0 = GWAmplitude(bin_mass, bin_now, DGW);
+        const auto H0 = gw_amplitude(bin_mass, bin_now, DGW);
         
         Rp[i] = H0*(cos2psi*RA - sin2psi*RB);
         Rx[i] = H0*(cos2psi*RB + sin2psi*RA);

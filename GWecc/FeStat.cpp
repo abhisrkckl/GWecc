@@ -9,7 +9,7 @@
 #include <sstream>
 
 template<unsigned i>
-double FeStat_A_fn_pt(double t, void *_params){
+double fe_stat_A_fn_pt(double t, void *_params){
 
     static_assert(i>0 && i<4, "Invalid A function index.");
 
@@ -73,7 +73,7 @@ double FeStat_A_fn_pt(double t, void *_params){
 
     if(std::isnan(result)){
         std::ostringstream errstrm;
-        errstrm<<"NaN encountered in FeStat_A_fn_pt<"<<i<<">. "
+        errstrm<<"NaN encountered in fe_stat_A_fn_pt<"<<i<<">. "
                <<"M = "<<bin_mass.mass()<<", "
                <<"eta = "<<bin_mass.symmetric_mass_ratio()<<", "
                <<"e = "<<e<<", "
@@ -102,7 +102,7 @@ double FeStat_A_fn_pt(double t, void *_params){
     return result;
 }
 
-std::array<Signal1D, 6> FeStatFuncs(const BinaryMass &bin_mass,
+std::array<Signal1D, 6> fe_stat_funcs(const BinaryMass &bin_mass,
                                     const BinaryState &bin_init,
                                     const SkyPosition &bin_pos,
                                     const SkyPosition &psr_pos,
@@ -124,15 +124,15 @@ std::array<Signal1D, 6> FeStatFuncs(const BinaryMass &bin_mass,
                             bin_init,
                             ev_coeffs };
 
-    gsl_function EccentricResiduals_gsl_func_1 {&FeStat_A_fn_pt<1>, &params},
-                 EccentricResiduals_gsl_func_2 {&FeStat_A_fn_pt<2>, &params},
-                 EccentricResiduals_gsl_func_3 {&FeStat_A_fn_pt<3>, &params};
+    gsl_function EccentricResiduals_gsl_func_1 {&fe_stat_A_fn_pt<1>, &params},
+                 EccentricResiduals_gsl_func_2 {&fe_stat_A_fn_pt<2>, &params},
+                 EccentricResiduals_gsl_func_3 {&fe_stat_A_fn_pt<3>, &params};
 
     Signal1D f1 = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_1, ts[0], ts),
              f2 = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_2, ts[0], ts),
              f3 = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_3, ts[0], ts);
     
-    const double H0 = GWAmplitude(bin_mass, bin_init, bin_pos.DL);
+    const double H0 = gw_amplitude(bin_mass, bin_init, bin_pos.DL);
 
     return {H0*Fp*f1, H0*Fp*f2, H0*Fp*f3,
             H0*Fx*f1, H0*Fx*f2, H0*Fx*f3};

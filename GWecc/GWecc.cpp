@@ -62,7 +62,7 @@ std::vector<double> eccentric_residuals(const double M, const double q,
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
     
-    Signal1D result = EccentricResiduals(bin_mass, bin_init, bin_pos, psr_pos, 
+    Signal1D result = eccentric_residuals(bin_mass, bin_init, bin_pos, psr_pos, 
                                          residuals_method, 
                                          residuals_terms,
                                          tzs);
@@ -96,7 +96,7 @@ std::vector<std::vector<double>> eccentric_residuals_and_waveform(
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
     
-    auto [R, h] = EccentricResidualsAndWaveform(bin_mass, bin_init, bin_pos, psr_pos, 
+    auto [R, h] = eccentric_residuals_and_waveform(bin_mass, bin_init, bin_pos, psr_pos, 
                                                 residuals_terms,
                                                 tzs);
     R *= (1+z);
@@ -131,7 +131,7 @@ std::vector<double> eccentric_waveform( const double M, const double q,
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
     
-    Signal1D result = EccentricWaveform(bin_mass, bin_init, bin_pos, psr_pos, 
+    Signal1D result = eccentric_waveform(bin_mass, bin_init, bin_pos, psr_pos, 
                                         residuals_terms,
                                         tzs);
     
@@ -181,7 +181,7 @@ std::vector<std::vector<double> > eccentric_residuals_px(const double M, const d
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
 
-    auto [_Rp, _Rx] = EccentricResiduals_px(bin_mass, bin_init,
+    auto [_Rp, _Rx] = eccentric_residuals_px(bin_mass, bin_init,
                                             parsec_to_s*DGW, parsec_to_s*delay,
                                             residuals_method,
                                             residuals_terms,
@@ -214,7 +214,7 @@ std::vector<std::vector<double> > eccentric_waveform_px( const double M, const d
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
 
-    const auto [_hp, _hx] = EccentricWaveform_px(bin_mass, bin_init, 
+    const auto [_hp, _hx] = eccentric_waveform_px(bin_mass, bin_init, 
                                                  DGW*parsec_to_s,
                                                  tzs);
 
@@ -275,13 +275,13 @@ std::vector<std::vector<double> > fe_stat_funcs(const double M, const double q,
 
     std::array<Signal1D,6> A;
     if(residuals_method == ResidualsMethod::Num){
-        A = FeStatFuncs(bin_mass, bin_init, bin_pos, psr_pos, tzs);
+        A = fe_stat_funcs(bin_mass, bin_init, bin_pos, psr_pos, tzs);
     }
     else if(residuals_method == ResidualsMethod::Adb){
-        A = FeStatFuncs_Adb(bin_mass, bin_init, bin_pos, psr_pos, tzs);
+        A = fe_stat_funcs_Adb(bin_mass, bin_init, bin_pos, psr_pos, tzs);
     }
     else{
-        throw std::invalid_argument("Only Num and Adb methods are supported in FeStatFuncs.");
+        throw std::invalid_argument("Only Num and Adb methods are supported in fe_stat_funcs.");
     }
 
     for(auto Ai : A){

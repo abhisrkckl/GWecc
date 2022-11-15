@@ -5,9 +5,9 @@
 #include "ipow.hpp"
 #include <iostream>
 
-double EccentricResiduals_fn_pt(double t, void *_params);
+double eccentric_residuals_fn_pt(double t, void *_params);
 
-Signal1D EccentricResiduals_Num(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_Num(const BinaryMass &bin_mass,
                                 const BinaryState &bin_init,
                                 const SkyPosition &bin_pos,
                                 const SkyPosition &psr_pos,
@@ -17,25 +17,25 @@ Signal1D EccentricResiduals_Num(const BinaryMass &bin_mass,
     const auto [cosmu, Fp, Fx] = antenna_pattern(bin_pos, psr_pos);
     
     if(residuals_terms==ResidualsTerms::Earth){
-        return -EccentricResiduals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts);
+        return -eccentric_residuals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts);
     }
     else if(residuals_terms==ResidualsTerms::Pulsar){
         
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        return  EccentricResiduals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts + delay); 
+        return  eccentric_residuals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts + delay); 
     }
     else{
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         //const auto bin_psrterm = solve_orbit_equations(bin_mass, bin_init, delay);
         
-        return    EccentricResiduals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts + delay)
-                - EccentricResiduals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts);
+        return    eccentric_residuals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts + delay)
+                - eccentric_residuals_fn_Num(bin_mass, bin_init, Fp, Fx, bin_pos.DL, ts);
     }
 }
 
-Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals_fn_Num(const BinaryMass &bin_mass,
                                    const BinaryState &bin_init,
                                    const double Fp, const double Fx, const double DGW,
                                    const Signal1D &ts){
@@ -55,18 +55,18 @@ Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
     const double t_max = *std::max_element(std::begin(ts), std::end(ts));
     const auto bin_last = solve_orbit_equations(bin_init, ev_coeffs, t_max-bin_init.t);
     if(bin_last.merged){
-        std::cerr<<"Warning : [GWecc/EccentricResiduals_Num.cpp] The binary will merge within observation span.\n";
+        std::cerr<<"Warning : [GWecc/eccentric_residuals_Num.cpp] The binary will merge within observation span.\n";
     }
     
-    gsl_function EccentricResiduals_gsl_func {&EccentricResiduals_fn_pt, &params};
+    gsl_function eccentric_residuals_gsl_func {&eccentric_residuals_fn_pt, &params};
     
-    return cquad_integrator.eval_noerr(EccentricResiduals_gsl_func, ts[0], ts);
+    return cquad_integrator.eval_noerr(eccentric_residuals_gsl_func, ts[0], ts);
     
     /*
     const int length = ts.size();
     Signal1D result(length);
     for(int i=0;i<length;i++){
-        result[i] = EccentricResiduals_fn_pt(ts[i], &params);
+        result[i] = eccentric_residuals_fn_pt(ts[i], &params);
     }
     
     return result;
@@ -74,7 +74,7 @@ Signal1D EccentricResiduals_fn_Num(const BinaryMass &bin_mass,
     
 }
 
-double EccentricResiduals_fn_pt(double t, void *_params){
+double eccentric_residuals_fn_pt(double t, void *_params){
 
     const auto &wf_params = *static_cast<WaveformParams*>(_params);
     const auto &Fp = wf_params.Fp,
@@ -134,7 +134,7 @@ double EccentricResiduals_fn_pt(double t, void *_params){
                c2psi     = ev_coeffs.cos2psi,
                s2psi     = ev_coeffs.sin2psi,
                
-               H0       = (DGW==-1) ?1 :GWAmplitude(bin_mass, bin_now, DGW);    
+               H0       = (DGW==-1) ?1 :gw_amplitude(bin_mass, bin_now, DGW);    
     
     const auto h_mq_A   = 1./ipow(1-ecu,2) * (    - (ci*ci+1)*(2*OTS*esu)         *s2phi
                             + (ci*ci+1)*(2*e*e - ecu*ecu + ecu - 2)    *c2phi
@@ -163,7 +163,7 @@ double EccentricResiduals_fn_pt(double t, void *_params){
     return H0*(Fp*hp + Fx*hx);
 }
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Num(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Num(const BinaryMass &bin_mass,
                                                          const BinaryState &bin_init,
                                                          const double DGW,
                                                          const Signal1D &ts){
@@ -185,11 +185,11 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px_Num(const BinaryMass &bin_m
                                   ev_coeffs };
 
 
-        gsl_function EccentricResiduals_gsl_func_p {&EccentricResiduals_fn_pt, &params_p},
-                     EccentricResiduals_gsl_func_x {&EccentricResiduals_fn_pt, &params_x};
+        gsl_function eccentric_residuals_gsl_func_p {&eccentric_residuals_fn_pt, &params_p},
+                     eccentric_residuals_gsl_func_x {&eccentric_residuals_fn_pt, &params_x};
 
-        Signal1D Rp = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_p, ts[0], ts),
-                 Rx = cquad_integrator.eval_noerr(EccentricResiduals_gsl_func_x, ts[0], ts);
+        Signal1D Rp = cquad_integrator.eval_noerr(eccentric_residuals_gsl_func_p, ts[0], ts),
+                 Rx = cquad_integrator.eval_noerr(eccentric_residuals_gsl_func_x, ts[0], ts);
         
         return std::make_tuple(Rp,Rx);
 

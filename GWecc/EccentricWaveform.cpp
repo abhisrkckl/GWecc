@@ -6,7 +6,7 @@
 #include "NumericalWaveform.hpp"
 #include "AntennaPattern.hpp"
 
-std::vector<double> EccentricWaveform_fn(const double M, const double q,
+std::vector<double> eccentric_waveform_fn(const double M, const double q,
                                          const double psi, const double i,
                                          const double n, const double e, const double l, const double gamma,
                                          const double DGW){
@@ -55,7 +55,7 @@ std::vector<double> EccentricWaveform_fn(const double M, const double q,
                   c2Om     = cos(2*psi),
                   s2Om     = sin(2*psi),
                   
-                  H0       = (DGW==-1) ?1 :GWAmplitude(bin_mass, bin_now, DGW);
+                  H0       = (DGW==-1) ?1 :gw_amplitude(bin_mass, bin_now, DGW);
     
     const auto h_mq_A   = 1./ipow(1-ecu,2) * (    - (ci*ci+1)*(2*OTS*esu)         *s2phi
                             + (ci*ci+1)*(2*e*e - ecu*ecu + ecu - 2)    *c2phi
@@ -85,7 +85,7 @@ std::vector<double> EccentricWaveform_fn(const double M, const double q,
  
 }
 
-Signal1D EccentricWaveform( const BinaryMass &bin_mass,
+Signal1D eccentric_waveform( const BinaryMass &bin_mass,
                             const BinaryState &bin_init,
                             const SkyPosition &bin_pos,
                             const SkyPosition &psr_pos,
@@ -106,26 +106,26 @@ Signal1D EccentricWaveform( const BinaryMass &bin_mass,
     
     if(residuals_terms==ResidualsTerms::Earth){
         for(unsigned i=0; i<length; i++){
-            h[i] = -EccentricResiduals_fn_pt(ts[i], &params);
+            h[i] = -eccentric_residuals_fn_pt(ts[i], &params);
         }
     }
     else if(residuals_terms==ResidualsTerms::Pulsar){
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         for(unsigned i=0; i<length; i++){
-            h[i] = EccentricResiduals_fn_pt(ts[i] + delay, &params);
+            h[i] = eccentric_residuals_fn_pt(ts[i] + delay, &params);
         }
     }
     else{
         const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
         for(unsigned i=0; i<length; i++){
-            h[i] = EccentricResiduals_fn_pt(ts[i] + delay, &params) - EccentricResiduals_fn_pt(ts[i], &params);
+            h[i] = eccentric_residuals_fn_pt(ts[i] + delay, &params) - eccentric_residuals_fn_pt(ts[i], &params);
         }
     }
 
     return h;
 }
 
-std::tuple<Signal1D, Signal1D> EccentricWaveform_px(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_waveform_px(const BinaryMass &bin_mass,
                                                     const BinaryState &bin_init,
                                                     const double DGW,
                                                     const Signal1D &ts){
@@ -144,8 +144,8 @@ std::tuple<Signal1D, Signal1D> EccentricWaveform_px(const BinaryMass &bin_mass,
                               ev_coeffs };
     
     for(unsigned i=0; i<length; i++){
-        hp[i] = EccentricResiduals_fn_pt(ts[i], &params_p);
-        hx[i] = EccentricResiduals_fn_pt(ts[i], &params_x);    
+        hp[i] = eccentric_residuals_fn_pt(ts[i], &params_p);
+        hx[i] = eccentric_residuals_fn_pt(ts[i], &params_x);    
     }
     
     return std::make_tuple(hp, hx);

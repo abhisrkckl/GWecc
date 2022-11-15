@@ -8,7 +8,7 @@
 #include "FeStat.hpp"
 #include <sstream>
 
-std::array<double, 3> FeStat_A_fn_pt_Adb(double t, void *_params){
+std::array<double, 3> fe_stat_A_fn_pt_Adb(double t, void *_params){
 
     const auto &wf_params = *static_cast<WaveformParams*>(_params);
    
@@ -62,7 +62,7 @@ std::array<double, 3> FeStat_A_fn_pt_Adb(double t, void *_params){
     return {P*c2w + Q*s2w, P*s2w - Q*c2w, R};
 }
 
-std::array<Signal1D, 6> FeStatFuncs_Adb(const BinaryMass &bin_mass,
+std::array<Signal1D, 6> fe_stat_funcs_Adb(const BinaryMass &bin_mass,
                                         const BinaryState &bin_init,
                                         const SkyPosition &bin_pos,
                                         const SkyPosition &psr_pos,
@@ -80,13 +80,13 @@ std::array<Signal1D, 6> FeStatFuncs_Adb(const BinaryMass &bin_mass,
     const size_t nts = ts.size();
     Signal1D f1s(nts), f2s(nts), f3s(nts);
     for(unsigned idx=0; idx<nts; idx++){
-        const auto [f1, f2, f3] = FeStat_A_fn_pt_Adb(ts[idx], &params);
+        const auto [f1, f2, f3] = fe_stat_A_fn_pt_Adb(ts[idx], &params);
         f1s[idx] = f1;
         f2s[idx] = f2;
         f3s[idx] = f3;
     }    
 
-    const double H0 = GWAmplitude(bin_mass, bin_init, bin_pos.DL);
+    const double H0 = gw_amplitude(bin_mass, bin_init, bin_pos.DL);
 
     return {H0*Fp*f1s, H0*Fp*f2s, H0*Fp*f3s,
             H0*Fx*f1s, H0*Fx*f2s, H0*Fx*f3s};

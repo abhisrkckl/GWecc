@@ -4,25 +4,25 @@
 #include "PN.hpp"
 #include <stdexcept>
 
-auto choose_EccentricResiduals_fn(const ResidualsMethod residuals_method){
+auto choose_eccentric_residuals_fn(const ResidualsMethod residuals_method){
     switch (residuals_method){
-        break; case ResidualsMethod::Anl: return EccentricResiduals_Anl;
-        break; case ResidualsMethod::Adb: return EccentricResiduals_Adb;
-        break; case ResidualsMethod::Num: return EccentricResiduals_Num;
-        break; case ResidualsMethod::PM : return EccentricResiduals_PM;
+        break; case ResidualsMethod::Anl: return eccentric_residuals_Anl;
+        break; case ResidualsMethod::Adb: return eccentric_residuals_Adb;
+        break; case ResidualsMethod::Num: return eccentric_residuals_Num;
+        break; case ResidualsMethod::PM : return eccentric_residuals_PM;
     }
 }
 
-auto choose_EccentricResiduals_px_fn(const ResidualsMethod residuals_method){
+auto choose_eccentric_residuals_px_fn(const ResidualsMethod residuals_method){
     switch (residuals_method){
-        break; case ResidualsMethod::Anl: return EccentricResiduals_px_Anl;
-        break; case ResidualsMethod::Adb: return EccentricResiduals_px_Adb;
-        break; case ResidualsMethod::Num: return EccentricResiduals_px_Num;
-        break; case ResidualsMethod::PM : return EccentricResiduals_px_PM;
+        break; case ResidualsMethod::Anl: return eccentric_residuals_px_Anl;
+        break; case ResidualsMethod::Adb: return eccentric_residuals_px_Adb;
+        break; case ResidualsMethod::Num: return eccentric_residuals_px_Num;
+        break; case ResidualsMethod::PM : return eccentric_residuals_px_PM;
     }
 }
 
-Signal1D EccentricResiduals(const BinaryMass &bin_mass,
+Signal1D eccentric_residuals(const BinaryMass &bin_mass,
                             const BinaryState &bin_init,
                             const SkyPosition &bin_pos,
                             const SkyPosition &psr_pos,
@@ -30,9 +30,9 @@ Signal1D EccentricResiduals(const BinaryMass &bin_mass,
                             const ResidualsTerms residuals_terms,
                             const Signal1D &ts){
 
-    const auto EccentricResiduals_fn = choose_EccentricResiduals_fn(residuals_method);
+    const auto eccentric_residuals_fn = choose_eccentric_residuals_fn(residuals_method);
 
-    return EccentricResiduals_fn(bin_mass,
+    return eccentric_residuals_fn(bin_mass,
                                  bin_init,
                                  bin_pos,
                                  psr_pos,
@@ -40,7 +40,7 @@ Signal1D EccentricResiduals(const BinaryMass &bin_mass,
                                  ts);
 }
 
-std::tuple<Signal1D, Signal1D> EccentricResiduals_px(const BinaryMass &bin_mass,
+std::tuple<Signal1D, Signal1D> eccentric_residuals_px(const BinaryMass &bin_mass,
                                                      const BinaryState &bin_init,
                                                      const double DGW, const double delay,
                                                      const ResidualsMethod residuals_method,
@@ -48,18 +48,18 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px(const BinaryMass &bin_mass,
                                                      const Signal1D &ts){
 
     
-    const auto EccentricResiduals_px_fn = choose_EccentricResiduals_px_fn(residuals_method);
+    const auto eccentric_residuals_px_fn = choose_eccentric_residuals_px_fn(residuals_method);
 
     if(residuals_terms == ResidualsTerms::Earth){
-        const auto [RpE,RxE] = EccentricResiduals_px_fn(bin_mass, bin_init, DGW, ts);
+        const auto [RpE,RxE] = eccentric_residuals_px_fn(bin_mass, bin_init, DGW, ts);
         return std::make_tuple(-RpE, -RxE);
     }
     else if(residuals_terms == ResidualsTerms::Pulsar){    
-        return EccentricResiduals_px_fn(bin_mass, bin_init, DGW, ts + delay);
+        return eccentric_residuals_px_fn(bin_mass, bin_init, DGW, ts + delay);
     }
     else{
-        const auto [RpE,RxE] = EccentricResiduals_px_fn(bin_mass, bin_init, DGW, ts);
-        const auto [RpP,RxP] = EccentricResiduals_px_fn(bin_mass, bin_init, DGW, ts + delay);
+        const auto [RpE,RxE] = eccentric_residuals_px_fn(bin_mass, bin_init, DGW, ts);
+        const auto [RpP,RxP] = eccentric_residuals_px_fn(bin_mass, bin_init, DGW, ts + delay);
         
         const auto Rp = RpP-RpE,
                    Rx = RxP-RxE;
@@ -68,7 +68,7 @@ std::tuple<Signal1D, Signal1D> EccentricResiduals_px(const BinaryMass &bin_mass,
     }
 }
 
-double GWAmplitude(const BinaryMass &bin_mass,
+double gw_amplitude(const BinaryMass &bin_mass,
                    const BinaryState &bin_init,
                    const double DGW){
 
