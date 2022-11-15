@@ -1,7 +1,7 @@
 #ifndef _PN_hpp_
 #define _PN_hpp_ 1
 
-#include "Binary.hpp"
+#include "binary.hpp"
 
 double PN_param_xi(const BinaryMass &bin_mass,
                    const BinaryState &bin_state);

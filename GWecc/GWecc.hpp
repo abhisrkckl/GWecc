@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "ResidualsOptions.hpp"
-#include "Binary.hpp"
+#include "binary.hpp"
 
 /*
  * Computes R(t)

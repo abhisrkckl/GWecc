@@ -2,7 +2,7 @@
 #define _AntennaPattern_hpp_ 1
 
 #include <tuple>
-#include "Binary.hpp"
+#include "binary.hpp"
 
 struct AntennaPattern{
     double cosmu, Fp, Fx;

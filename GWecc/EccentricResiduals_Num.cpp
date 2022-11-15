@@ -1,5 +1,5 @@
 #include "NumericalWaveform.hpp"
-#include "AntennaPattern.hpp"
+#include "antenna_pattern.hpp"
 #include "PN.hpp"
 #include "mikkola.h"
 #include "ipow.hpp"

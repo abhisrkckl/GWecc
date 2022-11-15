@@ -1,6 +1,6 @@
 #include "EccentricResiduals.hpp"
 #include "OrbitalEvolution.hpp"
-#include "AntennaPattern.hpp"
+#include "antenna_pattern.hpp"
 #include "FourierWaveform.hpp"
 #include "PN.hpp"
 #include <iostream>

@@ -2,7 +2,7 @@
 #define _FourierWaveform_hpp_ 1
 
 #include <Eigen/Dense>
-#include "Binary.hpp"
+#include "binary.hpp"
 #include "FourierSize.incl"
 #include <tuple>
 

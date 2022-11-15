@@ -1,7 +1,7 @@
 #ifndef _OrbitalEvolution_hpp_
 #define _OrbitalEvolution_hpp_ 1
 
-#include "Binary.hpp"
+#include "binary.hpp"
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_spline.h>
 #include <vector>

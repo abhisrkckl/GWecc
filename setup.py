@@ -2,7 +2,7 @@ from setuptools import setup, Extension
 import os
 
 GWecc_sources = (
-    "AntennaPattern.cpp",
+    "antenna_pattern.cpp",
     "EccentricResiduals_Anl.cpp",
     "EccentricResiduals_Num.cpp",
     "EccentricResiduals_Adb.cpp",

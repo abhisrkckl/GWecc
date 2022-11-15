@@ -4,7 +4,7 @@
 #include "ipow.hpp"
 #include "EccentricResiduals.hpp"
 #include "NumericalWaveform.hpp"
-#include "AntennaPattern.hpp"
+#include "antenna_pattern.hpp"
 
 std::vector<double> eccentric_waveform_fn(const double M, const double q,
                                          const double psi, const double i,

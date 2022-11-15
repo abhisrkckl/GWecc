@@ -1,7 +1,7 @@
 #include "GWecc.hpp"
 #include "EccentricResiduals.hpp"
 #include "FeStat.hpp"
-#include "AntennaPattern.hpp"
+#include "antenna_pattern.hpp"
 
 static constexpr double MSun_to_s   = 4.92703806e-6,       // Solar mass in s (geometric units)
                         parsec_to_s = 102927125.0,         // Parsec in s (geometric units)
