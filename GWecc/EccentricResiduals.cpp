@@ -5,31 +5,21 @@
 #include <stdexcept>
 
 auto choose_EccentricResiduals_fn(const ResidualsMethod residuals_method){
-    auto fn = EccentricResiduals_Num;
-    if(residuals_method == ResidualsMethod::Anl){
-        fn = EccentricResiduals_Anl;
+    switch (residuals_method){
+        break; case ResidualsMethod::Anl: return EccentricResiduals_Anl;
+        break; case ResidualsMethod::Adb: return EccentricResiduals_Adb;
+        break; case ResidualsMethod::Num: return EccentricResiduals_Num;
+        break; case ResidualsMethod::PM : return EccentricResiduals_PM;
     }
-    else if(residuals_method == ResidualsMethod::Adb){
-        fn = EccentricResiduals_Adb;
-    }
-    else if(residuals_method == ResidualsMethod::PM){
-        fn = EccentricResiduals_PM;
-    }
-    return fn;
 }
 
 auto choose_EccentricResiduals_px_fn(const ResidualsMethod residuals_method){
-    auto fn = EccentricResiduals_px_Num;
-    if(residuals_method == ResidualsMethod::Anl){
-        fn = EccentricResiduals_px_Anl;
+    switch (residuals_method){
+        break; case ResidualsMethod::Anl: return EccentricResiduals_px_Anl;
+        break; case ResidualsMethod::Adb: return EccentricResiduals_px_Adb;
+        break; case ResidualsMethod::Num: return EccentricResiduals_px_Num;
+        break; case ResidualsMethod::PM : return EccentricResiduals_px_PM;
     }
-    else if(residuals_method == ResidualsMethod::Adb){
-        fn = EccentricResiduals_px_Adb;
-    }
-    else if(residuals_method == ResidualsMethod::PM){
-        fn = EccentricResiduals_px_PM;
-    }
-    return fn;
 }
 
 Signal1D EccentricResiduals(const BinaryMass &bin_mass,
