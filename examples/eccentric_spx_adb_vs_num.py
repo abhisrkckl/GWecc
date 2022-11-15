@@ -1,4 +1,4 @@
-"""Comparison of analytical vs numerical vs adiabatic residuals
+"""Comparison of analytical vs numerical residuals
 """
 
 import numpy as np
