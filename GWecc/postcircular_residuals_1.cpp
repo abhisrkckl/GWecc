@@ -1,5 +1,5 @@
 #include <cmath>
-#include "fourier_residuals.hpp"
+#include "postcircular_residuals.hpp"
 #include "ipow.hpp"
 #include "post_newtonian.hpp"
 
