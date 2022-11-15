@@ -2,8 +2,7 @@
 #define _EccentricResiduals_py_hpp_
 
 #include <vector>
-#include "residual_options.hpp"
-#include "binary.hpp"
+#include "eccentric_residuals.hpp"
 
 /*
  * Computes R(t)

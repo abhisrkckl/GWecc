@@ -4,7 +4,9 @@
 #include <valarray>
 #include <tuple>
 #include "binary.hpp"
-#include "residual_options.hpp"
+
+enum class ResidualsMethod {PC, Adb, Num, PM};
+enum class ResidualsTerms {Earth=1, Pulsar=2, Both=3};
 
 typedef std::valarray<double> Signal1D;
 
