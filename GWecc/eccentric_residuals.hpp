@@ -17,17 +17,15 @@ double gw_amplitude(const BinaryMass &bin_mass,
                     const BinaryState &bin_init,
                     const double DGW);
 
-
 /*
  * This is to abstract over different methods of computing RA and RB.
  */
-//typedef std::tuple<Signal1D, Signal1D> (*)(const BinaryMass&, const BinaryState&, const Signal1D&);
-typedef Signal1D (*eccentric_residuals_func_t) ( const BinaryMass &,
-                                                const BinaryState &,
-                                                const SkyPosition &,
-                                                const SkyPosition &,
-                                                const ResidualsTerms,
-                                                const Signal1D &);
+typedef Signal1D (*eccentric_residuals_func_t)(const BinaryMass &,
+                                               const BinaryState &,
+                                               const SkyPosition &,
+                                               const SkyPosition &,
+                                               const ResidualsTerms,
+                                               const Signal1D &);
 
 /*
  * Computes R(t)
@@ -88,18 +86,17 @@ std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Anl(const BinaryMass &bin_
                                                          const double DGW,
                                                          const Signal1D &ts);
 
+Signal1D adiabatic_residuals(const BinaryMass &bin_mass,
+                             const BinaryState &bin_init,
+                             const SkyPosition &bin_pos,
+                             const SkyPosition &psr_pos,
+                             const ResidualsTerms residuals_terms,
+                             const Signal1D &ts);
 
-Signal1D eccentric_residuals_Adb(const BinaryMass &bin_mass,
-                                const BinaryState &bin_init,
-                                const SkyPosition &bin_pos,
-                                const SkyPosition &psr_pos,
-                                const ResidualsTerms residuals_terms,
-                                const Signal1D &ts);
-
-std::tuple<Signal1D, Signal1D> eccentric_residuals_px_Adb(const BinaryMass &bin_mass,
-                                                         const BinaryState &bin_init,
-                                                         const double DGW,
-                                                         const Signal1D &ts);
+std::tuple<Signal1D, Signal1D> adiabatic_residuals_px(const BinaryMass &bin_mass,
+                                                      const BinaryState &bin_init,
+                                                      const double DGW,
+                                                      const Signal1D &ts);
 
 Signal1D eccentric_residuals_PM(const BinaryMass &bin_mass,
                                const BinaryState &bin_init,

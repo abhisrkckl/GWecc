@@ -2,6 +2,7 @@
 %{
 #include "GWecc/binary.hpp"
 #include "GWecc/orbital_evolution.hpp"
+#include "GWecc/eccentric_residuals.hpp"
 #include "GWecc/GWecc.hpp"
 %}
 
@@ -14,4 +15,5 @@ namespace std {
 
 %include "GWecc/binary.hpp"
 %include "GWecc/orbital_evolution.hpp"
+%include "GWecc/eccentric_residuals.hpp"
 %include "GWecc/GWecc.hpp"
