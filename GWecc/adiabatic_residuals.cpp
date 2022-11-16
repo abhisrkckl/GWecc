@@ -39,7 +39,7 @@ auto eccentric_residuals_px_fn_pt_Adb(const BinaryMass &bin_mass,
                 ephi = angular_eccentricity(bin_mass, bin_now),
                 
                 betaphi = (ephi>1e-15)  ? (1-sqrt(1-ephi*ephi))/ephi 
-                                        : (e/2. + ipow(e,3)/8. + ipow(e,5)/16.),
+                                        : (ephi/2. + ipow(ephi,3)/8. + ipow(ephi,5)/16.),
                 v_u = 2*atan2(betaphi*su, 1-betaphi*cu),
                 v_l = v_u + esu,
                 v = v_l + l,

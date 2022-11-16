@@ -33,12 +33,12 @@ typedef Signal1D (*eccentric_residuals_func_t) ( const BinaryMass &,
  * Computes R(t)
  */
 Signal1D eccentric_residuals(const BinaryMass &bin_mass,
-                            const BinaryState &bin_init,
-                            const SkyPosition &bin_pos,
-                            const SkyPosition &psr_pos,
-                            const ResidualsMethod residuals_method,
-                            const ResidualsTerms residuals_terms,
-                            const Signal1D &ts);
+                             const BinaryState &bin_init,
+                             const SkyPosition &bin_pos,
+                             const SkyPosition &psr_pos,
+                             const ResidualsMethod residuals_method,
+                             const ResidualsTerms residuals_terms,
+                             const Signal1D &ts);
 
 /*
  * Computes h(t)
