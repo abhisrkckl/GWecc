@@ -10,4 +10,6 @@ struct AntennaPattern{
 
 AntennaPattern antenna_pattern(const SkyPosition &bin_pos, const SkyPosition &psr_pos);
 
+double pulsar_term_delay(const double cosmu, const double Dp, const double z);
+
 #endif

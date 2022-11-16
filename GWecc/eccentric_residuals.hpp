@@ -3,6 +3,8 @@
 
 #include <valarray>
 #include <tuple>
+#include <array>
+
 #include "binary.hpp"
 
 enum class ResidualsMethod {PC, Adb, Num, PM};
@@ -20,12 +22,35 @@ double gw_amplitude(const BinaryMass &bin_mass,
 /*
  * This is to abstract over different methods of computing RA and RB.
  */
-typedef Signal1D (*eccentric_residuals_func_t)(const BinaryMass &,
+/*typedef Signal1D (*eccentric_residuals_func_t)(const BinaryMass &,
                                                const BinaryState &,
                                                const SkyPosition &,
                                                const SkyPosition &,
                                                const ResidualsTerms,
-                                               const Signal1D &);
+                                               const Signal1D &);*/
+template <typename ResidualFunction>
+double get_total_residual(const ResidualFunction& res, double t, double delay, ResidualsTerms residuals_terms){
+    double R = 0;
+    if(residuals_terms == ResidualsTerms::Earth || residuals_terms == ResidualsTerms::Both) R -= res(t);
+    if(residuals_terms == ResidualsTerms::Pulsar|| residuals_terms == ResidualsTerms::Both) R += res(t-delay);
+    return R;
+}
+
+template <typename WfResFunction>
+std::array<double,2> get_total_residual_and_waveform(const WfResFunction& wfres, double t, double delay, ResidualsTerms residuals_terms){
+    double h=0, R=0;
+    if(residuals_terms == ResidualsTerms::Earth || residuals_terms == ResidualsTerms::Both){
+        const auto [RE, hE] = wfres(t);
+        R -= RE;
+        h -= hE;
+    }
+    if(residuals_terms == ResidualsTerms::Pulsar|| residuals_terms == ResidualsTerms::Both){
+        const auto [RP, hP] = wfres(t-delay);
+        R += RP;
+        h += hP;
+    }
+    return {R, h};
+}
 
 /*
  * Computes R(t)
@@ -51,7 +76,7 @@ Signal1D eccentric_waveform( const BinaryMass &bin_mass,
 /*
  * Computes R(t) and h(t)
  */
-std::tuple<Signal1D,Signal1D> eccentric_residuals_and_waveform(const BinaryMass &bin_mass,
+std::tuple<Signal1D,Signal1D> adiabatic_residuals_and_waveform(const BinaryMass &bin_mass,
                                                             const BinaryState &bin_init,
                                                             const SkyPosition &bin_pos,
                                                             const SkyPosition &psr_pos,

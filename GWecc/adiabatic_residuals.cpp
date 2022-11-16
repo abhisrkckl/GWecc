@@ -70,7 +70,24 @@ double adiabatic_residual(const BinaryMass &bin_mass,
                           const double t) {
     const auto [sp, sx] = adiabatic_residual_px(bin_mass, bin_init, DGW, ev_coeffs, t);
     const auto [_, Fp, Fx] = Fpx;
-    return Fp*sp + Fx*sx;
+
+    const auto s = Fp*sp + Fx*sx;
+
+    return s;
+}
+
+auto adiabatic_residual_and_waveform(const BinaryMass &bin_mass,
+                                     const BinaryState &bin_init,
+                                     const AntennaPattern Fpx, const double DGW,
+                                     const EvolveCoeffs& ev_coeffs,
+                                     const double t) {
+    const auto [sp, sx, hp, hx] = adiabatic_residual_and_waveform_px(bin_mass, bin_init, DGW, ev_coeffs, t);
+    const auto [_, Fp, Fx] = Fpx;
+
+    const auto s = Fp*sp + Fx*sx;
+    const auto h = Fp*hp + Fx*hx;
+
+    return std::make_tuple(s, h);
 }
 
 Signal1D adiabatic_residuals(const BinaryMass &bin_mass,
@@ -88,67 +105,40 @@ Signal1D adiabatic_residuals(const BinaryMass &bin_mass,
         return adiabatic_residual(bin_mass, bin_init, Fpx, DGW, ev_coeffs, t);
     };
 
+    const auto delay = pulsar_term_delay(Fpx.cosmu, psr_pos.DL, bin_pos.z);
+
     const auto nts = ts.size();
     Signal1D Rs(nts);
     for(unsigned idx=0; idx<nts; idx++){
-        const auto& t = ts[idx];
-
-        if(residuals_terms == ResidualsTerms::Earth){
-            Rs[idx] = -res(t);
-        }
-        else{
-            const auto delay = -psr_pos.DL*(1-Fpx.cosmu) / (1+bin_pos.z);
-            if(residuals_terms == ResidualsTerms::Pulsar){
-                Rs[idx] = res(t + delay);
-            }
-            else{
-                Rs[idx] = res(t+delay) - res(t);
-            }
-        }
+        Rs[idx] = get_total_residual(res, ts[idx], delay, residuals_terms);
     }
 
     return Rs;
 }
 
-std::tuple<Signal1D,Signal1D> eccentric_residuals_and_waveform(const BinaryMass &bin_mass,
+std::tuple<Signal1D,Signal1D> adiabatic_residuals_and_waveform(const BinaryMass &bin_mass,
                                                             const BinaryState &bin_init,
                                                             const SkyPosition &bin_pos,
                                                             const SkyPosition &psr_pos,
                                                             const ResidualsTerms residuals_terms,
                                                             const Signal1D &ts){
     
-    const auto [cosmu, Fp, Fx] = antenna_pattern(bin_pos, psr_pos);
+    const auto Fpx = antenna_pattern(bin_pos, psr_pos);
     const auto DGW = bin_pos.DL;
     const auto ev_coeffs = compute_evolve_coeffs(bin_mass, bin_init);
 
     const auto wfres = [&](double t){
-        return adiabatic_residual_and_waveform_px(bin_mass, bin_init, DGW, ev_coeffs, t);
+        return adiabatic_residual_and_waveform(bin_mass, bin_init, Fpx, DGW, ev_coeffs, t);
     };
+
+    const auto delay = pulsar_term_delay(Fpx.cosmu, psr_pos.DL, bin_pos.z);
 
     const auto nts = ts.size();
     Signal1D Rs(nts), hs(nts);
     for(unsigned idx=0; idx<nts; idx++){
-        const auto& t = ts[idx];
-
-        if(residuals_terms == ResidualsTerms::Earth){
-            const auto [sp, sx, hp, hx] = wfres(t);
-            Rs[idx] = -(Fp*sp + Fx*sx);
-            hs[idx] = -(Fp*hp + Fx*hx);
-        }
-        else{
-            const auto delay = -psr_pos.DL*(1-cosmu) / (1+bin_pos.z);
-            if(residuals_terms == ResidualsTerms::Pulsar){
-                const auto [sp, sx, hp, hx] = wfres(t+delay);
-                Rs[idx] = (Fp*sp + Fx*sx);
-                hs[idx] = (Fp*hp + Fx*hx);
-            }
-            else{
-                const auto [spP, sxP, hpP, hxP] = wfres(t+delay);
-                const auto [spE, sxE, hpE, hxE] = wfres(t);
-                Rs[idx] = Fp*(spP-spE) + Fx*(sxP-sxE);
-                hs[idx] = Fp*(hpP-hpE) + Fx*(hxP-hxE);
-            }
-        }
+        const auto [R, h] = get_total_residual_and_waveform(wfres, ts[idx], delay, residuals_terms);
+        Rs[idx] = R;
+        hs[idx] = h;
     }
 
     return {Rs, hs};

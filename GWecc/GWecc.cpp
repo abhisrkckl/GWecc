@@ -96,9 +96,9 @@ std::vector<std::vector<double>> eccentric_residuals_and_waveform(
     Signal1D tzs(_ts.data(), _ts.size());
     tzs *= day_to_s/(1+z);
     
-    auto [R, h] = eccentric_residuals_and_waveform(bin_mass, bin_init, bin_pos, psr_pos, 
-                                                residuals_terms,
-                                                tzs);
+    auto [R, h] = adiabatic_residuals_and_waveform(bin_mass, bin_init, bin_pos, psr_pos, 
+                                                   residuals_terms,
+                                                   tzs);
     R *= (1+z);
     
     const std::vector<double> result_R(std::begin(R), std::end(R));

@@ -94,3 +94,7 @@ AntennaPattern antenna_pattern(const SkyPosition &bin_pos, const SkyPosition &ps
     
     return {cosmu, Fp, Fx};
 }
+
+double pulsar_term_delay(const double cosmu, const double Dp, const double z){
+    return Dp*(1-cosmu) / (1+z);
+}
