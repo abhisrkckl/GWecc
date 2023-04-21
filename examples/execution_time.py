@@ -9,8 +9,9 @@ import time
 year = 365.25 * 24 * 3600
 ns = 1e-9
 
-ntoas = 10
-toas = 365.25 * np.linspace(0, 15, ntoas)
+ntoas = 1000
+nreps = 2
+toas = 365.25 * np.linspace(0, 15*year, ntoas)
 
 RA_P = 1.65
 DEC_P = -1.12
@@ -30,7 +31,7 @@ Pb0 = 2
 #e0 = 0.5
 gamma0 = 0
 l0 = 0
-t0 = 0
+t0 = max(toas)
 
 z = 0.0
 
@@ -62,9 +63,6 @@ runtime_adb = []
 runtime_anl = []
 runtime_pm = []
 
-ntoas = 10000
-nreps = 2
-
 start = time.time()
 res_N = [
     GWecc.GWecc.EccentricResiduals(
@@ -95,8 +93,6 @@ runtime_circ = (end-start)  / (nreps*ntoas)
 
 es = np.linspace(0.001, 0.8, 10)
 for e0 in es:
-    toas = 365.25 * np.linspace(0, 15, ntoas)
-
     start = time.time()
     res_N = [
         GWecc.GWecc.EccentricResiduals(

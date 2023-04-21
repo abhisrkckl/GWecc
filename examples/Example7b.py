@@ -24,7 +24,7 @@ def dms_to_rad(dd, mm, ss):
 
 M = 1e9
 q = 1
-Pb0 = 1.5  # years
+Pb0 = 5.0  # years
 Omega = 0
 i = 0
 t0 = 0
@@ -67,23 +67,23 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
         toas,
     )
 
-    res_px_anl = GWecc.EccentricResiduals_px(
-        M,
-        q,
-        Omega,
-        i,
-        t0,
-        Pb0,
-        e0,
-        l0,
-        gamma0,
-        D_GW,
-        delay,
-        z,
-        GWecc.ResidualsMethod_Anl,
-        term,
-        toas,
-    )
+    # res_px_anl = GWecc.EccentricResiduals_px(
+    #     M,
+    #     q,
+    #     Omega,
+    #     i,
+    #     t0,
+    #     Pb0,
+    #     e0,
+    #     l0,
+    #     gamma0,
+    #     D_GW,
+    #     delay,
+    #     z,
+    #     GWecc.ResidualsMethod_Anl,
+    #     term,
+    #     toas,
+    # )
 
     res_px_num = GWecc.EccentricResiduals_px(
         M,
@@ -106,8 +106,8 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
     res_p_adb = np.asarray(res_px_adb[0]) - np.mean(res_px_adb[0])
     res_x_adb = np.asarray(res_px_adb[1]) - np.mean(res_px_adb[1])
 
-    res_p_anl = np.asarray(res_px_anl[0]) - np.mean(res_px_anl[0])
-    res_x_anl = np.asarray(res_px_anl[1]) - np.mean(res_px_anl[1])
+    # res_p_anl = np.asarray(res_px_anl[0]) - np.mean(res_px_anl[0])
+    # res_x_anl = np.asarray(res_px_anl[1]) - np.mean(res_px_anl[1])
 
     res_p_num = np.asarray(res_px_num[0]) - np.mean(res_px_num[0])
     res_x_num = np.asarray(res_px_num[1]) - np.mean(res_px_num[1])
@@ -120,7 +120,8 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
     plt.xlim([0, 10])
     plt.ylabel("$s_{+,\\times}(t_E)$  (ns)", fontsize=14)
     if idx == 0:
-        plt.legend(loc="upper right", fontsize=12)
+        # plt.legend(loc="upper right", fontsize=12)
+        pass
 
     if idx == 2:
         plt.tick_params(labelsize=12)
@@ -129,9 +130,9 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
         plt.tick_params(labelbottom=False, labelsize=12)
 
     plt.text(
-        1,
-        0.8 * ax.yaxis.get_data_interval()[1],
-        "e=" + str(e0),
+        -2,
+        0.0 * ax.yaxis.get_data_interval()[1],
+        f"e={e0}",
         size=15,
         ha="center",
         va="center",
@@ -150,7 +151,8 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
     plt.xlim([0, 10])
     # plt.ylabel("$s_{+,\\times}(t)$  (ns)", fontsize=14)
     if idx == 0:
-        plt.legend(loc="upper right", fontsize=12)
+        # plt.legend(loc="upper right", fontsize=12)
+        pass
 
     if idx == 2:
         plt.tick_params(labelsize=12)
@@ -160,8 +162,8 @@ for idx, e0 in enumerate([0.1, 0.3, 0.6]):
 
     ax2 = ax.twinx()
     diff = res_x_num - res_x_adb
-    plt.plot(toas / 365.25, diff, color="k", ls='dotted')
+    plt.plot(toas / 365.25, diff, color="k", ls='dotted', label="Difference")
     ax2.set_ylabel("Difference (ns)")
-    
+
 
 plt.show()

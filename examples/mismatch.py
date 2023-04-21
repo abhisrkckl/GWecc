@@ -1,4 +1,3 @@
-from cProfile import label
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -142,7 +141,7 @@ for idx, Pb0 in enumerate(Pb0s):
 
             mismatches.append(mismatch(res_adb, res_num))
 
-        plt.plot(es, mismatches, label=f"$M=10^{int(np.log10(M))}$ MSun")
+        plt.plot(es, mismatches, label=f"$M=10^{int(np.log10(M))}$ $M_☉︎$")
         plt.yscale("log")
         plt.legend(fontsize=14)
         plt.xlabel("$e_{t0}$", fontsize=14)
@@ -152,7 +151,7 @@ for idx, Pb0 in enumerate(Pb0s):
     plt.text(
         0.3,
         0.6 * ax.yaxis.get_data_interval()[1],
-        f"Pb0={Pb0} yr",
+        "$P_{b0}$" + f"={Pb0} yr",
         size=14,
         ha="center",
         va="center",
