@@ -1,6 +1,4 @@
-**GWecc is superseded by `GWecc.jl`_ and is no longer maintained.**
-
-.. _GWecc.jl: https://github.com/abhisrkckl/GWecc.jl
+**GWecc is superseded by GWecc.jl (https://github.com/abhisrkckl/GWecc.jl) and is no longer maintained.**
 
 GWecc computes pulsar TOA delays due to gravitational waves from eccentric supermassive binary sources. 
 enterprise_GWecc is a python wrapper for GWecc to be used with enterprise.
